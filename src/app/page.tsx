@@ -4,7 +4,6 @@ import { HeroBanner } from '@/components/home/HeroBanner';
 import { QuickLinks } from '@/components/home/QuickLinks';
 import { FeaturedBrandsSection } from '@/components/home/FeaturedBrandsSection';
 import { ProductSection } from '@/components/home/ProductSection';
-import { BrandSection } from '@/components/home/BrandSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -84,26 +83,12 @@ async function getFeaturedBrands() {
   return sorted;
 }
 
-async function getBrands() {
-  const client = getSupabaseClient();
-  const { data, error } = await client
-    .from('brands')
-    .select('*')
-    .eq('is_active', true)
-    .order('sort_order', { ascending: true })
-    .limit(12);
-  
-  if (error) throw error;
-  return data || [];
-}
-
 export default async function HomePage() {
-  const [banners, hotProducts, newProducts, featuredBrands, brands] = await Promise.all([
+  const [banners, hotProducts, newProducts, featuredBrands] = await Promise.all([
     getBanners(),
     getHotProducts(),
     getNewProducts(),
     getFeaturedBrands(),
-    getBrands(),
   ]);
 
   return (
@@ -113,7 +98,6 @@ export default async function HomePage() {
       <FeaturedBrandsSection brands={featuredBrands} />
       <ProductSection title="热销爆款" products={hotProducts} />
       <ProductSection title="新品上市" products={newProducts} />
-      <BrandSection brands={brands} />
     </Layout>
   );
 }
