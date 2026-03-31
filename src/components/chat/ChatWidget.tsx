@@ -7,6 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+// 自定义事件名称
+const CHAT_TOGGLE_EVENT = 'beautymart:toggle-chat';
+
 interface Message {
   id: string;
   content: string;
@@ -21,7 +24,7 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! Welcome to BeautyMart. How can I help you today?',
+      content: '您好！欢迎来到 BeautyMart。有什么可以帮助您的吗？',
       sender: 'bot',
       timestamp: new Date(),
     },
@@ -36,6 +39,16 @@ export function ChatWidget() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // 监听自定义事件（移动端底部导航触发）
+  useEffect(() => {
+    const handleToggle = () => {
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+    window.addEventListener(CHAT_TOGGLE_EVENT, handleToggle);
+    return () => window.removeEventListener(CHAT_TOGGLE_EVENT, handleToggle);
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -84,7 +97,8 @@ export function ChatWidget() {
   if (!isOpen) {
     return (
       <Button
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+        data-chat-trigger
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 hidden md:flex"
         onClick={() => setIsOpen(true)}
       >
         <MessageCircle className="h-6 w-6" />
@@ -94,11 +108,12 @@ export function ChatWidget() {
 
   return (
     <Card
+      data-chat-widget
       className={cn(
         'fixed z-50 shadow-2xl transition-all duration-300',
         isMinimized
-          ? 'bottom-6 right-6 w-72'
-          : 'bottom-6 right-6 w-96 h-[500px]',
+          ? 'bottom-20 right-4 md:bottom-6 md:right-6 w-72'
+          : 'bottom-20 right-4 md:bottom-6 md:right-6 w-[calc(100%-2rem)] md:w-96 h-[60vh] md:h-[500px]',
         'flex flex-col'
       )}
     >

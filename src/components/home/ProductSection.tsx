@@ -164,9 +164,6 @@ export function ProductCard({ product }: ProductCardProps) {
                   已售 {product.sales_count > 1000 ? `${(product.sales_count / 1000).toFixed(1)}k` : product.sales_count}
                 </p>
               )}
-              {product.categories && (
-                <p className="text-xs text-gray-300">{product.categories.name}</p>
-              )}
             </div>
           </div>
         </CardContent>

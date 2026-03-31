@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Search, ShoppingCart, User, MessageCircle } from 'lucide-react';
@@ -12,8 +13,16 @@ const navItems = [
   { name: '我的', href: '/account', icon: User },
 ];
 
+// 自定义事件名称
+const CHAT_TOGGLE_EVENT = 'beautymart:toggle-chat';
+
 export function MobileNav() {
   const pathname = usePathname();
+
+  const handleChatClick = () => {
+    // 发送自定义事件打开聊天窗口
+    window.dispatchEvent(new CustomEvent(CHAT_TOGGLE_EVENT));
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t md:hidden safe-area-bottom">
@@ -27,14 +36,8 @@ export function MobileNav() {
             return (
               <button
                 key={item.name}
-                onClick={() => {
-                  // 触发客服聊天窗口
-                  const chatButton = document.querySelector('[data-chat-trigger]');
-                  if (chatButton) {
-                    (chatButton as HTMLElement).click();
-                  }
-                }}
-                className="flex flex-col items-center justify-center flex-1 h-full text-gray-500"
+                onClick={handleChatClick}
+                className="flex flex-col items-center justify-center flex-1 h-full text-gray-500 active:text-primary"
               >
                 <Icon className="h-5 w-5" />
                 <span className="text-xs mt-1">{item.name}</span>
