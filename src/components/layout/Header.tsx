@@ -162,6 +162,15 @@ export function Header() {
 
           {/* Mobile Actions */}
           <div className="flex md:hidden items-center gap-0.5">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setShowMobileSearch(true)}
+            >
+              <Search className="h-4 w-4" />
+            </Button>
+
             {/* Mobile Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -187,15 +196,6 @@ export function Header() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setShowMobileSearch(true)}
-            >
-              <Search className="h-4 w-4" />
-            </Button>
 
             <Link href="/cart" className="relative p-1.5">
               <ShoppingCart className="h-4 w-4 text-gray-600" />
