@@ -78,6 +78,7 @@ export const brands = pgTable(
     country: varchar("country", { length: 100 }),
     sort_order: integer("sort_order").default(0),
     is_active: boolean("is_active").default(true).notNull(),
+    is_featured: boolean("is_featured").default(false).notNull(),
     created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   },
   (table) => [
