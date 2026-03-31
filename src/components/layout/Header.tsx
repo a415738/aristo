@@ -247,20 +247,6 @@ export function Header() {
                     </div>
                   </div>
 
-                  {/* Mobile Actions */}
-                  <div className="flex flex-col gap-3 pt-4 border-t">
-                    <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="outline" size="lg" className="w-full h-11">
-                        登录
-                      </Button>
-                    </Link>
-                    <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                      <Button size="lg" className="w-full h-11 bg-gradient-to-r from-pink-500 to-purple-500">
-                        注册
-                      </Button>
-                    </Link>
-                  </div>
-
                   {/* Contact */}
                   <div className="pt-4 border-t">
                     <a
