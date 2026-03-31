@@ -8,7 +8,13 @@ async function getProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name)')
+    .select(`
+      *,
+      categories(name),
+      brands(name),
+      product_images(image),
+      product_variants(name, sku, price, stock)
+    `)
     .order('created_at', { ascending: false })
     .limit(50);
   
@@ -20,9 +26,9 @@ async function getCategories() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('categories')
-    .select('*')
+    .select('id, name, slug')
     .eq('is_active', true)
-    .order('name');
+    .order('sort_order');
   
   if (error) throw error;
   return data || [];
@@ -32,7 +38,7 @@ async function getBrands() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('brands')
-    .select('*')
+    .select('id, name, slug')
     .eq('is_active', true)
     .order('name');
   
@@ -49,11 +55,9 @@ export default async function AdminProductsPage() {
 
   return (
     <AdminLayout>
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">商品管理</h1>
-          <p className="text-gray-600 mt-1">管理商品目录</p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-neutral-900">商品管理</h1>
+        <p className="text-neutral-500 mt-1">管理商品目录和库存</p>
       </div>
 
       <ProductTable products={products} categories={categories} brands={brands} />

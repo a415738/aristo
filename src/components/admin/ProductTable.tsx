@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,10 +19,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Plus, Pencil, Trash2, Search } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Loader2 } from 'lucide-react';
+import { ProductForm, ProductFormData } from './ProductForm';
 
 interface Product {
   id: string;
@@ -32,6 +32,14 @@ interface Product {
   stock: number;
   is_active: boolean;
   sales_count: number;
+  sku: string | null;
+  description: string | null;
+  category_id: string | null;
+  brand_id: string | null;
+  specs: { name: string; value: string }[] | null;
+  tags: string[] | null;
+  product_images: { image: string }[];
+  product_variants: { name: string; sku: string | null; price: string; stock: number }[];
   categories: { name: string } | null;
   brands: { name: string } | null;
 }
@@ -52,153 +60,217 @@ interface ProductTableProps {
   brands: Brand[];
 }
 
-export function ProductTable({ products, categories, brands }: ProductTableProps) {
+export function ProductTable({ products: initialProducts, categories, brands }: ProductTableProps) {
+  const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleSave = async (data: ProductFormData) => {
+    try {
+      const url = '/api/admin/products';
+      const method = editingProduct ? 'PUT' : 'POST';
+      const body = editingProduct ? { ...data, id: editingProduct.id } : data;
+
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // 刷新商品列表
+        window.location.reload();
+      } else {
+        alert(result.error || '保存失败');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('保存失败，请重试');
+    }
+  };
+
+  const handleEdit = (product: Product) => {
+    setEditingProduct(product);
+    setIsDialogOpen(true);
+  };
+
+  const handleDelete = async (productId: string) => {
+    if (!confirm('确定要删除这个商品吗？')) return;
+
+    setDeleting(productId);
+    try {
+      const response = await fetch(`/api/admin/products?id=${productId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setProducts(products.filter(p => p.id !== productId));
+      } else {
+        const result = await response.json();
+        alert(result.error || '删除失败');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('删除失败，请重试');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const handleAddNew = () => {
+    setEditingProduct(null);
+    setIsDialogOpen(true);
+  };
+
   return (
-    <Card>
+    <Card className="border-0 shadow-sm">
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
             <Input
               placeholder="搜索商品..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 border-neutral-200"
             />
           </div>
 
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                添加商品
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>添加新商品</DialogTitle>
-              </DialogHeader>
-              <div className="grid grid-cols-2 gap-4 py-4">
-                <div className="col-span-2">
-                  <Label htmlFor="name">商品名称</Label>
-                  <Input id="name" placeholder="请输入商品名称" />
-                </div>
-                <div>
-                  <Label htmlFor="category">分类</Label>
-                  <select id="category" className="w-full px-3 py-2 border rounded-lg">
-                    <option value="">请选择分类</option>
-                    {categories.map(cat => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="brand">品牌</Label>
-                  <select id="brand" className="w-full px-3 py-2 border rounded-lg">
-                    <option value="">请选择品牌</option>
-                    {brands.map(brand => (
-                      <option key={brand.id} value={brand.id}>{brand.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="retail-price">零售价</Label>
-                  <Input id="retail-price" type="number" placeholder="0.00" />
-                </div>
-                <div>
-                  <Label htmlFor="stock">库存</Label>
-                  <Input id="stock" type="number" placeholder="0" />
-                </div>
-                <div className="col-span-2">
-                  <Label htmlFor="description">商品描述</Label>
-                  <textarea
-                    id="description"
-                    className="w-full px-3 py-2 border rounded-lg min-h-[100px]"
-                    placeholder="请输入商品描述"
-                  />
-                </div>
-                <div className="col-span-2">
-                  <Label htmlFor="image">主图URL</Label>
-                  <Input id="image" type="url" placeholder="https://..." />
-                </div>
-                <div className="col-span-2 flex gap-2">
-                  <Button className="flex-1">保存商品</Button>
-                  <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    取消
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button
+            onClick={handleAddNew}
+            className="bg-neutral-900 hover:bg-neutral-800"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            添加商品
+          </Button>
         </div>
 
-        <div className="border rounded-lg overflow-hidden">
+        <div className="border border-neutral-200 rounded-lg overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>商品</TableHead>
+              <TableRow className="bg-neutral-50">
+                <TableHead className="w-12">图片</TableHead>
+                <TableHead>商品名称</TableHead>
                 <TableHead>分类</TableHead>
                 <TableHead>品牌</TableHead>
-                <TableHead>价格</TableHead>
-                <TableHead>库存</TableHead>
-                <TableHead>状态</TableHead>
-                <TableHead>销量</TableHead>
-                <TableHead className="text-right">操作</TableHead>
+                <TableHead className="text-right">价格</TableHead>
+                <TableHead className="text-right">库存</TableHead>
+                <TableHead className="text-right">销量</TableHead>
+                <TableHead className="text-center">状态</TableHead>
+                <TableHead className="w-24 text-center">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredProducts.map((product) => (
-                <TableRow key={product.id}>
+                <TableRow key={product.id} className="hover:bg-neutral-50">
                   <TableCell>
-                    <div className="flex items-center gap-3">
-                      <img
+                    <div className="w-12 h-12 relative rounded-lg overflow-hidden bg-neutral-100">
+                      <Image
                         src={product.main_image}
                         alt={product.name}
-                        className="w-10 h-10 rounded object-cover"
+                        fill
+                        className="object-cover"
                       />
-                      <span className="font-medium line-clamp-1">{product.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{product.categories?.name || '-'}</TableCell>
-                  <TableCell>{product.brands?.name || '-'}</TableCell>
                   <TableCell>
-                    <p className="font-medium">${Number(product.retail_price).toFixed(2)}</p>
+                    <div>
+                      <p className="font-medium text-neutral-900 line-clamp-1">{product.name}</p>
+                      {product.sku && (
+                        <p className="text-xs text-neutral-400">SKU: {product.sku}</p>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-neutral-600">
+                    {product.categories?.name || '-'}
+                  </TableCell>
+                  <TableCell className="text-neutral-600">
+                    {product.brands?.name || '-'}
+                  </TableCell>
+                  <TableCell className="text-right font-medium text-neutral-900">
+                    ${Number(product.retail_price).toFixed(2)}
+                  </TableCell>
+                  <TableCell className="text-right text-neutral-600">
+                    {product.stock}
+                  </TableCell>
+                  <TableCell className="text-right text-neutral-600">
+                    {product.sales_count}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge
+                      variant={product.is_active ? 'default' : 'secondary'}
+                      className={product.is_active 
+                        ? 'bg-green-100 text-green-700 hover:bg-green-100' 
+                        : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-100'
+                      }
+                    >
+                      {product.is_active ? '上架' : '下架'}
+                    </Badge>
                   </TableCell>
                   <TableCell>
-                    <span className={product.stock < 10 ? 'text-red-500' : ''}>
-                      {product.stock}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    {product.is_active ? (
-                      <Badge className="bg-green-500">上架</Badge>
-                    ) : (
-                      <Badge variant="secondary">下架</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>{product.sales_count}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end gap-1">
-                      <Button variant="ghost" size="icon" title="编辑">
+                    <div className="flex items-center justify-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(product)}
+                        className="text-neutral-500 hover:text-neutral-900"
+                      >
                         <Pencil className="h-4 w-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" title="删除">
-                        <Trash2 className="h-4 w-4 text-red-500" />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(product.id)}
+                        disabled={deleting === product.id}
+                        className="text-neutral-500 hover:text-red-500"
+                      >
+                        {deleting === product.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
               ))}
+
+              {filteredProducts.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center py-12 text-neutral-500">
+                    {searchQuery ? '未找到匹配的商品' : '暂无商品'}
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
+
+        {/* 添加/编辑商品弹窗 */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingProduct ? '编辑商品' : '添加新商品'}
+              </DialogTitle>
+            </DialogHeader>
+            <ProductForm
+              product={editingProduct}
+              categories={categories}
+              brands={brands}
+              onSave={handleSave}
+              onCancel={() => setIsDialogOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
