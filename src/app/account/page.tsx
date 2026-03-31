@@ -93,12 +93,12 @@ export default function AccountPage() {
               <div className="absolute top-[-30px] right-[-30px] w-40 h-40 border border-white/5 rounded-full" />
               <div className="absolute bottom-[-40px] left-[-40px] w-48 h-48 border border-white/5 rounded-full" />
               
-              <div className="relative z-10 p-6">
+              <div className="relative z-10 p-5">
                 {/* 顶部：会员等级 */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-2">
-                    <Crown className="h-4 w-4 text-white/60" />
-                    <span className="text-sm text-white/80 font-medium">{user.level}</span>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-1.5">
+                    <Crown className="h-3.5 w-3.5 text-white/60" />
+                    <span className="text-xs text-white/80 font-medium">{user.level}</span>
                   </div>
                   <Link 
                     href="/account/membership"
@@ -110,22 +110,22 @@ export default function AccountPage() {
                 </div>
                 
                 {/* 用户信息 */}
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-14 w-14 border-2 border-white/20">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10 border border-white/20">
                     <AvatarImage src={user.avatar || ''} />
-                    <AvatarFallback className="text-lg bg-white/10 text-white">
+                    <AvatarFallback className="text-sm bg-white/10 text-white">
                       {user.name.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1">
-                    <h1 className="text-lg font-semibold text-white mb-0.5">{user.name}</h1>
-                    <p className="text-sm text-white/50">{user.email}</p>
+                  <div className="flex-1 min-w-0">
+                    <h1 className="text-sm font-medium text-white truncate">{user.name}</h1>
+                    <p className="text-xs text-white/50 truncate">{user.email}</p>
                   </div>
                   <Link href="/account/profile">
                     <Button 
                       variant="secondary" 
                       size="sm"
-                      className="bg-white/10 hover:bg-white/20 text-white border-0"
+                      className="h-7 px-3 text-xs bg-white/10 hover:bg-white/20 text-white border-0"
                     >
                       编辑
                     </Button>
@@ -133,13 +133,13 @@ export default function AccountPage() {
                 </div>
                 
                 {/* 积分进度 */}
-                <div className="mt-5 pt-5 border-t border-white/10">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Star className="h-3.5 w-3.5 text-white/50" />
+                <div className="mt-4 pt-4 border-t border-white/10">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <Star className="h-3 w-3 text-white/50" />
                       <span className="text-xs text-white/60">积分</span>
                     </div>
-                    <span className="text-sm font-medium text-white">{user.points.toLocaleString()}</span>
+                    <span className="text-xs font-medium text-white">{user.points.toLocaleString()}</span>
                   </div>
                   <div className="h-1 bg-white/10 rounded-full overflow-hidden">
                     <div 
@@ -147,7 +147,7 @@ export default function AccountPage() {
                       style={{ width: `${(user.points / user.nextLevel) * 100}%` }}
                     />
                   </div>
-                  <p className="text-xs text-white/40 mt-1.5">
+                  <p className="text-xs text-white/40 mt-1">
                     再消费 ${(user.nextLevel - user.points) / 100} 升级为 SVIP
                   </p>
                 </div>
