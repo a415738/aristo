@@ -19,14 +19,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 验证文件数量 (6-12张)
-    if (files.length < 6 || files.length > 12) {
-      return NextResponse.json(
-        { error: '请上传6-12张图片' },
-        { status: 400 }
-      );
-    }
-
     // 验证每个文件
     for (const file of files) {
       if (!isValidImageType(file)) {

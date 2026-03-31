@@ -8,14 +8,12 @@ import { X, Upload, Plus, Loader2 } from 'lucide-react';
 interface ImageUploaderProps {
   images: string[];
   onChange: (images: string[]) => void;
-  minImages?: number;
   maxImages?: number;
 }
 
 export function ImageUploader({ 
   images, 
   onChange, 
-  minImages = 6, 
   maxImages = 12 
 }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
@@ -103,13 +101,6 @@ export function ImageUploader({
     onChange(newImages);
   };
 
-  const moveImage = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= images.length) return;
-    const newImages = [...images];
-    [newImages[fromIndex], newImages[toIndex]] = [newImages[toIndex], newImages[fromIndex]];
-    onChange(newImages);
-  };
-
   return (
     <div className="space-y-4">
       {/* 图片网格 */}
@@ -187,10 +178,10 @@ export function ImageUploader({
       {/* 提示 */}
       <div className="flex items-center justify-between text-xs text-neutral-500">
         <span>
-          已上传 {images.length} / {maxImages} 张（最少 {minImages} 张）
+          已上传 {images.length} 张{images.length > 0 ? '（第一张为主图）' : ''}
         </span>
         <span>
-          支持 JPG、PNG、WEBP，单张最大 10MB
+          支持 JPG、PNG、WEBP，单张最大 10MB，图片将自动裁剪为 800×800
         </span>
       </div>
 
@@ -209,7 +200,7 @@ export function ImageUploader({
         >
           <Upload className="h-8 w-8 text-neutral-400 mx-auto mb-2" />
           <p className="text-sm text-neutral-600 mb-1">拖拽图片到此处上传</p>
-          <p className="text-xs text-neutral-400">或点击选择文件</p>
+          <p className="text-xs text-neutral-400">或点击选择文件（图片将自动裁剪为 800×800）</p>
         </div>
       )}
     </div>

@@ -194,8 +194,8 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
       alert('请输入商品名称');
       return;
     }
-    if (images.length < 6) {
-      alert('请至少上传6张商品图片');
+    if (images.length === 0) {
+      alert('请至少上传1张商品图片');
       return;
     }
     if (!retailPrice || Number(retailPrice) <= 0) {
@@ -434,12 +434,11 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
         <TabsContent value="images" className="mt-4">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label>商品图片 <span className="text-red-500">*</span>（6-12张，第一张为主图）</Label>
+              <Label>商品图片 <span className="text-red-500">*</span>（最多12张，第一张为主图）</Label>
             </div>
             <ImageUploader
               images={images}
               onChange={setImages}
-              minImages={6}
               maxImages={12}
             />
           </div>
