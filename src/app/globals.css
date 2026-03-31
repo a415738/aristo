@@ -135,3 +135,38 @@
 body {
   @apply font-sans;
 }
+
+/* 移动端优化 */
+@layer utilities {
+  /* 隐藏滚动条但保持可滚动 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 安全区域适配 */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* 移动端触摸优化 */
+@media (max-width: 768px) {
+  /* 禁止长按弹出菜单 */
+  img {
+    -webkit-touch-callout: none;
+  }
+  
+  /* 优化点击高亮 */
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* 平滑滚动 */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}

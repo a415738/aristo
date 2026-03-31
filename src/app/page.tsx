@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { Layout } from '@/components/layout/Layout';
 import { HeroBanner } from '@/components/home/HeroBanner';
+import { QuickLinks } from '@/components/home/QuickLinks';
 import { CategorySection } from '@/components/home/CategorySection';
 import { ProductSection } from '@/components/home/ProductSection';
 import { BrandSection } from '@/components/home/BrandSection';
@@ -100,9 +101,10 @@ export default async function HomePage() {
   return (
     <Layout>
       <HeroBanner banners={banners} />
+      <QuickLinks />
       <CategorySection categories={categories} />
-      <ProductSection title="Hot Sales" products={hotProducts} />
-      <ProductSection title="New Arrivals" products={newProducts} />
+      <ProductSection title="热销爆款" products={hotProducts} />
+      <ProductSection title="新品上市" products={newProducts} />
       <BrandSection brands={brands} />
       <WholesaleSection products={wholesaleProducts} />
     </Layout>

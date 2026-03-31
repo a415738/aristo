@@ -21,39 +21,41 @@ export function BrandSection({ brands }: BrandSectionProps) {
   }
 
   return (
-    <section className="py-12 px-4">
+    <section className="py-6 md:py-12 px-4">
       <div className="container mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold">Featured Brands</h2>
+        <div className="flex justify-between items-center mb-4 md:mb-8">
+          <h2 className="text-lg md:text-2xl font-bold">品牌馆</h2>
           <Link href="/brands">
-            <Button variant="ghost" className="text-primary">
-              View All <ChevronRight className="h-4 w-4 ml-1" />
+            <Button variant="ghost" className="text-primary text-sm">
+              全部品牌 <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </Link>
         </div>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+        
+        {/* Mobile: 横向滚动 | Desktop: 网格 */}
+        <div className="flex md:grid md:grid-cols-6 gap-3 md:gap-4 overflow-x-auto pb-2 md:pb-0 -mx-4 px-4 scrollbar-hide">
           {brands.map((brand) => (
-            <Link key={brand.id} href={`/brands/${brand.slug}`}>
+            <Link key={brand.id} href={`/brands/${brand.slug}`} className="flex-shrink-0 w-[100px] md:w-auto">
               <Card className="group cursor-pointer hover:shadow-lg transition-shadow">
-                <CardContent className="p-4 flex flex-col items-center justify-center aspect-square">
+                <CardContent className="p-3 md:p-4 flex flex-col items-center justify-center aspect-square">
                   {brand.logo ? (
                     <img
                       src={brand.logo}
                       alt={brand.name}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                      className="w-12 h-12 md:w-full md:h-full object-contain group-hover:scale-105 transition-transform"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded">
-                      <span className="text-lg font-bold text-gray-400">
+                    <div className="w-12 h-12 md:w-full md:h-full flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 rounded-lg">
+                      <span className="text-lg md:text-xl font-bold text-primary">
                         {brand.name.charAt(0)}
                       </span>
                     </div>
                   )}
-                  <p className="text-sm font-medium text-center mt-2 line-clamp-1">
+                  <p className="text-xs md:text-sm font-medium text-center mt-1.5 md:mt-2 line-clamp-1">
                     {brand.name}
                   </p>
                   {brand.country && (
-                    <p className="text-xs text-gray-500">{brand.country}</p>
+                    <p className="text-[10px] md:text-xs text-gray-500">{brand.country}</p>
                   )}
                 </CardContent>
               </Card>
