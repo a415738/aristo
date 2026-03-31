@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, User, Menu, X, Search, Phone, Globe, Check } from 'lucide-react';
+import { ShoppingCart, Menu, X, Search, Phone, Globe, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -116,7 +116,7 @@ export function Header() {
           </form>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
             {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -154,9 +154,11 @@ export function Header() {
               </span>
             </Link>
 
-            {/* User */}
-            <Link href="/account" className="hover:text-primary">
-              <User className="h-5 w-5 text-gray-600" />
+            {/* Login Button */}
+            <Link href="/login">
+              <Button size="sm" className="h-8 px-4 text-sm">
+                登录
+              </Button>
             </Link>
           </div>
 
@@ -248,12 +250,12 @@ export function Header() {
                   {/* Mobile Actions */}
                   <div className="flex flex-col gap-3 pt-4 border-t">
                     <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" size="lg" className="w-full h-11">
                         登录
                       </Button>
                     </Link>
                     <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                      <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500">
+                      <Button size="lg" className="w-full h-11 bg-gradient-to-r from-pink-500 to-purple-500">
                         注册
                       </Button>
                     </Link>
