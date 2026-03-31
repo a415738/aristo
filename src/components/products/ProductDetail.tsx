@@ -1,16 +1,13 @@
 'use client';
 
-import { useState, use } from 'react';
-import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Heart, ShoppingCart, Minus, Plus, Share2, Truck, Shield, 
-  RotateCcw, ChevronRight, Star, MessageCircle, ThumbsUp,
-  Package, Clock, Award
+  Heart, ShoppingCart, Minus, Plus, Truck, Shield, 
+  RotateCcw, ChevronRight, Star, ThumbsUp, Award
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
@@ -21,8 +18,6 @@ interface Product {
   description: string | null;
   main_image: string;
   retail_price: string;
-  wholesale_price: string | null;
-  min_wholesale_qty: number | null;
   stock: number;
   sku: string | null;
   specs: { name: string; value: string }[] | null;
@@ -62,7 +57,7 @@ const mockReviews = [
     id: '3',
     user: '王**',
     rating: 5,
-    content: '批发价真的很划算，质量也OK，已经推荐给朋友了。',
+    content: '质量很好，已经推荐给朋友了。',
     date: '2024-01-08',
     helpful: 8,
     images: [],
@@ -82,9 +77,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const currentVariant = product.product_variants.find(v => v.id === selectedVariant);
   const currentPrice = currentVariant?.price || product.retail_price;
   const currentStock = currentVariant?.stock || product.stock;
-  const discount = product.wholesale_price 
-    ? Math.round((1 - Number(product.wholesale_price) / Number(product.retail_price)) * 100)
-    : 0;
 
   const handleAddToCart = () => {
     console.log('Add to cart:', { productId: product.id, variantId: selectedVariant, quantity });
@@ -121,9 +113,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
             {product.tags && product.tags.includes('新品') && (
               <Badge className="bg-green-500 text-white">新品</Badge>
-            )}
-            {discount > 0 && (
-              <Badge className="bg-orange-500 text-white">省{discount}%</Badge>
             )}
           </div>
 
@@ -189,8 +178,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
         {/* 价格区域 */}
         <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-4">
-          <div className="flex items-baseline gap-3 mb-2">
-            <span className="text-sm text-gray-500">零售价:</span>
+          <div className="flex items-baseline gap-3">
+            <span className="text-sm text-gray-500">价格:</span>
             <span className="text-3xl font-bold text-red-500">
               ${Number(currentPrice).toFixed(2)}
             </span>
@@ -200,26 +189,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </span>
             )}
           </div>
-          
-          {product.wholesale_price && (
-            <div className="mt-3 pt-3 border-t border-red-100">
-              <div className="flex items-center gap-2 mb-1">
-                <Badge className="bg-green-500 text-white">批发价</Badge>
-                <span className="text-2xl font-bold text-green-600">
-                  ${Number(product.wholesale_price).toFixed(2)}
-                </span>
-                <Badge variant="outline" className="text-green-600 border-green-300">
-                  省{discount}%
-                </Badge>
-              </div>
-              {product.min_wholesale_qty && (
-                <p className="text-sm text-green-600">
-                  <Package className="h-4 w-4 inline mr-1" />
-                  起批量: {product.min_wholesale_qty} 件
-                </p>
-              )}
-            </div>
-          )}
         </div>
 
         {/* 优惠信息 */}
@@ -299,11 +268,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            {product.wholesale_price && product.min_wholesale_qty && quantity >= product.min_wholesale_qty && (
-              <Badge className="bg-green-500 text-white">
-                已达批发价！
-              </Badge>
-            )}
           </div>
         </div>
 

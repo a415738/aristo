@@ -35,7 +35,6 @@ const navItems = [
   { name: '首页', href: '/' },
   { name: '全部商品', href: '/products' },
   { name: '品牌馆', href: '/brands' },
-  { name: '批发专区', href: '/wholesale' },
 ];
 
 export function Header() {

@@ -6,8 +6,8 @@ import { ChatWidget } from '@/components/chat/ChatWidget';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'BeautyMart - Southeast Asia Beauty B2B2C Platform',
-  description: 'Premium beauty products from top brands. Wholesale and retail available across Southeast Asia.',
+  title: 'BeautyMart - 东南亚美妆购物平台',
+  description: '汇聚全球知名美妆品牌，品质保证，正品低价，支持东南亚多国配送。',
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="zh">
       <body className={inter.className}>
         {children}
         <ChatWidget />

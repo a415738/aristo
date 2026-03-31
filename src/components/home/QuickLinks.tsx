@@ -26,11 +26,11 @@ const quickLinks = [
     desc: '限时折扣'
   },
   { 
-    name: '批发', 
-    href: '/wholesale', 
+    name: '品牌馆', 
+    href: '/brands', 
     icon: Crown, 
     color: 'from-amber-500 to-yellow-500',
-    desc: '低价拿货'
+    desc: '精选品牌'
   },
 ];
 

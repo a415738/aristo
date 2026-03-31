@@ -9,7 +9,6 @@ interface Product {
   slug: string;
   main_image: string;
   retail_price: string;
-  wholesale_price: string | null;
   brands: { name: string } | null;
 }
 
@@ -23,10 +22,10 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
   return (
     <section className="mt-12">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Related Products</h2>
+        <h2 className="text-xl md:text-2xl font-bold">相关推荐</h2>
         <Link href="/products">
-          <Button variant="ghost" className="text-primary">
-            View All <ChevronRight className="h-4 w-4 ml-1" />
+          <Button variant="ghost" className="text-primary text-sm">
+            查看更多 <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </Link>
       </div>

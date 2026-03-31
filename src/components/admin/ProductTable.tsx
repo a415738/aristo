@@ -29,10 +29,8 @@ interface Product {
   slug: string;
   main_image: string;
   retail_price: string;
-  wholesale_price: string | null;
   stock: number;
   is_active: boolean;
-  is_wholesale: boolean;
   sales_count: number;
   categories: { name: string } | null;
   brands: { name: string } | null;
@@ -115,16 +113,8 @@ export function ProductTable({ products, categories, brands }: ProductTableProps
                   <Input id="retail-price" type="number" placeholder="0.00" />
                 </div>
                 <div>
-                  <Label htmlFor="wholesale-price">批发价</Label>
-                  <Input id="wholesale-price" type="number" placeholder="0.00" />
-                </div>
-                <div>
                   <Label htmlFor="stock">库存</Label>
                   <Input id="stock" type="number" placeholder="0" />
-                </div>
-                <div>
-                  <Label htmlFor="min-wholesale">起批量</Label>
-                  <Input id="min-wholesale" type="number" placeholder="10" />
                 </div>
                 <div className="col-span-2">
                   <Label htmlFor="description">商品描述</Label>
@@ -179,14 +169,7 @@ export function ProductTable({ products, categories, brands }: ProductTableProps
                   <TableCell>{product.categories?.name || '-'}</TableCell>
                   <TableCell>{product.brands?.name || '-'}</TableCell>
                   <TableCell>
-                    <div>
-                      <p>${Number(product.retail_price).toFixed(2)}</p>
-                      {product.wholesale_price && (
-                        <p className="text-sm text-green-600">
-                          ${Number(product.wholesale_price).toFixed(2)} (批发)
-                        </p>
-                      )}
-                    </div>
+                    <p className="font-medium">${Number(product.retail_price).toFixed(2)}</p>
                   </TableCell>
                   <TableCell>
                     <span className={product.stock < 10 ? 'text-red-500' : ''}>
@@ -194,16 +177,11 @@ export function ProductTable({ products, categories, brands }: ProductTableProps
                     </span>
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-1">
-                      {product.is_active ? (
-                        <Badge className="bg-green-500">上架</Badge>
-                      ) : (
-                        <Badge variant="secondary">下架</Badge>
-                      )}
-                      {product.is_wholesale && (
-                        <Badge className="bg-blue-500">批发</Badge>
-                      )}
-                    </div>
+                    {product.is_active ? (
+                      <Badge className="bg-green-500">上架</Badge>
+                    ) : (
+                      <Badge variant="secondary">下架</Badge>
+                    )}
                   </TableCell>
                   <TableCell>{product.sales_count}</TableCell>
                   <TableCell className="text-right">

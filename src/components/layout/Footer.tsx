@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, ChevronUp } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -10,7 +10,7 @@ export function Footer() {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">BeautyMart</h3>
             <p className="text-sm mb-4">
-              东南亚一站式美妆购物平台，汇聚全球知名品牌，支持零售与批发双模式。
+              东南亚一站式美妆购物平台，汇聚全球知名品牌，品质保证。
             </p>
             <div className="flex gap-4">
               <a href="#" className="hover:text-white transition-colors">
@@ -40,8 +40,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/wholesale" className="hover:text-white transition-colors">
-                  批发专区
+                <Link href="/promotions" className="hover:text-white transition-colors">
+                  促销活动
                 </Link>
               </li>
               <li>

@@ -9,8 +9,6 @@ interface Product {
   slug: string;
   main_image: string;
   retail_price: string;
-  wholesale_price: string | null;
-  min_wholesale_qty: number | null;
   sales_count: number;
   categories: { name: string } | null;
   brands: { name: string; logo: string | null } | null;
@@ -27,9 +25,9 @@ export function ProductList({ products, page, totalPages }: ProductListProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No products found</p>
+        <p className="text-gray-500 text-lg">未找到商品</p>
         <Link href="/products">
-          <Button className="mt-4">View All Products</Button>
+          <Button className="mt-4">查看全部商品</Button>
         </Link>
       </div>
     );
@@ -61,11 +59,6 @@ export function ProductList({ products, page, totalPages }: ProductListProps) {
                     <span className="text-lg font-bold text-primary">
                       ${Number(product.retail_price).toFixed(2)}
                     </span>
-                    {product.wholesale_price && (
-                      <span className="text-sm text-green-600">
-                        Wholesale: ${Number(product.wholesale_price).toFixed(2)}
-                      </span>
-                    )}
                   </div>
                 </div>
               </CardContent>

@@ -10,8 +10,6 @@ interface Product {
   slug: string;
   main_image: string;
   retail_price: string;
-  wholesale_price: string | null;
-  min_wholesale_qty: number | null;
   sales_count: number;
   stock: number;
   tags: string[] | null;
@@ -67,10 +65,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const discount = product.wholesale_price 
-    ? Math.round((1 - Number(product.wholesale_price) / Number(product.retail_price)) * 100)
-    : 0;
-
   return (
     <Link href={`/products/${product.slug}`}>
       <Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
@@ -91,9 +85,6 @@ export function ProductCard({ product }: ProductCardProps) {
               )}
               {product.tags && product.tags.includes('新品') && (
                 <Badge className="bg-green-500 text-white text-[10px] px-1.5 py-0.5">新品</Badge>
-              )}
-              {product.wholesale_price && discount > 0 && (
-                <Badge className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5">省{discount}%</Badge>
               )}
             </div>
 
@@ -136,26 +127,7 @@ export function ProductCard({ product }: ProductCardProps) {
               <span className="text-base md:text-xl font-bold text-primary">
                 ${Number(product.retail_price).toFixed(2)}
               </span>
-              {product.wholesale_price && (
-                <span className="text-[10px] md:text-sm text-gray-400 line-through">
-                  ${Number(product.wholesale_price).toFixed(2)}
-                </span>
-              )}
             </div>
-
-            {/* 批发价 */}
-            {product.wholesale_price && (
-              <div className="bg-green-50 rounded-md md:rounded-lg p-1.5 md:p-2 mb-1 md:mb-2">
-                <p className="text-[10px] md:text-sm text-green-600 font-medium">
-                  批发: ${Number(product.wholesale_price).toFixed(2)}
-                </p>
-                {product.min_wholesale_qty && (
-                  <p className="text-[10px] text-green-500">
-                    起{product.min_wholesale_qty}件
-                  </p>
-                )}
-              </div>
-            )}
 
             {/* 销量 */}
             <div className="hidden md:flex items-center justify-between">
