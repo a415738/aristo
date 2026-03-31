@@ -1,54 +1,220 @@
-# 项目上下文
+# BeautyMart - Southeast Asia Beauty B2B2C Platform
 
-### 版本技术栈
+## Project Overview
+
+BeautyMart is a comprehensive B2B2C e-commerce platform for beauty products targeting the Southeast Asian market. It supports both retail and wholesale operations with multi-language and multi-currency capabilities.
+
+### Key Features
+
+- **B2B2C Model**: Supports both retail and wholesale pricing with minimum order quantities
+- **Multi-language**: English, Thai, Vietnamese, Indonesian, Malay
+- **Multi-currency**: USD, THB, VND, IDR, MYR
+- **Responsive Design**: PC and mobile adaptive layout
+- **Brand Gallery**: Dedicated brand pages with product listings
+- **Admin Dashboard**: Complete backend management system
+- **AI Customer Service**: LLM-powered chatbot for customer support
+
+## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
-- **Core**: React 19
 - **Language**: TypeScript 5
-- **UI 组件**: shadcn/ui (基于 Radix UI)
+- **UI Components**: shadcn/ui (Radix UI)
 - **Styling**: Tailwind CSS 4
+- **Database**: PostgreSQL (Supabase)
+- **ORM**: Drizzle
+- **Storage**: S3-compatible object storage
+- **AI**: LLM integration via coze-coding-dev-sdk
 
-## 目录结构
+## Project Structure
 
 ```
-├── public/                 # 静态资源
-├── scripts/                # 构建与启动脚本
-│   ├── build.sh            # 构建脚本
-│   ├── dev.sh              # 开发环境启动脚本
-│   ├── prepare.sh          # 预处理脚本
-│   └── start.sh            # 生产环境启动脚本
 ├── src/
-│   ├── app/                # 页面路由与布局
-│   ├── components/ui/      # Shadcn UI 组件库
-│   ├── hooks/              # 自定义 Hooks
-│   ├── lib/                # 工具库
-│   │   └── utils.ts        # 通用工具函数 (cn)
-│   └── server.ts           # 自定义服务端入口
-├── next.config.ts          # Next.js 配置
-├── package.json            # 项目依赖管理
-└── tsconfig.json           # TypeScript 配置
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── page.tsx            # Homepage
+│   │   ├── layout.tsx          # Root layout with chat widget
+│   │   ├── products/           # Product pages
+│   │   │   ├── page.tsx        # Product listing
+│   │   │   └── [slug]/page.tsx # Product detail
+│   │   ├── brands/             # Brand pages
+│   │   │   ├── page.tsx        # Brand gallery
+│   │   │   └── [slug]/page.tsx # Brand detail
+│   │   ├── wholesale/          # Wholesale zone
+│   │   ├── cart/               # Shopping cart
+│   │   ├── account/            # User center
+│   │   ├── admin/              # Admin dashboard
+│   │   │   ├── page.tsx        # Dashboard
+│   │   │   ├── products/       # Product management
+│   │   │   └── orders/         # Order management
+│   │   └── api/                # API routes
+│   │       └── chat/route.ts   # Chat API
+│   ├── components/             # React components
+│   │   ├── layout/             # Header, Footer, Layout
+│   │   ├── home/               # Homepage sections
+│   │   ├── products/           # Product components
+│   │   ├── account/            # Account components
+│   │   ├── admin/              # Admin components
+│   │   └── chat/               # Chat widget
+│   ├── lib/                    # Utilities
+│   │   ├── utils.ts            # Helper functions
+│   │   └── storage.ts          # S3 storage client
+│   └── storage/                # Database
+│       └── database/
+│           ├── shared/schema.ts # Drizzle schema
+│           └── supabase-client.ts # Supabase client
+├── public/                     # Static assets
+└── .coze                       # Deployment config
 ```
 
-- 项目文件（如 app 目录、pages 目录、components 等）默认初始化到 `src/` 目录下。
+## Database Schema
 
-## 包管理规范
+### Core Tables
 
-**仅允许使用 pnpm** 作为包管理器，**严禁使用 npm 或 yarn**。
-**常用命令**：
-- 安装依赖：`pnpm add <package>`
-- 安装开发依赖：`pnpm add -D <package>`
-- 安装所有依赖：`pnpm install`
-- 移除依赖：`pnpm remove <package>`
+- **users**: User accounts with role-based access
+- **categories**: Product categories with hierarchy support
+- **brands**: Brand information with logos and banners
+- **products**: Main product catalog with retail/wholesale pricing
+- **product_images**: Product image gallery
+- **product_variants**: Product variants (size, color, etc.)
+- **orders**: Customer orders
+- **order_items**: Order line items
+- **cart_items**: Shopping cart
+- **banners**: Homepage banners
+- **coupons**: Discount coupons
+- **user_addresses**: Shipping addresses
+- **favorites**: Product favorites/wishlist
+- **chat_messages**: Customer service chat history
+- **languages**: Supported languages
+- **currencies**: Supported currencies with exchange rates
+- **site_settings**: Site configuration
 
-## 开发规范
+## API Routes
 
-- **项目理解加速**：初始可以依赖项目下`package.json`文件理解项目类型，如果没有或无法理解退化成阅读其他文件。
-- **Hydration 错误预防**：严禁在 JSX 渲染逻辑中直接使用 typeof window、Date.now()、Math.random() 等动态数据。必须使用 'use client' 并配合 useEffect + useState 确保动态内容仅在客户端挂载后渲染；同时严禁非法 HTML 嵌套（如 <p> 嵌套 <div>）。
+- `POST /api/chat`: AI customer service chat endpoint
 
+## Development Commands
 
-## UI 设计与组件规范 (UI & Styling Standards)
+```bash
+# Install dependencies
+pnpm install
 
-- 模板默认预装核心组件库 `shadcn/ui`，位于`src/components/ui/`目录下
-- Next.js 项目**必须默认**采用 shadcn/ui 组件、风格和规范，**除非用户指定用其他的组件和规范。**
+# Start development server
+coze dev
 
+# Build for production
+coze build
 
+# Start production server
+coze start
+
+# Database migrations
+coze-coding-ai db generate-models  # Sync schema from database
+coze-coding-ai db upgrade          # Push schema changes to database
+
+# Type checking
+npx tsc --noEmit
+```
+
+## Environment Variables
+
+Required environment variables (auto-configured in sandbox):
+
+- `COZE_WORKSPACE_PATH`: Project workspace directory
+- `DEPLOY_RUN_PORT`: Server port (5000)
+- `COZE_PROJECT_DOMAIN_DEFAULT`: Public access domain
+- `COZE_SUPABASE_URL`: Supabase project URL
+- `COZE_SUPABASE_ANON_KEY`: Supabase anonymous key
+- `COZE_BUCKET_ENDPOINT_URL`: S3 storage endpoint
+- `COZE_BUCKET_NAME`: S3 bucket name
+
+## Page Routes
+
+### Frontend (Customer-facing)
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage with banners, categories, featured products |
+| `/products` | Product listing with filters and pagination |
+| `/products/[slug]` | Product detail page |
+| `/brands` | Brand gallery |
+| `/brands/[slug]` | Brand detail with products |
+| `/wholesale` | Wholesale zone |
+| `/cart` | Shopping cart |
+| `/account` | User center (orders, addresses, profile) |
+
+### Backend (Admin)
+
+| Route | Description |
+|-------|-------------|
+| `/admin` | Dashboard with statistics |
+| `/admin/products` | Product management |
+| `/admin/orders` | Order management |
+| `/admin/users` | User management |
+| `/admin/brands` | Brand management |
+| `/admin/marketing` | Marketing (banners, coupons) |
+| `/admin/settings` | System settings |
+| `/admin/chat` | Customer service chat |
+
+## Key Components
+
+### Layout Components
+- `Header`: Navigation, search, cart, user menu
+- `Footer`: Site info, links, contact
+- `Layout`: Main layout wrapper
+- `ChatWidget`: Floating customer service chat
+
+### Homepage Components
+- `HeroBanner`: Carousel banner
+- `CategorySection`: Category grid
+- `ProductSection`: Product carousel/grid
+- `BrandSection`: Brand logos
+- `WholesaleSection`: Wholesale promotion
+
+### Product Components
+- `ProductList`: Product grid with pagination
+- `ProductFilters`: Category, brand, price filters
+- `ProductDetail`: Product page with variants
+- `RelatedProducts`: Related product suggestions
+
+### Admin Components
+- `AdminLayout`: Admin sidebar and layout
+- `DashboardStats`: Statistics cards
+- `ProductTable`: Product management table
+- `OrderTable`: Order management table
+
+## Styling Guidelines
+
+- Use Tailwind CSS utility classes
+- Follow shadcn/ui component patterns
+- Responsive breakpoints: `md:768px`, `lg:1024px`
+- Primary color defined in CSS variables
+- Use `cn()` utility for conditional class merging
+
+## Database Operations
+
+All database operations use Supabase client:
+
+```typescript
+import { getSupabaseClient } from '@/storage/database/supabase-client';
+
+const client = getSupabaseClient();
+const { data, error } = await client.from('products').select('*');
+```
+
+## Deployment
+
+The project is configured for deployment via Coze platform:
+
+1. Build command: `pnpm run build`
+2. Start command: `pnpm run start`
+3. Port: 5000 (required)
+4. Hot reload enabled in development
+
+## Future Enhancements
+
+- User authentication with Supabase Auth
+- Payment gateway integration
+- Order tracking and notifications
+- Inventory management
+- Multi-warehouse support
+- Analytics and reporting
+- Email marketing integration
