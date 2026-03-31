@@ -6,7 +6,7 @@ import { ChatWidget } from '@/components/chat/ChatWidget';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'BeautyMart - 东南亚美妆购物平台',
+  title: 'Aristo - 东南亚美妆购物平台',
   description: '汇聚全球知名美妆品牌，品质保证，正品低价，支持东南亚多国配送。',
 };
 

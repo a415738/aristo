@@ -14,7 +14,7 @@ const navItems = [
 ];
 
 // 自定义事件名称
-const CHAT_TOGGLE_EVENT = 'beautymart:toggle-chat';
+const CHAT_TOGGLE_EVENT = 'aristo:toggle-chat';
 
 export function MobileNav() {
   const pathname = usePathname();

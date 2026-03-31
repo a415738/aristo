@@ -78,7 +78,7 @@ export function Header() {
         <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
           <Link href="/" className="text-xl md:text-2xl font-bold text-primary">
-            BeautyMart
+            Aristo
           </Link>
 
           {/* Desktop Navigation */}

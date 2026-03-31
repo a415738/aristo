@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <h3 className="text-white text-lg font-bold mb-4">BeautyMart</h3>
+            <h3 className="text-white text-lg font-bold mb-4">Aristo</h3>
             <p className="text-sm mb-4">
               东南亚一站式美妆购物平台，汇聚全球知名品牌，品质保证。
             </p>
@@ -93,7 +93,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0" />
-                <span>support@beautymart.com</span>
+                <span>support@aristo.com</span>
               </li>
             </ul>
           </div>
@@ -101,7 +101,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-          <p>&copy; {new Date().getFullYear()} BeautyMart. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Aristo. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,8 +1,8 @@
-# BeautyMart - Southeast Asia Beauty B2B2C Platform
+# Aristo - Southeast Asia Beauty E-commerce Platform
 
 ## Project Overview
 
-BeautyMart is a comprehensive B2B2C e-commerce platform for beauty products targeting the Southeast Asian market. It supports both retail and wholesale operations with multi-language and multi-currency capabilities.
+Aristo is a comprehensive e-commerce platform for beauty products targeting the Southeast Asian market. It supports retail operations with multi-language and multi-currency capabilities.
 
 ### Key Features
 

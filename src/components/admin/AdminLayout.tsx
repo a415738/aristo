@@ -39,7 +39,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <aside className="fixed left-0 top-0 h-full w-64 bg-gray-900 text-white z-50">
         <div className="p-6">
           <Link href="/" className="text-2xl font-bold text-primary">
-            BeautyMart
+            Aristo
           </Link>
           <p className="text-sm text-gray-400 mt-1">后台管理系统</p>
         </div>

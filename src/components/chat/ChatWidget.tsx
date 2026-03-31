@@ -8,7 +8,7 @@ import { MessageCircle, X, Send, Minimize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // 自定义事件名称
-const CHAT_TOGGLE_EVENT = 'beautymart:toggle-chat';
+const CHAT_TOGGLE_EVENT = 'aristo:toggle-chat';
 
 interface Message {
   id: string;
@@ -24,7 +24,7 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: '您好！欢迎来到 BeautyMart。有什么可以帮助您的吗？',
+      content: '您好！欢迎来到 Aristo。有什么可以帮助您的吗？',
       sender: 'bot',
       timestamp: new Date(),
     },
