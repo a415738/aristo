@@ -15,6 +15,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const languages = [
+  { code: 'zh', name: '简体中文' },
   { code: 'en', name: 'English' },
   { code: 'th', name: 'ไทย' },
   { code: 'vi', name: 'Tiếng Việt' },
