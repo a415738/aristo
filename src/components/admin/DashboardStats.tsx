@@ -13,28 +13,28 @@ interface DashboardStatsProps {
 export function DashboardStats({ stats }: DashboardStatsProps) {
   const cards = [
     {
-      title: 'Total Sales',
+      title: '销售总额',
       value: `$${stats.totalSales.toLocaleString()}`,
       icon: DollarSign,
       color: 'text-green-500',
       bgColor: 'bg-green-50',
     },
     {
-      title: 'Total Orders',
+      title: '订单总数',
       value: stats.totalOrders.toLocaleString(),
       icon: ShoppingCart,
       color: 'text-blue-500',
       bgColor: 'bg-blue-50',
     },
     {
-      title: 'Products',
+      title: '商品数量',
       value: stats.totalProducts.toLocaleString(),
       icon: Package,
       color: 'text-purple-500',
       bgColor: 'bg-purple-50',
     },
     {
-      title: 'Users',
+      title: '用户数量',
       value: stats.totalUsers.toLocaleString(),
       icon: Users,
       color: 'text-orange-500',

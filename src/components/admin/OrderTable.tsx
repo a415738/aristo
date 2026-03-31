@@ -46,6 +46,14 @@ const statusColors: Record<string, string> = {
   cancelled: 'bg-red-500',
 };
 
+const statusLabels: Record<string, string> = {
+  pending: '待付款',
+  paid: '已付款',
+  shipped: '已发货',
+  delivered: '已完成',
+  cancelled: '已取消',
+};
+
 export function OrderTable({ orders }: OrderTableProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -65,7 +73,7 @@ export function OrderTable({ orders }: OrderTableProps) {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search by order number or customer..."
+              placeholder="搜索订单号或客户..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -73,15 +81,15 @@ export function OrderTable({ orders }: OrderTableProps) {
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Filter by status" />
+              <SelectValue placeholder="筛选状态" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="shipped">Shipped</SelectItem>
-              <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">全部状态</SelectItem>
+              <SelectItem value="pending">待付款</SelectItem>
+              <SelectItem value="paid">已付款</SelectItem>
+              <SelectItem value="shipped">已发货</SelectItem>
+              <SelectItem value="delivered">已完成</SelectItem>
+              <SelectItem value="cancelled">已取消</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -90,13 +98,13 @@ export function OrderTable({ orders }: OrderTableProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order No.</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Payment</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>订单号</TableHead>
+                <TableHead>客户</TableHead>
+                <TableHead>金额</TableHead>
+                <TableHead>订单状态</TableHead>
+                <TableHead>支付状态</TableHead>
+                <TableHead>下单时间</TableHead>
+                <TableHead className="text-right">操作</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,12 +124,12 @@ export function OrderTable({ orders }: OrderTableProps) {
                   </TableCell>
                   <TableCell>
                     <Badge className={statusColors[order.status] || 'bg-gray-500'}>
-                      {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      {statusLabels[order.status] || order.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
-                      {order.payment_status}
+                      {order.payment_status === 'paid' ? '已支付' : '未支付'}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -130,7 +138,7 @@ export function OrderTable({ orders }: OrderTableProps) {
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm">
                       <Eye className="h-4 w-4 mr-1" />
-                      View
+                      查看
                     </Button>
                   </TableCell>
                 </TableRow>

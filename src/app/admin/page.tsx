@@ -32,8 +32,8 @@ export default async function AdminDashboard() {
   return (
     <AdminLayout>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welcome back to your admin panel</p>
+        <h1 className="text-3xl font-bold">控制台</h1>
+        <p className="text-gray-600 mt-1">欢迎回到管理后台</p>
       </div>
 
       <DashboardStats stats={stats} />

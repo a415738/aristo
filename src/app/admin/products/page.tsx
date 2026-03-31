@@ -51,8 +51,8 @@ export default async function AdminProductsPage() {
     <AdminLayout>
       <div className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Products</h1>
-          <p className="text-gray-600 mt-1">Manage your product catalog</p>
+          <h1 className="text-3xl font-bold">商品管理</h1>
+          <p className="text-gray-600 mt-1">管理商品目录</p>
         </div>
       </div>
 

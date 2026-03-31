@@ -20,14 +20,14 @@ interface AdminLayoutProps {
 }
 
 const menuItems = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Products', href: '/admin/products', icon: Package },
-  { name: 'Brands', href: '/admin/brands', icon: Tags },
-  { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
-  { name: 'Users', href: '/admin/users', icon: Users },
-  { name: 'Marketing', href: '/admin/marketing', icon: Megaphone },
-  { name: 'Settings', href: '/admin/settings', icon: Settings },
-  { name: 'Chat', href: '/admin/chat', icon: MessageSquare },
+  { name: '控制台', href: '/admin', icon: LayoutDashboard },
+  { name: '商品管理', href: '/admin/products', icon: Package },
+  { name: '品牌管理', href: '/admin/brands', icon: Tags },
+  { name: '订单管理', href: '/admin/orders', icon: ShoppingCart },
+  { name: '用户管理', href: '/admin/users', icon: Users },
+  { name: '运营管理', href: '/admin/marketing', icon: Megaphone },
+  { name: '系统设置', href: '/admin/settings', icon: Settings },
+  { name: '客服管理', href: '/admin/chat', icon: MessageSquare },
 ];
 
 export function AdminLayout({ children }: AdminLayoutProps) {
@@ -41,7 +41,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <Link href="/" className="text-2xl font-bold text-primary">
             BeautyMart
           </Link>
-          <p className="text-sm text-gray-400 mt-1">Admin Panel</p>
+          <p className="text-sm text-gray-400 mt-1">后台管理系统</p>
         </div>
 
         <nav className="mt-6 px-3">

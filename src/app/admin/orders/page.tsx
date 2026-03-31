@@ -22,8 +22,8 @@ export default async function AdminOrdersPage() {
   return (
     <AdminLayout>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Orders</h1>
-        <p className="text-gray-600 mt-1">Manage customer orders</p>
+        <h1 className="text-3xl font-bold">订单管理</h1>
+        <p className="text-gray-600 mt-1">管理客户订单</p>
       </div>
 
       <OrderTable orders={orders} />
