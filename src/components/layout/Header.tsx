@@ -116,75 +116,72 @@ export function Header() {
           </form>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
             {/* Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="flex items-center gap-1.5 px-2 h-9 hover:bg-gray-100"
-                >
-                  <Globe className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">{currentLanguage.flag}</span>
-                  <span className="text-sm hidden lg:inline">{currentLanguage.name}</span>
-                </Button>
+                <button className="flex items-center gap-1 px-2 py-1 rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors text-sm">
+                  <Globe className="h-3.5 w-3.5" />
+                  <span>{currentLanguage.flag}</span>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuContent align="end" className="w-36">
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
                     onClick={() => setCurrentLang(lang.code)}
-                    className="flex items-center justify-between cursor-pointer"
+                    className="flex items-center justify-between cursor-pointer text-sm py-1.5"
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5">
                       <span>{lang.flag}</span>
                       <span>{lang.name}</span>
                     </span>
                     {currentLang === lang.code && (
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-3.5 w-3.5 text-primary" />
                     )}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
+            <div className="w-px h-4 bg-gray-200" />
+
             {/* Cart */}
-            <Link href="/cart" className="relative hover:text-primary p-2">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-0 -right-0 bg-red-500 text-white text-[10px] rounded-full min-w-[16px] h-4 flex items-center justify-center">
+            <Link href="/cart" className="relative hover:text-primary">
+              <ShoppingCart className="h-5 w-5 text-gray-600" />
+              <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full min-w-[14px] h-3.5 flex items-center justify-center">
                 0
               </span>
             </Link>
 
             {/* User */}
-            <Link href="/account" className="hover:text-primary p-2">
-              <User className="h-5 w-5" />
+            <Link href="/account" className="hover:text-primary">
+              <User className="h-5 w-5 text-gray-600" />
             </Link>
           </div>
 
           {/* Mobile Actions */}
-          <div className="flex md:hidden items-center gap-1">
+          <div className="flex md:hidden items-center gap-0.5">
             {/* Mobile Language Switcher */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
-                  <Globe className="h-5 w-5" />
-                </Button>
+                <button className="p-1.5 rounded-md text-gray-600 hover:bg-gray-100">
+                  <Globe className="h-4 w-4" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuContent align="end" className="w-36">
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
                     onClick={() => setCurrentLang(lang.code)}
-                    className="flex items-center justify-between cursor-pointer"
+                    className="flex items-center justify-between cursor-pointer text-sm py-1.5"
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5">
                       <span>{lang.flag}</span>
                       <span>{lang.name}</span>
                     </span>
                     {currentLang === lang.code && (
-                      <Check className="h-4 w-4 text-primary" />
+                      <Check className="h-3.5 w-3.5 text-primary" />
                     )}
                   </DropdownMenuItem>
                 ))}
@@ -194,14 +191,15 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
+              className="h-8 w-8"
               onClick={() => setShowMobileSearch(true)}
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-4 w-4" />
             </Button>
 
-            <Link href="/cart" className="relative p-2">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full min-w-[16px] h-4 flex items-center justify-center">
+            <Link href="/cart" className="relative p-1.5">
+              <ShoppingCart className="h-4 w-4 text-gray-600" />
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-[9px] rounded-full min-w-[12px] h-3 flex items-center justify-center">
                 0
               </span>
             </Link>
@@ -209,8 +207,8 @@ export function Header() {
             {/* Mobile menu */}
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Menu className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
