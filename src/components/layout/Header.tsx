@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Menu, X, Search, Phone, Globe, Check } from 'lucide-react';
+import { ShoppingCart, X, Search, Globe, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const languages = [
   { code: 'zh', name: '简体中文', flag: '🇨🇳' },
@@ -32,7 +31,6 @@ const navItems = [
 export function Header() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [currentLang, setCurrentLang] = useState('zh');
 
@@ -205,61 +203,6 @@ export function Header() {
                 0
               </span>
             </Link>
-
-            {/* Mobile menu */}
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <Menu className="h-4 w-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80">
-                <div className="flex flex-col gap-6 mt-8">
-                  {/* Mobile Nav */}
-                  <nav className="flex flex-col gap-4">
-                    {navItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-lg font-medium hover:text-primary py-2 border-b"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </nav>
-
-                  {/* Language */}
-                  <div className="space-y-3 pt-4 border-t">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">语言</span>
-                      <select 
-                        className="text-sm border rounded px-2 py-1"
-                        value={currentLang}
-                        onChange={(e) => setCurrentLang(e.target.value)}
-                      >
-                        {languages.map((lang) => (
-                          <option key={lang.code} value={lang.code}>
-                            {lang.flag} {lang.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Contact */}
-                  <div className="pt-4 border-t">
-                    <a
-                      href="tel:+66123456789"
-                      className="flex items-center gap-2 text-sm text-gray-500"
-                    >
-                      <Phone className="h-4 w-4" />
-                      客服热线: +66 123 456 789
-                    </a>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </div>
