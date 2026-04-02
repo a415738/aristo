@@ -29,7 +29,7 @@ async function getRelatedProducts(productId: string, categoryId: string) {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo)')
+    .select('*, categories(name), brands(name, logo), specs')
     .eq('category_id', categoryId)
     .eq('is_active', true)
     .neq('id', productId)

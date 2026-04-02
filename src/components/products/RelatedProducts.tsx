@@ -10,6 +10,7 @@ interface Product {
   main_image: string;
   retail_price: string;
   brands: { name: string } | null;
+  specs?: { name: string; value: string }[] | null;
 }
 
 interface RelatedProductsProps {
@@ -58,6 +59,15 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
                     {Number(product.retail_price).toFixed(2)}
                   </span>
                 </div>
+                {product.specs && product.specs.length > 0 && (
+                  <div className="mt-1 space-y-0.5">
+                    {product.specs.slice(0, 2).map((spec, index) => (
+                      <p key={index} className="text-xs text-neutral-500 truncate">
+                        <span className="text-neutral-400">{spec.name}:</span> {spec.value}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </Link>

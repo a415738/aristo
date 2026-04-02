@@ -25,7 +25,7 @@ async function getBrandProducts(brandId: string) {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo)')
+    .select('*, categories(name), brands(name, logo), specs')
     .eq('brand_id', brandId)
     .eq('is_active', true)
     .order('created_at', { ascending: false });

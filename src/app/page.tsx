@@ -23,7 +23,7 @@ async function getHotProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo)')
+    .select('*, categories(name), brands(name, logo), specs')
     .eq('is_active', true)
     .order('sales_count', { ascending: false })
     .limit(8);
@@ -36,7 +36,7 @@ async function getNewProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo)')
+    .select('*, categories(name), brands(name, logo), specs')
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(8);

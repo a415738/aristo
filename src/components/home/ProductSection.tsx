@@ -15,6 +15,7 @@ interface Product {
   tags: string[] | null;
   categories: { name: string } | null;
   brands: { name: string; logo: string | null } | null;
+  specs?: { name: string; value: string }[] | null;
 }
 
 interface ProductSectionProps {
@@ -128,6 +129,17 @@ export function ProductCard({ product }: ProductCardProps) {
                 ${Number(product.retail_price).toFixed(2)}
               </span>
             </div>
+
+            {/* 商品参数 */}
+            {product.specs && product.specs.length > 0 && (
+              <div className="hidden md:block space-y-0.5 mb-1">
+                {product.specs.slice(0, 2).map((spec, index) => (
+                  <p key={index} className="text-[10px] text-gray-500 truncate">
+                    <span className="text-gray-400">{spec.name}:</span> {spec.value}
+                  </p>
+                ))}
+              </div>
+            )}
 
             {/* 销量 */}
             <div className="hidden md:flex items-center justify-between">

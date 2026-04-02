@@ -17,6 +17,7 @@ interface Product {
   categories: { name: string } | null;
   brands: { name: string; logo: string | null } | null;
   product_images?: { image: string }[];
+  specs?: { name: string; value: string }[] | null;
 }
 
 interface ProductListProps {
@@ -154,6 +155,17 @@ function ProductCard({ product }: { product: Product }) {
                 <span>{product.sales_count}</span>
               </div>
             </div>
+
+            {/* 商品参数 */}
+            {product.specs && product.specs.length > 0 && (
+              <div className="mt-2 space-y-0.5">
+                {product.specs.slice(0, 2).map((spec, index) => (
+                  <p key={index} className="text-xs text-neutral-500 truncate">
+                    <span className="text-neutral-400">{spec.name}:</span> {spec.value}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
