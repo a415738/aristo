@@ -41,12 +41,14 @@ const currencies = [
 ];
 
 // 支付方式
-const paymentMethods = [
-  { id: 'cod', name: '货到付款 (COD)', enabled: true, icon: '💵' },
-  { id: 'bank_transfer', name: '银行转账', enabled: true, icon: '🏦' },
-  { id: 'paypal', name: 'PayPal', enabled: false, icon: '🅿️' },
-  { id: 'stripe', name: 'Stripe', enabled: false, icon: '💳' },
-];
+const [paymentMethods, setPaymentMethods] = useState([
+  { id: 'cod', name: '货到付款 (COD)', enabled: true, icon: '💵', desc: '支持泰国、越南、印尼等地区' },
+  { id: 'bank_transfer', name: '银行转账', enabled: true, icon: '🏦', desc: '支持本地银行转账' },
+  { id: 'lianlian', name: '连连国际 (LianLian)', enabled: false, icon: '🔗', desc: '东南亚主流支付，支持多币种' },
+  { id: 'ksher', name: 'KSHER', enabled: false, icon: '💠', desc: '聚合支付，支持微信/支付宝/本地钱包' },
+  { id: 'paypal', name: 'PayPal', enabled: false, icon: '🅿️', desc: '国际支付' },
+  { id: 'stripe', name: 'Stripe', enabled: false, icon: '💳', desc: '国际支付，支持信用卡' },
+]);
 
 // 物流方式
 const shippingMethods = [
@@ -94,7 +96,7 @@ export default function SettingsPageContent() {
   };
 
   const handleTogglePayment = (id: string) => {
-    // Toggle payment method - simplified for demo
+    setPaymentMethods(prev => prev.map(m => m.id === id ? { ...m, enabled: !m.enabled } : m));
   };
 
   const handleToggleShipping = (id: string) => {
@@ -317,26 +319,89 @@ export default function SettingsPageContent() {
                 {paymentMethods.map((method) => (
                   <div
                     key={method.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    className="p-4 bg-gray-50 rounded-lg"
                   >
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl">{method.icon}</span>
-                      <p className="font-medium">{method.name}</p>
-                    </div>
-                    <button
-                      onClick={() => handleTogglePayment(method.id)}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        method.enabled ? 'bg-primary' : 'bg-gray-300'
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          method.enabled ? 'translate-x-7' : 'translate-x-1'
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-4">
+                        <span className="text-2xl">{method.icon}</span>
+                        <div>
+                          <p className="font-medium">{method.name}</p>
+                          <p className="text-sm text-gray-500">{method.desc}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleTogglePayment(method.id)}
+                        className={`relative w-12 h-6 rounded-full transition-colors ${
+                          method.enabled ? 'bg-primary' : 'bg-gray-300'
                         }`}
-                      />
-                    </button>
+                      >
+                        <span
+                          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                            method.enabled ? 'translate-x-7' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    
+                    {/* 连连国际和KSHER配置 */}
+                    {(method.id === 'lianlian' || method.id === 'ksher') && method.enabled && (
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {method.id === 'lianlian' ? 'Merchant ID' : 'App ID'}
+                            </label>
+                            <input
+                              type="text"
+                              placeholder={method.id === 'lianlian' ? '连连商户号' : 'KSHER App ID'}
+                              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              {method.id === 'lianlian' ? 'API Key' : 'API Key'}
+                            </label>
+                            <input
+                              type="password"
+                              placeholder="API密钥"
+                              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            />
+                          </div>
+                        </div>
+                        {method.id === 'ksher' && (
+                          <div className="mt-3">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              商户号 (Merchant No)
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="KSHER商户号"
+                              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            />
+                          </div>
+                        )}
+                        <div className="mt-3 flex items-center gap-4">
+                          <label className="flex items-center gap-2 text-sm">
+                            <input type="checkbox" className="rounded" />
+                            启用测试环境
+                          </label>
+                          <span className="text-xs text-gray-400">沙盒测试</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
+              </div>
+              
+              {/* 支付提示 */}
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                <h4 className="font-medium text-blue-800 mb-2">支付方式说明</h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• <strong>货到付款 (COD)</strong>：顾客收货时付款，适合东南亚市场</li>
+                  <li>• <strong>连连国际</strong>：支持泰国、越南、印尼、新加坡、马来西亚等，支持多币种结算</li>
+                  <li>• <strong>KSHER</strong>：聚合支付专家，支持微信支付、支付宝、本地钱包（TrueMoney、Line Pay等）</li>
+                  <li>• 请联系对应服务商获取 API 凭证</li>
+                </ul>
               </div>
             </div>
           )}
