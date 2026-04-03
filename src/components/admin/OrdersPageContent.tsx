@@ -1,9 +1,9 @@
 'use client';
 
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 export function OrdersPageContent() {
-  const { t } = useTranslation();
+  const t = adminTranslations;
 
   return (
     <div className="mb-8">

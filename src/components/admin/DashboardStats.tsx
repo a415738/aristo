@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react';
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface DashboardStatsProps {
   stats: {
@@ -14,7 +14,7 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ stats }: DashboardStatsProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
   
   const cards = [
     {

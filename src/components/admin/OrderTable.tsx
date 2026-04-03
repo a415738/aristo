@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search, Eye } from 'lucide-react';
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface Order {
   id: string;
@@ -48,7 +48,7 @@ const statusColors: Record<string, string> = {
 };
 
 export function OrderTable({ orders }: OrderTableProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 

@@ -1,7 +1,6 @@
 'use client';
 
-import { useTranslation } from '@/lib/i18n';
-import { DashboardStats } from '@/components/admin/DashboardStats';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface DashboardContentProps {
   stats: {
@@ -13,7 +12,7 @@ interface DashboardContentProps {
 }
 
 export function DashboardContent({ stats }: DashboardContentProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
 
   return (
     <div className="mb-8">

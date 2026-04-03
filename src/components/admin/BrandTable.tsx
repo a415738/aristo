@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Star, Edit, Globe } from 'lucide-react';
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface Brand {
   id: string;
@@ -35,7 +35,7 @@ interface BrandTableProps {
 }
 
 export function BrandTable({ brands: initialBrands }: BrandTableProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
   const [brands, setBrands] = useState(initialBrands);
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [saving, setSaving] = useState(false);

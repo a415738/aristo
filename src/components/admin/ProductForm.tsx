@@ -9,7 +9,7 @@ import {
   X, Plus, Loader2, Trash2 
 } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface Category {
   id: string;
@@ -133,7 +133,7 @@ const categorySpecTemplates: Record<string, { name: string; value: string }[]> =
 };
 
 export function ProductForm({ product, categories, brands, onSave, onCancel }: ProductFormProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
   const [loading, setLoading] = useState(false);
   
   // 基础信息

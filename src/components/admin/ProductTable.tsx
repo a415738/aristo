@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2, Search, Loader2 } from 'lucide-react';
 import { ProductForm, ProductFormData } from './ProductForm';
-import { useTranslation } from '@/lib/i18n';
+import { adminTranslations } from '@/lib/admin-translations';
 
 interface Product {
   id: string;
@@ -62,7 +62,7 @@ interface ProductTableProps {
 }
 
 export function ProductTable({ products: initialProducts, categories, brands }: ProductTableProps) {
-  const { t } = useTranslation();
+  const t = adminTranslations;
   const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);

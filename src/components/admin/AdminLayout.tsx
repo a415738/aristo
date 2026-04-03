@@ -17,17 +17,30 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { ReactNode } from 'react';
-import { useTranslation } from '@/lib/i18n';
-import { Button } from '@/components/ui/button';
 
 interface AdminLayoutProps {
   children: ReactNode;
 }
 
+// 后台专用中文文本
+const adminText = {
+  dashboard: '控制台',
+  products: '商品管理',
+  brands: '品牌管理',
+  orders: '订单管理',
+  users: '用户管理',
+  marketing: '运营管理',
+  settings: '系统设置',
+  chat: '客服管理',
+  adminPanel: '管理后台',
+  viewSite: '查看网站',
+  logout: '退出登录',
+  admin: '管理员',
+};
+
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { t } = useTranslation();
   const [username, setUsername] = useState<string | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
@@ -52,14 +65,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   };
 
   const menuItems = [
-    { name: t.admin.dashboard, href: '/admin', icon: LayoutDashboard },
-    { name: t.admin.products, href: '/admin/products', icon: Package },
-    { name: t.admin.brands, href: '/admin/brands', icon: Tags },
-    { name: t.admin.orders, href: '/admin/orders', icon: ShoppingCart },
-    { name: t.admin.users, href: '/admin/users', icon: Users },
-    { name: t.admin.marketing, href: '/admin/marketing', icon: Megaphone },
-    { name: t.admin.settings, href: '/admin/settings', icon: Settings },
-    { name: t.admin.chat, href: '/admin/chat', icon: MessageSquare },
+    { name: adminText.dashboard, href: '/admin', icon: LayoutDashboard },
+    { name: adminText.products, href: '/admin/products', icon: Package },
+    { name: adminText.brands, href: '/admin/brands', icon: Tags },
+    { name: adminText.orders, href: '/admin/orders', icon: ShoppingCart },
+    { name: adminText.users, href: '/admin/users', icon: Users },
+    { name: adminText.marketing, href: '/admin/marketing', icon: Megaphone },
+    { name: adminText.settings, href: '/admin/settings', icon: Settings },
+    { name: adminText.chat, href: '/admin/chat', icon: MessageSquare },
   ];
 
   return (
@@ -70,7 +83,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <Link href="/admin" className="text-2xl font-bold text-primary">
             Aristo
           </Link>
-          <p className="text-sm text-gray-400 mt-1">管理后台</p>
+          <p className="text-sm text-gray-400 mt-1">{adminText.adminPanel}</p>
         </div>
 
         <nav className="mt-6 px-3">
@@ -110,7 +123,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 </div>
                 <div className="text-left">
                   <p className="text-sm font-medium">{username}</p>
-                  <p className="text-xs text-gray-400">管理员</p>
+                  <p className="text-xs text-gray-400">{adminText.admin}</p>
                 </div>
               </div>
               <ChevronDown className={cn('h-4 w-4 transition-transform', showUserMenu && 'rotate-180')} />
@@ -123,14 +136,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   target="_blank"
                   className="flex items-center gap-2 px-4 py-3 hover:bg-gray-700 transition-colors text-sm"
                 >
-                  查看网站
+                  {adminText.viewSite}
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center gap-2 px-4 py-3 hover:bg-gray-700 transition-colors text-sm text-red-400"
                 >
                   <LogOut className="h-4 w-4" />
-                  退出登录
+                  {adminText.logout}
                 </button>
               </div>
             )}
