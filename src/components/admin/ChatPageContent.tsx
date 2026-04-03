@@ -15,7 +15,8 @@ import {
   Loader2,
   Check,
   Copy,
-  X,
+  Globe,
+  AlertCircle,
 } from 'lucide-react';
 
 interface ChatSession {
@@ -39,6 +40,7 @@ interface ChatMessage {
   timestamp: string;
   translated?: string;
   detectedLang?: string;
+  translationError?: boolean;
 }
 
 // 语言配置
@@ -51,53 +53,48 @@ const languages = [
   { code: 'zh', name: '中文', flag: '🇨🇳' },
 ];
 
-// 简单的语言检测（基于字符模式）
+// 目标语言（固定为中文）
+const TARGET_LANG = 'zh';
+
+// 语言检测（基于字符模式）
 function detectLanguage(text: string): string {
   const vietnameseChars = /[àáạảãâầấậẩẫăằắặẳẫèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
   const thaiChars = /[ก-๙]/;
-  const indonesianWords = /\b(saya|anda|terima kasih|tidak|ada|yang|dan|dari|untuk|dengan)\b/i;
-  const malayWords = /\b(saya|anda|terima kasih|tidak|ada|yang|dan|dari|untuk|dengan|semua)\b/i;
+  const indonesianWords = /\b(saya|anda|terima|tidak|ada|yang|dan|dari|untuk|dengan|ke|in|di|nya|sudah|bisa|akan|juga|tapi|atau|saya|beli|Order|order|thank|thanks|how|what|where|when|which)\b/i;
+  const malayWords = /\b(saya|anda|terima|tidak|ada|yang|dan|dari|untuk|dengan|semua|ke|in|di|nya|sudah|bisa|akan|juga|tapi|atau|okay|ok|yes|no|the|a|an|is|are|was|were|have|has|had|do|does|did|will|would|could|should)\b/i;
 
   if (thaiChars.test(text)) return 'th';
   if (vietnameseChars.test(text)) return 'vi';
-  if (indonesianWords.test(text.toLowerCase())) return 'id';
-  if (malayWords.test(text.toLowerCase())) return 'ms';
+  
+  // 检查是否像印尼语
+  const lowerText = text.toLowerCase();
+  const indonesianCount = (lowerText.match(/\b(saya|anda|terima|tidak|ada|yang|dan|dari|untuk|dengan|ke|in|di|nya|sudah|bisa|akan|juga)\b/g) || []).length;
+  if (indonesianCount >= 2) return 'id';
+  
+  // 检查是否像马来语
+  const malayCount = (lowerText.match(/\b(saya|anda|terima|tidak|ada|yang|dan|dari|untuk|dengan|semua)\b/g) || []).length;
+  if (malayCount >= 2) return 'ms';
+  
   return 'en';
 }
 
-// 模拟翻译函数
-function translateText(text: string, fromLang: string, toLang: string): string {
-  // 这里可以接入真实的翻译API，如Google Translate API
-  // 目前返回模拟翻译结果
-  const translations: Record<string, Record<string, string>> = {
-    'vi': {
-      'Tôi muốn biết về sản phẩm kem chống nắng': 'I want to know about sunscreen products',
-      'Chào bạn, tôi muốn biết về sản phẩm kem chống nắng': 'Hello, I want to know about sunscreen products',
-      'Tôi quan tâm đến sản phẩm của Anessa, loại nào phù hợp cho da nhạy cảm?': 'I am interested in Anessa products, which one is suitable for sensitive skin?',
-      'Terima kasih atas bantuannya!': 'Thank you for your help!',
-    },
-    'th': {
-      'มีสีอะไรให้เลือกบ้าง': 'What colors are available?',
-      'ราคาเท่าไหร่': 'How much is it?',
-      'ส่งฟรีไหม': 'Is shipping free?',
-    },
-    'id': {
-      'Terima kasih': 'Thank you',
-      'Berapa harganya': 'How much is it?',
-    },
-    'ms': {
-      'Terima kasih': 'Thank you',
-      'Berapa harga': 'How much is it?',
-    },
-  };
-
-  const langTranslations = translations[fromLang];
-  if (langTranslations && langTranslations[text]) {
-    return langTranslations[text];
+// 使用 MyMemory API 翻译
+async function translateText(text: string, sourceLang: string): Promise<string> {
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang}|${TARGET_LANG}`;
+    
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data.responseStatus === 200 && data.responseData?.translatedText) {
+      return data.responseData.translatedText;
+    }
+    
+    throw new Error('Translation failed');
+  } catch (error) {
+    console.error('Translation error:', error);
+    throw error;
   }
-
-  // 如果没有预设翻译，返回标记后的原文（实际应调用翻译API）
-  return `[${fromLang.toUpperCase()}] ${text}`;
 }
 
 // 模拟聊天会话数据
@@ -165,16 +162,16 @@ const mockSessions: ChatSession[] = [
 const mockMessages: Record<string, ChatMessage[]> = {
   '1': [
     { id: 'm1', sessionId: '1', content: 'Chào bạn, tôi muốn biết về sản phẩm kem chống nắng', sender: 'user', timestamp: '14:25' },
-    { id: 'm2', sessionId: '1', content: 'Xin chào! Cảm ơn bạn đã liên hệ. Bạn quan tâm đến sản phẩm kem chống nắng nào ạ? Chúng tôi có nhiều loại từ các thương hiệu nổi tiếng như Anessa, Biore, Murada.', sender: 'ai', timestamp: '14:26' },
+    { id: 'm2', sessionId: '1', content: 'Xin chào! Cảm ơn bạn đã liên hệ. Bạn quan tâm đến sản phẩm kem chống nắng nào ạ?', sender: 'ai', timestamp: '14:26' },
     { id: 'm3', sessionId: '1', content: 'Tôi quan tâm đến sản phẩm của Anessa, loại nào phù hợp cho da nhạy cảm?', sender: 'user', timestamp: '14:28' },
-    { id: 'm4', sessionId: '1', content: 'Anessa Perfect UV Skincare Milk là sản phẩm rất phù hợp cho da nhạy cảm. Sản phẩm này không chứa cồn, không gây kích ứng và có chỉ số SPF50+ PA++++. Bạn có muốn tôi thêm vào giỏ hàng không?', sender: 'ai', timestamp: '14:29' },
+    { id: 'm4', sessionId: '1', content: 'Anessa Perfect UV Skincare Milk là sản phẩm rất phù hợp cho da nhạy cảm.', sender: 'ai', timestamp: '14:29' },
     { id: 'm5', sessionId: '1', content: 'Tôi muốn biết về sản phẩm kem chống nắng', sender: 'user', timestamp: '14:30' },
   ],
   '2': [
     { id: 'm6', sessionId: '2', content: 'How long does shipping take to Bangkok?', sender: 'user', timestamp: '14:20' },
-    { id: 'm7', sessionId: '2', content: 'Hello! Shipping to Bangkok typically takes 3-5 business days for standard delivery and 1-2 business days for express delivery.', sender: 'ai', timestamp: '14:21' },
+    { id: 'm7', sessionId: '2', content: 'Shipping to Bangkok typically takes 3-5 business days for standard delivery.', sender: 'ai', timestamp: '14:21' },
     { id: 'm8', sessionId: '2', content: 'What about express shipping cost?', sender: 'user', timestamp: '14:24' },
-    { id: 'm9', sessionId: '2', content: 'Express shipping costs vary by weight. For orders under 1kg, it\'s approximately $15. Would you like me to check the exact cost for your order?', sender: 'ai', timestamp: '14:25' },
+    { id: 'm9', sessionId: '2', content: 'Express shipping costs approximately $15 for orders under 1kg.', sender: 'ai', timestamp: '14:25' },
   ],
   '3': [
     { id: 'm10', sessionId: '3', content: 'Terima kasih atas bantuannya!', sender: 'user', timestamp: '12:55' },
@@ -189,7 +186,7 @@ const mockMessages: Record<string, ChatMessage[]> = {
   ],
   '5': [
     { id: 'm17', sessionId: '5', content: 'Okay, I will place the order now', sender: 'user', timestamp: '11:25' },
-    { id: 'm18', sessionId: '5', content: 'Great! Your order will be processed within 24 hours. You will receive a confirmation email shortly.', sender: 'ai', timestamp: '11:26' },
+    { id: 'm18', sessionId: '5', content: 'Great! Your order will be processed within 24 hours.', sender: 'ai', timestamp: '11:26' },
     { id: 'm19', sessionId: '5', content: 'Thank you for shopping with us!', sender: 'ai', timestamp: '11:27' },
   ],
 };
@@ -205,23 +202,50 @@ export default function ChatPageContent() {
   const [autoReplyEnabled, setAutoReplyEnabled] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [translatingMessageId, setTranslatingMessageId] = useState<string | null>(null);
-  const [showTranslations, setShowTranslations] = useState(true);
-  const [targetLanguage, setTargetLanguage] = useState('zh');
+  const [autoTranslate, setAutoTranslate] = useState(true); // 自动翻译开关
   const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const [translationCount, setTranslationCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selectedSession) {
       const sessionMessages = mockMessages[selectedSession.id] || [];
       setMessages(sessionMessages);
-      // 自动检测语言并标记
-      const messagesWithLang = sessionMessages.map(msg => ({
-        ...msg,
-        detectedLang: msg.sender === 'user' ? detectLanguage(msg.content) : undefined,
-      }));
-      setDisplayMessages(messagesWithLang);
+      
+      // 自动检测语言并翻译非英文消息
+      const processMessages = async () => {
+        const messagesWithLang: ChatMessage[] = [];
+        
+        for (const msg of sessionMessages) {
+          const detectedLang = msg.sender === 'user' ? detectLanguage(msg.content) : undefined;
+          const message: ChatMessage = {
+            ...msg,
+            detectedLang,
+          };
+          
+          // 如果是用户消息且不是英文，自动翻译
+          if (msg.sender === 'user' && autoTranslate && detectedLang && detectedLang !== 'en' && detectedLang !== 'zh') {
+            try {
+              setTranslatingMessageId(msg.id);
+              const translated = await translateText(msg.content, detectedLang);
+              message.translated = translated;
+              setTranslationCount(prev => prev + 1);
+            } catch (error) {
+              message.translationError = true;
+              console.error('Auto-translate failed for:', msg.content);
+            }
+            setTranslatingMessageId(null);
+          }
+          
+          messagesWithLang.push(message);
+        }
+        
+        setDisplayMessages(messagesWithLang);
+      };
+      
+      processMessages();
     }
-  }, [selectedSession]);
+  }, [selectedSession, autoTranslate]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -257,40 +281,57 @@ export default function ChatPageContent() {
     }
   };
 
+  // 手动翻译单条消息
   const handleTranslate = async (messageId: string) => {
     const msg = displayMessages.find(m => m.id === messageId);
     if (!msg || msg.sender === 'admin') return;
 
     setTranslatingMessageId(messageId);
 
-    // 模拟翻译延迟
-    await new Promise(resolve => setTimeout(resolve, 800));
+    try {
+      const sourceLang = msg.detectedLang || detectLanguage(msg.content);
+      const translated = await translateText(msg.content, sourceLang);
 
-    const sourceLang = msg.detectedLang || detectLanguage(msg.content);
-    const translated = translateText(msg.content, sourceLang, targetLanguage);
-
-    setDisplayMessages(prev => prev.map(m =>
-      m.id === messageId ? { ...m, translated, detectedLang: sourceLang } : m
-    ));
+      setDisplayMessages(prev => prev.map(m =>
+        m.id === messageId ? { ...m, translated, detectedLang: sourceLang, translationError: false } : m
+      ));
+      setTranslationCount(prev => prev + 1);
+    } catch (error) {
+      setDisplayMessages(prev => prev.map(m =>
+        m.id === messageId ? { ...m, translationError: true } : m
+      ));
+    }
 
     setTranslatingMessageId(null);
   };
 
+  // 翻译全部用户消息
   const handleTranslateAll = async () => {
     if (!selectedSession) return;
 
     setTranslatingMessageId('all');
 
-    const userMessages = displayMessages.filter(m => m.sender !== 'admin' && !m.translated);
+    const userMessages = displayMessages.filter(m => m.sender === 'user' && !m.translated && !m.translationError);
     
     for (const msg of userMessages) {
-      await new Promise(resolve => setTimeout(resolve, 300));
       const sourceLang = msg.detectedLang || detectLanguage(msg.content);
-      const translated = translateText(msg.content, sourceLang, targetLanguage);
       
-      setDisplayMessages(prev => prev.map(m =>
-        m.id === msg.id ? { ...m, translated, detectedLang: sourceLang } : m
-      ));
+      if (sourceLang !== 'en' && sourceLang !== 'zh') {
+        try {
+          const translated = await translateText(msg.content, sourceLang);
+          setDisplayMessages(prev => prev.map(m =>
+            m.id === msg.id ? { ...m, translated, detectedLang: sourceLang } : m
+          ));
+          setTranslationCount(prev => prev + 1);
+        } catch (error) {
+          setDisplayMessages(prev => prev.map(m =>
+            m.id === msg.id ? { ...m, translationError: true } : m
+          ));
+        }
+        
+        // 添加延迟避免请求过快
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     }
 
     setTranslatingMessageId(null);
@@ -314,48 +355,6 @@ export default function ChatPageContent() {
           <p className="text-gray-500 mt-1">管理客户聊天记录和 AI 客服配置</p>
         </div>
         <div className="flex items-center gap-3">
-          {/* Target Language Selector */}
-          <div className="relative">
-            <button
-              onClick={() => setShowLangDropdown(!showLangDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
-            >
-              <Languages className="h-4 w-4" />
-              翻译为: {getLanguageName(targetLanguage)}
-              <ChevronDown className="h-4 w-4" />
-            </button>
-            {showLangDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10">
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => {
-                      setTargetLanguage(lang.code);
-                      setShowLangDropdown(false);
-                    }}
-                    className={`w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 ${
-                      targetLanguage === lang.code ? 'bg-primary/5 text-primary' : ''
-                    }`}
-                  >
-                    <span>{lang.flag}</span>
-                    <span>{lang.name}</span>
-                    {targetLanguage === lang.code && <Check className="h-4 w-4 ml-auto" />}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <button
-            onClick={() => setShowTranslations(!showTranslations)}
-            className={`flex items-center gap-2 px-4 py-2 border rounded-lg ${
-              showTranslations
-                ? 'bg-primary text-white border-primary'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            }`}
-          >
-            <Languages className="h-4 w-4" />
-            {showTranslations ? '隐藏翻译' : '显示翻译'}
-          </button>
           <button
             onClick={() => setShowSettings(!showSettings)}
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
@@ -380,6 +379,24 @@ export default function ChatPageContent() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div>
+                <p className="font-medium">自动翻译</p>
+                <p className="text-sm text-gray-500">自动将用户消息翻译为中文</p>
+              </div>
+              <button
+                onClick={() => setAutoTranslate(!autoTranslate)}
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  autoTranslate ? 'bg-primary' : 'bg-gray-300'
+                }`}
+              >
+                <span
+                  className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                    autoTranslate ? 'translate-x-7' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+              <div>
                 <p className="font-medium">自动回复</p>
                 <p className="text-sm text-gray-500">AI 自动回复客户消息</p>
               </div>
@@ -402,14 +419,9 @@ export default function ChatPageContent() {
               <p className="text-sm text-gray-500">AI 处理 89%</p>
             </div>
             <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="font-medium mb-2">平均响应时间</p>
-              <p className="text-2xl font-bold text-primary">2.3s</p>
-              <p className="text-sm text-gray-500">客户满意度 94%</p>
-            </div>
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="font-medium mb-2">翻译调用</p>
-              <p className="text-2xl font-bold text-primary">543</p>
-              <p className="text-sm text-gray-500">今日翻译次数</p>
+              <p className="font-medium mb-2">翻译次数</p>
+              <p className="text-2xl font-bold text-blue-600">{translationCount}</p>
+              <p className="text-sm text-gray-500">已翻译消息</p>
             </div>
           </div>
         </div>
@@ -550,7 +562,7 @@ export default function ChatPageContent() {
                     className={`flex ${msg.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-2xl ${
+                      className={`max-w-[75%] rounded-2xl ${
                         msg.sender === 'admin'
                           ? 'bg-primary text-white rounded-br-md'
                           : msg.sender === 'ai'
@@ -563,8 +575,9 @@ export default function ChatPageContent() {
                         {msg.sender === 'ai' && <Bot className="h-3 w-3" />}
                         {msg.sender === 'user' && <User className="h-3 w-3" />}
                         <span className="text-xs opacity-70">{msg.timestamp}</span>
-                        {msg.detectedLang && (
-                          <span className="text-xs opacity-70 bg-black/10 px-1.5 py-0.5 rounded">
+                        {msg.detectedLang && msg.sender === 'user' && (
+                          <span className="text-xs bg-black/10 px-1.5 py-0.5 rounded flex items-center gap-1">
+                            <Globe className="h-3 w-3" />
                             {getLanguageName(msg.detectedLang)}
                           </span>
                         )}
@@ -576,23 +589,37 @@ export default function ChatPageContent() {
                       </div>
 
                       {/* Translated Message */}
-                      {showTranslations && msg.translated && msg.sender !== 'admin' && (
-                        <div className="mx-3 mb-3 p-2 bg-white/20 rounded-lg">
-                          <div className="flex items-center gap-1 mb-1">
-                            <Languages className="h-3 w-3" />
-                            <span className="text-xs opacity-70">翻译 ({getLanguageName(targetLanguage)})</span>
+                      {msg.translated && msg.sender === 'user' && (
+                        <div className="mx-3 mb-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                          <div className="flex items-center gap-1 mb-2">
+                            <Languages className="h-4 w-4 text-blue-600" />
+                            <span className="text-xs font-medium text-blue-600">中文翻译</span>
                           </div>
-                          <p className="text-sm">{msg.translated}</p>
+                          <p className="text-sm text-gray-800 font-medium">{msg.translated}</p>
                         </div>
                       )}
 
-                      {/* Translate Button (for user/ai messages without translation) */}
-                      {showTranslations && !msg.translated && msg.sender !== 'admin' && (
+                      {/* Translation Error */}
+                      {msg.translationError && msg.sender === 'user' && (
+                        <div className="mx-3 mb-3 p-2 bg-red-50 rounded-lg border border-red-100 flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4 text-red-500" />
+                          <span className="text-xs text-red-600">翻译失败</span>
+                          <button
+                            onClick={() => handleTranslate(msg.id)}
+                            className="text-xs text-blue-600 hover:underline"
+                          >
+                            重试
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Translate Button (for messages without translation) */}
+                      {!msg.translated && !msg.translationError && msg.sender === 'user' && msg.detectedLang && msg.detectedLang !== 'en' && msg.detectedLang !== 'zh' && (
                         <div className="px-4 pb-3">
                           <button
                             onClick={() => handleTranslate(msg.id)}
                             disabled={translatingMessageId !== null}
-                            className="flex items-center gap-1 text-xs opacity-70 hover:opacity-100 transition-opacity disabled:opacity-50"
+                            className="flex items-center gap-2 px-3 py-1.5 text-xs bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50 transition-colors"
                           >
                             {translatingMessageId === msg.id ? (
                               <>
@@ -609,7 +636,7 @@ export default function ChatPageContent() {
                         </div>
                       )}
 
-                      {/* Action Buttons (for user messages) */}
+                      {/* Action Buttons */}
                       {msg.sender === 'user' && (
                         <div className="flex items-center gap-1 px-4 pb-2">
                           <button
