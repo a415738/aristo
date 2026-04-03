@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { DashboardStats } from '@/components/admin/DashboardStats';
 import { DashboardContent } from '@/components/admin/DashboardContent';
@@ -31,9 +32,11 @@ export default async function AdminDashboard() {
   const stats = await getStats();
 
   return (
-    <AdminLayout>
-      <DashboardContent stats={stats} />
-      <DashboardStats stats={stats} />
-    </AdminLayout>
+    <AdminPageWrapper>
+      <AdminLayout>
+        <DashboardContent stats={stats} />
+        <DashboardStats stats={stats} />
+      </AdminLayout>
+    </AdminPageWrapper>
   );
 }

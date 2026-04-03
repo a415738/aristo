@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { OrderTable } from '@/components/admin/OrderTable';
 import { OrdersPageContent } from '@/components/admin/OrdersPageContent';
@@ -21,9 +22,11 @@ export default async function AdminOrdersPage() {
   const orders = await getOrders();
 
   return (
-    <AdminLayout>
-      <OrdersPageContent />
-      <OrderTable orders={orders} />
-    </AdminLayout>
+    <AdminPageWrapper>
+      <AdminLayout>
+        <OrdersPageContent />
+        <OrderTable orders={orders} />
+      </AdminLayout>
+    </AdminPageWrapper>
   );
 }

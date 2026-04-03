@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ProductTable } from '@/components/admin/ProductTable';
 import { ProductsPageContent } from '@/components/admin/ProductsPageContent';
@@ -55,9 +56,11 @@ export default async function AdminProductsPage() {
   ]);
 
   return (
-    <AdminLayout>
-      <ProductsPageContent />
-      <ProductTable products={products} categories={categories} brands={brands} />
-    </AdminLayout>
+    <AdminPageWrapper>
+      <AdminLayout>
+        <ProductsPageContent />
+        <ProductTable products={products} categories={categories} brands={brands} />
+      </AdminLayout>
+    </AdminPageWrapper>
   );
 }

@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
+import { AdminPageWrapper } from '@/components/admin/AdminPageWrapper';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { BrandTable } from '@/components/admin/BrandTable';
 import { BrandsPageContent } from '@/components/admin/BrandsPageContent';
@@ -20,9 +21,11 @@ export default async function BrandsAdminPage() {
   const brands = await getBrands();
 
   return (
-    <AdminLayout>
-      <BrandsPageContent />
-      <BrandTable brands={brands} />
-    </AdminLayout>
+    <AdminPageWrapper>
+      <AdminLayout>
+        <BrandsPageContent />
+        <BrandTable brands={brands} />
+      </AdminLayout>
+    </AdminPageWrapper>
   );
 }
