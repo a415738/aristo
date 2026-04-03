@@ -151,11 +151,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
   const t = adminTranslations;
   const [loading, setLoading] = useState(false);
   
-  // 获取当前选择的品牌名称
-  const selectedBrand = brands.find(b => b.id === brandId);
-  
   // 基础信息
-  // 产品名称（不含品牌）
   const [productName, setProductName] = useState(() => {
     if (product?.name && product?.brand_id) {
       const brand = brands.find(b => b.id === product.brand_id);
@@ -182,6 +178,9 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
   const [sku, setSku] = useState(product?.sku || '');
   const [categoryId, setCategoryId] = useState(product?.category_id || '');
   const [brandId, setBrandId] = useState(product?.brand_id || '');
+  
+  // 获取当前选择的品牌名称
+  const selectedBrand = brands.find(b => b.id === brandId);
   
   // 商品属性
   const [specs, setSpecs] = useState<{ name: string; value: string }[]>(product?.specs || []);
