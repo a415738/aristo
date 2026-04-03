@@ -10,8 +10,7 @@ interface AdminGuardProps {
 
 export function AdminGuard({ children }: AdminGuardProps) {
   const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('admin_logged_in') === 'true';
@@ -19,13 +18,11 @@ export function AdminGuard({ children }: AdminGuardProps) {
     if (!loggedIn) {
       router.push('/admin/login');
     } else {
-      setIsAuthorized(true);
+      setIsReady(true);
     }
-    
-    setLoading(false);
   }, [router]);
 
-  if (loading) {
+  if (!isReady) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
@@ -34,10 +31,6 @@ export function AdminGuard({ children }: AdminGuardProps) {
         </div>
       </div>
     );
-  }
-
-  if (!isAuthorized) {
-    return null;
   }
 
   return <>{children}</>;

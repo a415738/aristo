@@ -43,6 +43,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     // 检查登录状态
@@ -55,7 +56,20 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     }
     
     setUsername(storedUsername);
+    setIsChecking(false);
   }, [router]);
+
+  // 正在检查登录状态时显示加载
+  if (isChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600">加载中...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleLogout = () => {
     localStorage.removeItem('admin_logged_in');
