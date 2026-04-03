@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { OrderTable } from '@/components/admin/OrderTable';
+import { OrdersPageContent } from '@/components/admin/OrdersPageContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,11 +22,7 @@ export default async function AdminOrdersPage() {
 
   return (
     <AdminLayout>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">订单管理</h1>
-        <p className="text-gray-600 mt-1">管理客户订单</p>
-      </div>
-
+      <OrdersPageContent />
       <OrderTable orders={orders} />
     </AdminLayout>
   );

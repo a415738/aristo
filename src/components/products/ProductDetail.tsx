@@ -10,6 +10,7 @@ import {
   RotateCcw, ChevronRight, ChevronLeft, Share2, Eye
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useTranslation } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -34,6 +35,7 @@ interface ProductDetailProps {
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
+  const { t } = useTranslation();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(
@@ -43,7 +45,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const [activeTab, setActiveTab] = useState('description');
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
-  // 获取所有图片（主图 + 商品图片，共6-12张）
+  // Get all images
   const images = [product.main_image, ...product.product_images.map(img => img.image)];
   
   const currentVariant = product.product_variants.find(v => v.id === selectedVariant);
@@ -78,9 +80,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   return (
     <div className="space-y-8">
-      {/* 面包屑 */}
+      {/* Breadcrumb */}
       <nav className="text-sm text-neutral-500 flex items-center flex-wrap">
-        <Link href="/" className="hover:text-neutral-900 transition-colors">首页</Link>
+        <Link href="/" className="hover:text-neutral-900 transition-colors">{t.nav.home}</Link>
         <ChevronRight className="h-4 w-4 mx-1.5" />
         {product.categories && (
           <>
@@ -93,12 +95,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <span className="text-neutral-900 truncate">{product.name}</span>
       </nav>
 
-      {/* 商品卡片 */}
+      {/* Product Card */}
       <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-100">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          {/* 左侧图片区 */}
+          {/* Left - Images */}
           <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-neutral-100">
-            {/* 主图 */}
+            {/* Main Image */}
             <div className="relative aspect-square bg-neutral-50 rounded-xl overflow-hidden mb-4 group">
               <Image
                 src={images[selectedImageIndex]}
@@ -108,7 +110,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 priority
               />
               
-              {/* 图片切换按钮 */}
+              {/* Image Navigation */}
               {images.length > 1 && (
                 <>
                   <button
@@ -126,12 +128,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 </>
               )}
 
-              {/* 图片计数 */}
+              {/* Image Counter */}
               <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-black/50 text-white text-xs rounded-full">
                 {selectedImageIndex + 1} / {images.length}
               </div>
 
-              {/* 标签 */}
+              {/* Tags */}
               {product.tags && product.tags.length > 0 && (
                 <div className="absolute top-3 left-3 flex flex-col gap-1.5">
                   {product.tags.map((tag, index) => (
@@ -142,7 +144,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 </div>
               )}
 
-              {/* 收藏按钮 */}
+              {/* Favorite Button */}
               <button
                 onClick={() => setIsFavorite(!isFavorite)}
                 className="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50 transition-colors"
@@ -151,7 +153,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </button>
             </div>
 
-            {/* 缩略图 */}
+            {/* Thumbnails */}
             {images.length > 1 && (
               <div className="relative">
                 <button
@@ -197,9 +199,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
           </div>
 
-          {/* 右侧信息区 */}
+          {/* Right - Info */}
           <div className="p-6 lg:p-8 space-y-6">
-            {/* 品牌和标题 */}
+            {/* Brand and Title */}
             <div>
               {product.brands && (
                 <Link 
@@ -215,7 +217,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               )}
             </div>
 
-            {/* 价格 */}
+            {/* Price */}
             <div className="flex items-baseline gap-2">
               <span className="text-xs text-neutral-400">$</span>
               <span className="text-3xl font-bold text-neutral-900">
@@ -230,10 +232,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
             <Separator className="bg-neutral-100" />
 
-            {/* 规格 */}
+            {/* Variants */}
             {product.product_variants.length > 0 && (
               <div className="space-y-3">
-                <label className="text-sm font-medium text-neutral-700">选择规格</label>
+                <label className="text-sm font-medium text-neutral-700">{t.product.selectOptions}</label>
                 <div className="flex flex-wrap gap-2">
                   {product.product_variants.map((variant) => (
                     <button
@@ -247,19 +249,19 @@ export function ProductDetail({ product }: ProductDetailProps) {
                       disabled={variant.stock === 0}
                     >
                       {variant.name}
-                      {variant.stock === 0 && <span className="ml-1">(售罄)</span>}
+                      {variant.stock === 0 && <span className="ml-1">({t.product.outOfStock})</span>}
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {/* 数量 */}
+            {/* Quantity */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-neutral-700">数量</label>
+                <label className="text-sm font-medium text-neutral-700">{t.product.quantity}</label>
                 <span className={`text-xs ${currentStock === 0 ? 'text-red-500' : currentStock < 10 ? 'text-orange-500' : 'text-neutral-500'}`}>
-                  {currentStock === 0 ? '已售罄' : currentStock < 10 ? `仅剩 ${currentStock} 件` : '有货'}
+                  {currentStock === 0 ? t.product.outOfStock : currentStock < 10 ? `${currentStock} ${t.product.inStock}` : t.product.inStock}
                 </span>
               </div>
               <div className="flex items-center">
@@ -288,7 +290,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </div>
             </div>
 
-            {/* 操作按钮 */}
+            {/* Action Buttons */}
             <div className="flex gap-3">
               <Button 
                 size="lg" 
@@ -298,7 +300,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 disabled={currentStock === 0}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                加入购物车
+                {t.product.addToCart}
               </Button>
               <Button 
                 size="lg" 
@@ -306,17 +308,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 onClick={handleBuyNow}
                 disabled={currentStock === 0}
               >
-                立即购买
+                {t.product.buyNow}
               </Button>
             </div>
 
-            {/* 服务 */}
+            {/* Services */}
             <div className="grid grid-cols-4 gap-2 pt-4 border-t border-neutral-100">
               {[
-                { icon: Shield, text: '正品保障' },
-                { icon: Truck, text: '极速发货' },
-                { icon: RotateCcw, text: '无忧退换' },
-                { icon: Eye, text: `${product.sales_count} 已售` },
+                { icon: Shield, text: t.footer.privacyPolicy.split(' ')[0] },
+                { icon: Truck, text: t.footer.shipping.split(' ')[0] },
+                { icon: RotateCcw, text: t.footer.returns.split(' ')[0] },
+                { icon: Eye, text: `${product.sales_count} ${t.product.sold}` },
               ].map((item, index) => (
                 <div key={index} className="flex flex-col items-center text-center py-2">
                   <item.icon className="h-5 w-5 text-neutral-400 mb-1" />
@@ -328,7 +330,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         </div>
       </div>
 
-      {/* 详情和评价 */}
+      {/* Details and Reviews */}
       <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-100">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="border-b border-neutral-100">
@@ -337,13 +339,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 value="description" 
                 className="h-12 px-0 rounded-none border-b-2 border-transparent data-[state=active]:border-neutral-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
               >
-                商品详情
+                {t.product.description}
               </TabsTrigger>
               <TabsTrigger 
                 value="specs" 
                 className="h-12 px-0 rounded-none border-b-2 border-transparent data-[state=active]:border-neutral-900 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
               >
-                规格参数
+                {t.product.specifications}
               </TabsTrigger>
             </TabsList>
           </div>
@@ -353,18 +355,18 @@ export function ProductDetail({ product }: ProductDetailProps) {
               {product.description ? (
                 <p className="whitespace-pre-line text-neutral-600 leading-relaxed">{product.description}</p>
               ) : (
-                <p className="text-neutral-400">暂无商品描述</p>
+                <p className="text-neutral-400">{t.product.description}</p>
               )}
             </div>
             
-            {/* 商品图片展示 */}
+            {/* Product Images */}
             {images.length > 1 && (
               <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
                 {images.map((img, index) => (
                   <div key={index} className="aspect-square relative rounded-lg overflow-hidden bg-neutral-50">
                     <Image
                       src={img}
-                      alt={`${product.name} 图片 ${index + 1}`}
+                      alt={`${product.name} ${index + 1}`}
                       fill
                       className="object-cover"
                     />
@@ -377,11 +379,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <TabsContent value="specs" className="p-6 lg:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
-                { name: '品牌', value: product.brands?.name || '-' },
-                { name: '分类', value: product.categories?.name || '-' },
+                { name: t.productForm.brand, value: product.brands?.name || '-' },
+                { name: t.productForm.category, value: product.categories?.name || '-' },
                 { name: 'SKU', value: product.sku || '-' },
-                { name: '库存', value: `${product.stock} 件` },
-                { name: '销量', value: `${product.sales_count} 件` },
+                { name: t.productForm.stock, value: `${product.stock}` },
+                { name: t.product.sold, value: `${product.sales_count}` },
                 ...(product.specs || []),
               ].map((spec, index) => (
                 <div key={index} className="flex justify-between py-3 px-4 bg-neutral-50 rounded-lg">

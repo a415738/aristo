@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Star, Edit, Globe } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface Brand {
   id: string;
@@ -34,6 +35,7 @@ interface BrandTableProps {
 }
 
 export function BrandTable({ brands: initialBrands }: BrandTableProps) {
+  const { t } = useTranslation();
   const [brands, setBrands] = useState(initialBrands);
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [saving, setSaving] = useState(false);
@@ -103,13 +105,13 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
       <table className="w-full">
         <thead>
           <tr className="border-b">
-            <th className="text-left py-3 px-4 font-medium text-gray-600">品牌Logo</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-600">品牌名称</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-600">国家/地区</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-600">商品数量</th>
-            <th className="text-center py-3 px-4 font-medium text-gray-600">首页轮播</th>
-            <th className="text-center py-3 px-4 font-medium text-gray-600">启用状态</th>
-            <th className="text-center py-3 px-4 font-medium text-gray-600">操作</th>
+            <th className="text-left py-3 px-4 font-medium text-gray-600">{t.admin.brands} Logo</th>
+            <th className="text-left py-3 px-4 font-medium text-gray-600">{t.admin.brands}</th>
+            <th className="text-left py-3 px-4 font-medium text-gray-600">{t.brands.origin}</th>
+            <th className="text-left py-3 px-4 font-medium text-gray-600">{t.brands.products}</th>
+            <th className="text-center py-3 px-4 font-medium text-gray-600">{t.admin.marketing}</th>
+            <th className="text-center py-3 px-4 font-medium text-gray-600">{t.account.orderStatus}</th>
+            <th className="text-center py-3 px-4 font-medium text-gray-600">{t.common.edit}</th>
           </tr>
         </thead>
         <tbody>
@@ -148,7 +150,7 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
                   )}
                 </td>
                 <td className="py-3 px-4">
-                  <Badge variant="outline">{productCount} 件</Badge>
+                  <Badge variant="outline">{productCount} {t.brands.products}</Badge>
                 </td>
                 <td className="py-3 px-4 text-center">
                   <div className="flex items-center justify-center gap-2">
@@ -181,32 +183,32 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
                     {editingBrand?.id === brand.id && (
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>编辑品牌</DialogTitle>
+                          <DialogTitle>{t.common.edit} {t.admin.brands}</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-4 pt-4">
                           <div>
-                            <Label>品牌名称</Label>
+                            <Label>{t.admin.brands}</Label>
                             <Input 
                               defaultValue={brand.name}
                               id="brand-name"
                             />
                           </div>
                           <div>
-                            <Label>品牌Logo URL</Label>
+                            <Label>Logo URL</Label>
                             <Input 
                               defaultValue={brand.logo || ''}
                               id="brand-logo"
                             />
                           </div>
                           <div>
-                            <Label>国家/地区</Label>
+                            <Label>{t.brands.origin}</Label>
                             <Input 
                               defaultValue={brand.country || ''}
                               id="brand-country"
                             />
                           </div>
                           <div>
-                            <Label>品牌描述</Label>
+                            <Label>{t.productForm.description}</Label>
                             <Textarea 
                               defaultValue={brand.description || ''}
                               id="brand-description"
@@ -214,7 +216,7 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
                             />
                           </div>
                           <div>
-                            <Label>排序权重</Label>
+                            <Label>{t.filters.sort}</Label>
                             <Input 
                               type="number"
                               defaultValue={brand.sort_order}
@@ -233,7 +235,7 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
                             }}
                             disabled={saving}
                           >
-                            {saving ? '保存中...' : '保存'}
+                            {saving ? t.common.loading : t.common.save}
                           </Button>
                         </div>
                       </DialogContent>
@@ -248,7 +250,7 @@ export function BrandTable({ brands: initialBrands }: BrandTableProps) {
 
       {brands.length === 0 && (
         <div className="text-center py-12 text-gray-500">
-          暂无品牌数据
+          {t.brands.noBrands}
         </div>
       )}
     </div>

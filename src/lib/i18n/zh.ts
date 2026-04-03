@@ -1,0 +1,238 @@
+// Frontend translations - Chinese (Simplified)
+export const zh = {
+  // Navigation
+  nav: {
+    home: '首页',
+    allProducts: '全部商品',
+    brands: '品牌馆',
+    cart: '购物车',
+    login: '登录',
+    register: '注册',
+    account: '账户',
+    logout: '退出',
+    search: '搜索',
+    searchPlaceholder: '搜索商品...',
+  },
+  
+  // Categories
+  categories: {
+    all: '全部分类',
+    skinCare: '护肤',
+    makeup: '彩妆',
+    baseMakeup: '底妆',
+    lips: '唇部',
+    eyes: '眼部',
+    fragrance: '香水',
+    bodyCare: '身体护理',
+    hairCare: '头发护理',
+    beautyTools: '美妆工具',
+    giftSets: '礼盒套装',
+  },
+  
+  // Product
+  product: {
+    addToCart: '加入购物车',
+    buyNow: '立即购买',
+    outOfStock: '缺货',
+    inStock: '有货',
+    reviews: '评价',
+    description: '商品描述',
+    specifications: '规格参数',
+    relatedProducts: '相关推荐',
+    viewAll: '查看全部',
+    sold: '已售',
+    price: '价格',
+    quantity: '数量',
+    selectOptions: '选择规格',
+    addSuccess: '已加入购物车',
+    details: '商品详情',
+  },
+  
+  // Cart
+  cart: {
+    title: '购物车',
+    empty: '购物车是空的',
+    continueShopping: '继续购物',
+    checkout: '结算',
+    subtotal: '小计',
+    total: '合计',
+    remove: '删除',
+    quantity: '数量',
+  },
+  
+  // Account
+  account: {
+    title: '我的账户',
+    orders: '我的订单',
+    addresses: '收货地址',
+    profile: '个人资料',
+    favorites: '我的收藏',
+    settings: '设置',
+    orderHistory: '订单历史',
+    orderNumber: '订单号',
+    orderDate: '下单时间',
+    orderStatus: '订单状态',
+    orderTotal: '订单总额',
+    noOrders: '暂无订单',
+  },
+  
+  // Auth
+  auth: {
+    login: '登录',
+    register: '注册',
+    email: '邮箱',
+    password: '密码',
+    confirmPassword: '确认密码',
+    forgotPassword: '忘记密码？',
+    noAccount: '还没有账户？',
+    haveAccount: '已有账户？',
+    signUp: '注册',
+    signIn: '登录',
+  },
+  
+  // Common
+  common: {
+    loading: '加载中...',
+    error: '错误',
+    success: '成功',
+    cancel: '取消',
+    confirm: '确认',
+    save: '保存',
+    delete: '删除',
+    edit: '编辑',
+    add: '添加',
+    back: '返回',
+    next: '下一步',
+    prev: '上一步',
+    submit: '提交',
+    required: '必填',
+    optional: '选填',
+    yes: '是',
+    no: '否',
+    all: '全部',
+    none: '无',
+  },
+  
+  // Filters
+  filters: {
+    title: '筛选',
+    sort: '排序',
+    sortBy: '排序方式',
+    priceRange: '价格区间',
+    minPrice: '最低价',
+    maxPrice: '最高价',
+    apply: '应用',
+    reset: '重置',
+    clearAll: '清除全部',
+    priceAsc: '价格从低到高',
+    priceDesc: '价格从高到低',
+    newest: '最新',
+    popular: '热门',
+    sales: '销量优先',
+  },
+  
+  // Brands
+  brands: {
+    title: '品牌',
+    allBrands: '全部品牌',
+    featured: '推荐品牌',
+    origin: '产地',
+    products: '商品',
+    noBrands: '暂无品牌',
+  },
+  
+  // Footer
+  footer: {
+    customerService: '客户服务',
+    aboutUs: '关于我们',
+    contactUs: '联系我们',
+    faq: '常见问题',
+    shipping: '配送说明',
+    returns: '退换货',
+    privacyPolicy: '隐私政策',
+    termsOfService: '服务条款',
+    followUs: '关注我们',
+    newsletter: '订阅资讯',
+    subscribe: '订阅',
+    emailPlaceholder: '输入邮箱地址',
+    copyright: '版权所有',
+  },
+  
+  // Messages
+  messages: {
+    noProducts: '暂无商品',
+    tryOtherFilters: '试试其他筛选条件',
+    noResults: '未找到结果',
+    serverError: '服务器错误，请稍后重试',
+    networkError: '网络错误，请检查网络连接',
+  },
+  
+  // Admin
+  admin: {
+    dashboard: '控制台',
+    products: '商品管理',
+    orders: '订单管理',
+    users: '用户管理',
+    brands: '品牌管理',
+    marketing: '运营管理',
+    settings: '系统设置',
+    chat: '客服管理',
+    totalOrders: '总订单数',
+    totalProducts: '商品总数',
+    totalUsers: '用户总数',
+    totalRevenue: '总收入',
+    pendingOrders: '待处理订单',
+    lowStock: '库存不足',
+  },
+  
+  // Order Status
+  orderStatus: {
+    pending: '待付款',
+    paid: '已付款',
+    shipped: '已发货',
+    delivered: '已完成',
+    cancelled: '已取消',
+  },
+  
+  // Product Form (Admin)
+  productForm: {
+    title: '商品信息',
+    name: '商品名称',
+    slug: 'URL别名',
+    sku: 'SKU编码',
+    category: '商品分类',
+    brand: '品牌',
+    price: '价格',
+    retailPrice: '零售价',
+    stock: '库存',
+    description: '商品描述',
+    tags: '商品标签',
+    images: '商品图片',
+    specs: '商品属性',
+    variants: '规格变体',
+    save: '保存商品',
+    cancel: '取消',
+    loadTemplate: '加载属性模板',
+    addSpec: '添加属性',
+    addVariant: '添加规格',
+    noSpecs: '暂无商品属性',
+    noVariants: '暂无规格变体',
+    specName: '属性名称',
+    specValue: '属性值',
+    variantName: '规格名称',
+    variantPrice: '价格',
+    variantStock: '库存',
+    required: '必填',
+    optional: '选填',
+    mainImage: '主图',
+    maxImages: '最多12张，第一张为主图',
+  },
+  
+  // Home
+  home: {
+    hotProducts: '热销爆款',
+    newArrivals: '新品上市',
+    shopNow: '立即选购',
+    viewMore: '查看更多',
+  },
+};

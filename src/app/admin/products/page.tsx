@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ProductTable } from '@/components/admin/ProductTable';
+import { ProductsPageContent } from '@/components/admin/ProductsPageContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,11 +56,7 @@ export default async function AdminProductsPage() {
 
   return (
     <AdminLayout>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-neutral-900">商品管理</h1>
-        <p className="text-neutral-500 mt-1">管理商品目录和库存</p>
-      </div>
-
+      <ProductsPageContent />
       <ProductTable products={products} categories={categories} brands={brands} />
     </AdminLayout>
   );

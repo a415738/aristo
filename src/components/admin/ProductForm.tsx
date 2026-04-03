@@ -9,6 +9,7 @@ import {
   X, Plus, Loader2, Trash2 
 } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
+import { useTranslation } from '@/lib/i18n';
 
 interface Category {
   id: string;
@@ -132,6 +133,7 @@ const categorySpecTemplates: Record<string, { name: string; value: string }[]> =
 };
 
 export function ProductForm({ product, categories, brands, onSave, onCancel }: ProductFormProps) {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   
   // 基础信息
@@ -178,19 +180,19 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
   const handleSubmit = async () => {
     // 验证
     if (!name.trim()) {
-      alert('请输入商品名称');
+      alert(t.productForm.name + ' ' + t.common.required);
       return;
     }
     if (images.length === 0) {
-      alert('请至少上传1张商品图片');
+      alert(t.productForm.images + ' ' + t.common.required);
       return;
     }
     if (!retailPrice || Number(retailPrice) <= 0) {
-      alert('请输入有效的商品价格');
+      alert(t.productForm.price + ' ' + t.common.required);
       return;
     }
     if (!categoryId) {
-      alert('请选择商品分类');
+      alert(t.productForm.category + ' ' + t.common.required);
       return;
     }
 
@@ -279,47 +281,47 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
     <div className="space-y-6">
       {/* 基本信息 */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-neutral-900">基本信息</h3>
+        <h3 className="text-lg font-semibold text-neutral-900">{t.productForm.title}</h3>
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2">
-            <Label htmlFor="name">商品名称 <span className="text-red-500">*</span></Label>
+            <Label htmlFor="name">{t.productForm.name} <span className="text-red-500">*</span></Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="请输入商品名称"
+              placeholder={t.productForm.name}
             />
           </div>
 
           <div>
-            <Label htmlFor="slug">URL别名</Label>
+            <Label htmlFor="slug">{t.productForm.slug}</Label>
             <Input
               id="slug"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              placeholder="自动生成或手动输入"
+              placeholder={t.productForm.slug}
             />
           </div>
 
           <div>
-            <Label htmlFor="sku">SKU编码</Label>
+            <Label htmlFor="sku">{t.productForm.sku}</Label>
             <Input
               id="sku"
               value={sku}
               onChange={(e) => setSku(e.target.value)}
-              placeholder="商品SKU编码"
+              placeholder={t.productForm.sku}
             />
           </div>
 
           <div>
-            <Label htmlFor="category">分类 <span className="text-red-500">*</span></Label>
+            <Label htmlFor="category">{t.productForm.category} <span className="text-red-500">*</span></Label>
             <select
               id="category"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               className="w-full px-3 py-2 border border-neutral-200 rounded-lg bg-white"
             >
-              <option value="">请选择分类</option>
+              <option value="">{t.productForm.category}</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
@@ -327,14 +329,14 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           </div>
 
           <div>
-            <Label htmlFor="brand">品牌</Label>
+            <Label htmlFor="brand">{t.productForm.brand}</Label>
             <select
               id="brand"
               value={brandId}
               onChange={(e) => setBrandId(e.target.value)}
               className="w-full px-3 py-2 border border-neutral-200 rounded-lg bg-white"
             >
-              <option value="">请选择品牌</option>
+              <option value="">{t.productForm.brand}</option>
               {brands.map(brand => (
                 <option key={brand.id} value={brand.id}>{brand.name}</option>
               ))}
@@ -342,7 +344,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           </div>
 
           <div>
-            <Label htmlFor="price">零售价 <span className="text-red-500">*</span></Label>
+            <Label htmlFor="price">{t.productForm.retailPrice} <span className="text-red-500">*</span></Label>
             <Input
               id="price"
               type="number"
@@ -354,7 +356,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           </div>
 
           <div>
-            <Label htmlFor="stock">库存数量</Label>
+            <Label htmlFor="stock">{t.productForm.stock}</Label>
             <Input
               id="stock"
               type="number"
@@ -365,19 +367,19 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           </div>
 
           <div className="col-span-2">
-            <Label htmlFor="description">商品描述</Label>
+            <Label htmlFor="description">{t.productForm.description}</Label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 border border-neutral-200 rounded-lg min-h-[80px] resize-none"
-              placeholder="请输入商品描述"
+              placeholder={t.productForm.description}
             />
           </div>
 
           {/* 标签 */}
           <div className="col-span-2">
-            <Label>商品标签</Label>
+            <Label>{t.productForm.tags}</Label>
             <div className="flex gap-2 mb-2 flex-wrap">
               {tags.map((tag, index) => (
                 <span
@@ -399,11 +401,11 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
               <Input
                 value={newTag}
                 onChange={(e) => setNewTag(e.target.value)}
-                placeholder="输入标签"
+                placeholder={t.productForm.tags}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
               />
               <Button type="button" variant="outline" onClick={addTag}>
-                添加
+                {t.common.add}
               </Button>
             </div>
           </div>
@@ -412,9 +414,9 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
 
       {/* 商品图片 */}
       <div className="space-y-4 pt-4 border-t">
-        <h3 className="text-lg font-semibold text-neutral-900">商品图片</h3>
+        <h3 className="text-lg font-semibold text-neutral-900">{t.productForm.images}</h3>
         <div className="space-y-4">
-          <Label>商品图片 <span className="text-red-500">*</span>（最多12张，第一张为主图）</Label>
+          <Label>{t.productForm.images} <span className="text-red-500">*</span>（{t.productForm.maxImages}）</Label>
           <ImageUploader
             images={images}
             onChange={setImages}
@@ -426,7 +428,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
       {/* 商品属性 */}
       <div className="space-y-4 pt-4 border-t">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-neutral-900">商品属性</h3>
+          <h3 className="text-lg font-semibold text-neutral-900">{t.productForm.specs}</h3>
           <div className="flex gap-2">
             {categoryId && (
               <Button
@@ -435,7 +437,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
                 size="sm"
                 onClick={loadCategoryTemplate}
               >
-                加载属性模板
+                {t.productForm.loadTemplate}
               </Button>
             )}
             <Button
@@ -445,7 +447,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
               onClick={addSpec}
             >
               <Plus className="h-4 w-4 mr-1" />
-              添加属性
+              {t.productForm.addSpec}
             </Button>
           </div>
         </div>
@@ -456,13 +458,13 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
               <Input
                 value={spec.name}
                 onChange={(e) => updateSpec(index, 'name', e.target.value)}
-                placeholder="属性名称"
+                placeholder={t.productForm.specName}
                 className="w-40"
               />
               <Input
                 value={spec.value}
                 onChange={(e) => updateSpec(index, 'value', e.target.value)}
-                placeholder="属性值"
+                placeholder={t.productForm.specValue}
                 className="flex-1"
               />
               <Button
@@ -479,8 +481,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
             
           {specs.length === 0 && (
             <div className="text-center py-4 text-neutral-500">
-              <p>暂无商品属性</p>
-              <p className="text-sm">点击"加载属性模板"自动填充或手动添加</p>
+              <p>{t.productForm.noSpecs}</p>
             </div>
           )}
         </div>
@@ -489,7 +490,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
       {/* 规格变体 */}
       <div className="space-y-4 pt-4 border-t">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-neutral-900">规格变体</h3>
+          <h3 className="text-lg font-semibold text-neutral-900">{t.productForm.variants}</h3>
           <Button
             type="button"
             variant="outline"
@@ -497,7 +498,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
             onClick={addVariant}
           >
             <Plus className="h-4 w-4 mr-1" />
-            添加规格
+            {t.productForm.addVariant}
           </Button>
         </div>
 
@@ -506,10 +507,10 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
             <table className="w-full">
               <thead className="bg-neutral-50">
                 <tr>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">规格名称</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">SKU</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">价格</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">库存</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantName}</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.sku}</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantPrice}</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantStock}</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600 w-12"></th>
                 </tr>
               </thead>
@@ -520,14 +521,14 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
                       <Input
                         value={variant.name}
                         onChange={(e) => updateVariant(index, 'name', e.target.value)}
-                        placeholder="如：红色"
+                        placeholder={t.productForm.variantName}
                       />
                     </td>
                     <td className="px-4 py-2">
                       <Input
                         value={variant.sku}
                         onChange={(e) => updateVariant(index, 'sku', e.target.value)}
-                        placeholder="SKU"
+                        placeholder={t.productForm.sku}
                       />
                     </td>
                     <td className="px-4 py-2">
@@ -565,8 +566,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
 
         {variants.length === 0 && (
           <div className="text-center py-4 text-neutral-500">
-            <p>暂无规格变体</p>
-            <p className="text-sm">如商品有多种规格（如颜色、尺寸），可在此添加</p>
+            <p>{t.productForm.noVariants}</p>
           </div>
         )}
       </div>
@@ -581,10 +581,10 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           {loading ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              保存中...
+              {t.common.loading}
             </>
           ) : (
-            '保存商品'
+            t.productForm.save
           )}
         </Button>
         <Button
@@ -593,7 +593,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           onClick={onCancel}
           disabled={loading}
         >
-          取消
+          {t.productForm.cancel}
         </Button>
       </div>
     </div>

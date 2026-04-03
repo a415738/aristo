@@ -1,8 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ChevronRight, Heart, Eye, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -27,6 +30,8 @@ interface ProductSectionProps {
 }
 
 export function ProductSection({ title, subtitle, products, showMore = true, moreLink = '/products' }: ProductSectionProps) {
+  const { t } = useTranslation();
+  
   if (products.length === 0) {
     return null;
   }
@@ -42,7 +47,7 @@ export function ProductSection({ title, subtitle, products, showMore = true, mor
           {showMore && (
             <Link href={moreLink}>
               <Button variant="ghost" className="text-primary text-sm">
-                更多 <ChevronRight className="h-4 w-4 ml-1" />
+                {t.home.viewMore} <ChevronRight className="h-4 w-4 ml-1" />
               </Button>
             </Link>
           )}
@@ -66,6 +71,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const { t } = useTranslation();
+  
   return (
     <Link href={`/products/${product.slug}`}>
       <Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
@@ -82,10 +89,10 @@ export function ProductCard({ product }: ProductCardProps) {
             {/* 标签 */}
             <div className="absolute top-2 left-2 flex flex-col gap-1">
               {product.tags && product.tags.includes('热销') && (
-                <Badge className="bg-red-500 text-white text-[10px] px-1.5 py-0.5">热销</Badge>
+                <Badge className="bg-red-500 text-white text-[10px] px-1.5 py-0.5">{t.home.hotProducts}</Badge>
               )}
               {product.tags && product.tags.includes('新品') && (
-                <Badge className="bg-green-500 text-white text-[10px] px-1.5 py-0.5">新品</Badge>
+                <Badge className="bg-green-500 text-white text-[10px] px-1.5 py-0.5">{t.home.newArrivals}</Badge>
               )}
             </div>
 
@@ -145,7 +152,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="hidden md:flex items-center justify-between">
               {product.sales_count > 0 && (
                 <p className="text-xs text-gray-400">
-                  已售 {product.sales_count > 1000 ? `${(product.sales_count / 1000).toFixed(1)}k` : product.sales_count}
+                  {t.product.sold} {product.sales_count > 1000 ? `${(product.sales_count / 1000).toFixed(1)}k` : product.sales_count}
                 </p>
               )}
             </div>

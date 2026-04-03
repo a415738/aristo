@@ -1,5 +1,8 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface DashboardStatsProps {
   stats: {
@@ -11,30 +14,32 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ stats }: DashboardStatsProps) {
+  const { t } = useTranslation();
+  
   const cards = [
     {
-      title: '销售总额',
+      title: t.admin.totalRevenue,
       value: `$${stats.totalSales.toLocaleString()}`,
       icon: DollarSign,
       color: 'text-green-500',
       bgColor: 'bg-green-50',
     },
     {
-      title: '订单总数',
+      title: t.admin.totalOrders,
       value: stats.totalOrders.toLocaleString(),
       icon: ShoppingCart,
       color: 'text-blue-500',
       bgColor: 'bg-blue-50',
     },
     {
-      title: '商品数量',
+      title: t.admin.totalProducts,
       value: stats.totalProducts.toLocaleString(),
       icon: Package,
       color: 'text-purple-500',
       bgColor: 'bg-purple-50',
     },
     {
-      title: '用户数量',
+      title: t.admin.totalUsers,
       value: stats.totalUsers.toLocaleString(),
       icon: Users,
       color: 'text-orange-500',

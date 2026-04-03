@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Heart, Eye } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -174,6 +175,8 @@ function ProductCard({ product }: { product: Product }) {
 }
 
 export function ProductList({ products, page, totalPages }: ProductListProps) {
+  const { t } = useTranslation();
+
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
@@ -182,11 +185,11 @@ export function ProductList({ products, page, totalPages }: ProductListProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
           </svg>
         </div>
-        <p className="text-neutral-500 text-lg mb-2">暂无商品</p>
-        <p className="text-neutral-400 text-sm mb-6">请尝试其他筛选条件</p>
+        <p className="text-neutral-500 text-lg mb-2">{t.messages.noProducts}</p>
+        <p className="text-neutral-400 text-sm mb-6">{t.messages.tryOtherFilters}</p>
         <Link href="/products">
           <Button className="bg-neutral-900 hover:bg-neutral-800">
-            查看全部商品
+            {t.nav.allProducts}
           </Button>
         </Link>
       </div>

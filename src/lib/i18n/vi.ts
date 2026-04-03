@@ -1,0 +1,238 @@
+// Frontend translations - Vietnamese
+export const vi = {
+  // Navigation
+  nav: {
+    home: 'Trang chủ',
+    allProducts: 'Tất cả sản phẩm',
+    brands: 'Thương hiệu',
+    cart: 'Giỏ hàng',
+    login: 'Đăng nhập',
+    register: 'Đăng ký',
+    account: 'Tài khoản',
+    logout: 'Đăng xuất',
+    search: 'Tìm kiếm',
+    searchPlaceholder: 'Tìm kiếm sản phẩm...',
+  },
+  
+  // Categories
+  categories: {
+    all: 'Tất cả danh mục',
+    skinCare: 'Chăm sóc da',
+    makeup: 'Trang điểm',
+    baseMakeup: 'Kem nền',
+    lips: 'Môi',
+    eyes: 'Mắt',
+    fragrance: 'Nước hoa',
+    bodyCare: 'Chăm sóc cơ thể',
+    hairCare: 'Chăm sóc tóc',
+    beautyTools: 'Dụng cụ làm đẹp',
+    giftSets: 'Bộ quà tặng',
+  },
+  
+  // Product
+  product: {
+    addToCart: 'Thêm vào giỏ',
+    buyNow: 'Mua ngay',
+    outOfStock: 'Hết hàng',
+    inStock: 'Còn hàng',
+    reviews: 'Đánh giá',
+    description: 'Mô tả sản phẩm',
+    specifications: 'Thông số kỹ thuật',
+    relatedProducts: 'Sản phẩm liên quan',
+    viewAll: 'Xem tất cả',
+    sold: 'Đã bán',
+    price: 'Giá',
+    quantity: 'Số lượng',
+    selectOptions: 'Chọn tùy chọn',
+    addSuccess: 'Đã thêm vào giỏ hàng',
+    details: 'Chi tiết sản phẩm',
+  },
+  
+  // Cart
+  cart: {
+    title: 'Giỏ hàng',
+    empty: 'Giỏ hàng trống',
+    continueShopping: 'Tiếp tục mua sắm',
+    checkout: 'Thanh toán',
+    subtotal: 'Tổng phụ',
+    total: 'Tổng cộng',
+    remove: 'Xóa',
+    quantity: 'SL',
+  },
+  
+  // Account
+  account: {
+    title: 'Tài khoản của tôi',
+    orders: 'Đơn hàng',
+    addresses: 'Địa chỉ',
+    profile: 'Hồ sơ',
+    favorites: 'Yêu thích',
+    settings: 'Cài đặt',
+    orderHistory: 'Lịch sử đơn hàng',
+    orderNumber: 'Đơn hàng #',
+    orderDate: 'Ngày đặt',
+    orderStatus: 'Trạng thái',
+    orderTotal: 'Tổng',
+    noOrders: 'Chưa có đơn hàng',
+  },
+  
+  // Auth
+  auth: {
+    login: 'Đăng nhập',
+    register: 'Đăng ký',
+    email: 'Email',
+    password: 'Mật khẩu',
+    confirmPassword: 'Xác nhận mật khẩu',
+    forgotPassword: 'Quên mật khẩu?',
+    noAccount: 'Chưa có tài khoản?',
+    haveAccount: 'Đã có tài khoản?',
+    signUp: 'Đăng ký',
+    signIn: 'Đăng nhập',
+  },
+  
+  // Common
+  common: {
+    loading: 'Đang tải...',
+    error: 'Lỗi',
+    success: 'Thành công',
+    cancel: 'Hủy',
+    confirm: 'Xác nhận',
+    save: 'Lưu',
+    delete: 'Xóa',
+    edit: 'Sửa',
+    add: 'Thêm',
+    back: 'Quay lại',
+    next: 'Tiếp',
+    prev: 'Trước',
+    submit: 'Gửi',
+    required: 'Bắt buộc',
+    optional: 'Tùy chọn',
+    yes: 'Có',
+    no: 'Không',
+    all: 'Tất cả',
+    none: 'Không có',
+  },
+  
+  // Filters
+  filters: {
+    title: 'Bộ lọc',
+    sort: 'Sắp xếp',
+    sortBy: 'Sắp xếp theo',
+    priceRange: 'Khoảng giá',
+    minPrice: 'Giá thấp nhất',
+    maxPrice: 'Giá cao nhất',
+    apply: 'Áp dụng',
+    reset: 'Đặt lại',
+    clearAll: 'Xóa tất cả',
+    priceAsc: 'Giá: Thấp đến cao',
+    priceDesc: 'Giá: Cao đến thấp',
+    newest: 'Mới nhất',
+    popular: 'Phổ biến',
+    sales: 'Bán chạy',
+  },
+  
+  // Brands
+  brands: {
+    title: 'Thương hiệu',
+    allBrands: 'Tất cả thương hiệu',
+    featured: 'Thương hiệu nổi bật',
+    origin: 'Xuất xứ',
+    products: 'Sản phẩm',
+    noBrands: 'Không tìm thấy thương hiệu',
+  },
+  
+  // Footer
+  footer: {
+    customerService: 'Dịch vụ khách hàng',
+    aboutUs: 'Về chúng tôi',
+    contactUs: 'Liên hệ',
+    faq: 'Câu hỏi thường gặp',
+    shipping: 'Thông tin vận chuyển',
+    returns: 'Đổi trả',
+    privacyPolicy: 'Chính sách bảo mật',
+    termsOfService: 'Điều khoản dịch vụ',
+    followUs: 'Theo dõi chúng tôi',
+    newsletter: 'Bản tin',
+    subscribe: 'Đăng ký',
+    emailPlaceholder: 'Nhập email của bạn',
+    copyright: 'Bảo lưu mọi quyền',
+  },
+  
+  // Messages
+  messages: {
+    noProducts: 'Không tìm thấy sản phẩm',
+    tryOtherFilters: 'Thử các bộ lọc khác',
+    noResults: 'Không tìm thấy kết quả',
+    serverError: 'Lỗi máy chủ, vui lòng thử lại sau',
+    networkError: 'Lỗi mạng, vui lòng kiểm tra kết nối',
+  },
+  
+  // Admin
+  admin: {
+    dashboard: 'Bảng điều khiển',
+    products: 'Sản phẩm',
+    orders: 'Đơn hàng',
+    users: 'Người dùng',
+    brands: 'Thương hiệu',
+    marketing: 'Marketing',
+    settings: 'Cài đặt',
+    chat: 'Tin nhắn',
+    totalOrders: 'Tổng đơn hàng',
+    totalProducts: 'Tổng sản phẩm',
+    totalUsers: 'Tổng người dùng',
+    totalRevenue: 'Tổng doanh thu',
+    pendingOrders: 'Đơn chờ xử lý',
+    lowStock: 'Hàng sắp hết',
+  },
+  
+  // Order Status
+  orderStatus: {
+    pending: 'Chờ thanh toán',
+    paid: 'Đã thanh toán',
+    shipped: 'Đã gửi',
+    delivered: 'Hoàn thành',
+    cancelled: 'Đã hủy',
+  },
+  
+  // Product Form (Admin)
+  productForm: {
+    title: 'Thông tin sản phẩm',
+    name: 'Tên sản phẩm',
+    slug: 'URL Slug',
+    sku: 'SKU',
+    category: 'Danh mục',
+    brand: 'Thương hiệu',
+    price: 'Giá',
+    retailPrice: 'Giá bán lẻ',
+    stock: 'Tồn kho',
+    description: 'Mô tả',
+    tags: 'Tags',
+    images: 'Hình ảnh',
+    specs: 'Thông số',
+    variants: 'Phân loại',
+    save: 'Lưu sản phẩm',
+    cancel: 'Hủy',
+    loadTemplate: 'Tải mẫu',
+    addSpec: 'Thêm thông số',
+    addVariant: 'Thêm phân loại',
+    noSpecs: 'Không có thông số',
+    noVariants: 'Không có phân loại',
+    specName: 'Tên thông số',
+    specValue: 'Giá trị',
+    variantName: 'Tên phân loại',
+    variantPrice: 'Giá',
+    variantStock: 'Tồn kho',
+    required: 'Bắt buộc',
+    optional: 'Tùy chọn',
+    mainImage: 'Ảnh chính',
+    maxImages: 'Tối đa 12 ảnh, ảnh đầu là ảnh chính',
+  },
+  
+  // Home
+  home: {
+    hotProducts: 'Sản phẩm hot',
+    newArrivals: 'Hàng mới về',
+    shopNow: 'Mua ngay',
+    viewMore: 'Xem thêm',
+  },
+};

@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Search, Eye } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface Order {
   id: string;
@@ -46,15 +47,8 @@ const statusColors: Record<string, string> = {
   cancelled: 'bg-red-500',
 };
 
-const statusLabels: Record<string, string> = {
-  pending: '待付款',
-  paid: '已付款',
-  shipped: '已发货',
-  delivered: '已完成',
-  cancelled: '已取消',
-};
-
 export function OrderTable({ orders }: OrderTableProps) {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -66,6 +60,14 @@ export function OrderTable({ orders }: OrderTableProps) {
     return matchesSearch && matchesStatus;
   });
 
+  const statusLabels: Record<string, string> = {
+    pending: t.orderStatus.pending || '待付款',
+    paid: t.orderStatus.paid || '已付款',
+    shipped: t.orderStatus.shipped || '已发货',
+    delivered: t.orderStatus.delivered || '已完成',
+    cancelled: t.orderStatus.cancelled || '已取消',
+  };
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -73,7 +75,7 @@ export function OrderTable({ orders }: OrderTableProps) {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="搜索订单号或客户..."
+              placeholder={t.nav.search}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -81,15 +83,15 @@ export function OrderTable({ orders }: OrderTableProps) {
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="筛选状态" />
+              <SelectValue placeholder={t.filters.title} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">全部状态</SelectItem>
-              <SelectItem value="pending">待付款</SelectItem>
-              <SelectItem value="paid">已付款</SelectItem>
-              <SelectItem value="shipped">已发货</SelectItem>
-              <SelectItem value="delivered">已完成</SelectItem>
-              <SelectItem value="cancelled">已取消</SelectItem>
+              <SelectItem value="all">{t.common.all}</SelectItem>
+              <SelectItem value="pending">{statusLabels.pending}</SelectItem>
+              <SelectItem value="paid">{statusLabels.paid}</SelectItem>
+              <SelectItem value="shipped">{statusLabels.shipped}</SelectItem>
+              <SelectItem value="delivered">{statusLabels.delivered}</SelectItem>
+              <SelectItem value="cancelled">{statusLabels.cancelled}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -98,13 +100,13 @@ export function OrderTable({ orders }: OrderTableProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>订单号</TableHead>
-                <TableHead>客户</TableHead>
-                <TableHead>金额</TableHead>
-                <TableHead>订单状态</TableHead>
-                <TableHead>支付状态</TableHead>
-                <TableHead>下单时间</TableHead>
-                <TableHead className="text-right">操作</TableHead>
+                <TableHead>{t.account.orderNumber}</TableHead>
+                <TableHead>{t.account.orders}</TableHead>
+                <TableHead>{t.cart.total}</TableHead>
+                <TableHead>{t.account.orderStatus}</TableHead>
+                <TableHead>{t.account.orderStatus}</TableHead>
+                <TableHead>{t.account.orderDate}</TableHead>
+                <TableHead className="text-right">{t.common.edit}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -129,7 +131,7 @@ export function OrderTable({ orders }: OrderTableProps) {
                   </TableCell>
                   <TableCell>
                     <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
-                      {order.payment_status === 'paid' ? '已支付' : '未支付'}
+                      {order.payment_status === 'paid' ? t.account.orderStatus : t.common.no}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -138,7 +140,7 @@ export function OrderTable({ orders }: OrderTableProps) {
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm">
                       <Eye className="h-4 w-4 mr-1" />
-                      查看
+                      {t.common.edit}
                     </Button>
                   </TableCell>
                 </TableRow>

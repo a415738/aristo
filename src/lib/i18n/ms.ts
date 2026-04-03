@@ -1,0 +1,238 @@
+// Frontend translations - Malay
+export const ms = {
+  // Navigation
+  nav: {
+    home: 'Laman Utama',
+    allProducts: 'Semua Produk',
+    brands: 'Jenama',
+    cart: 'Troli',
+    login: 'Log Masuk',
+    register: 'Daftar',
+    account: 'Akaun',
+    logout: 'Log Keluar',
+    search: 'Cari',
+    searchPlaceholder: 'Cari produk...',
+  },
+  
+  // Categories
+  categories: {
+    all: 'Semua Kategori',
+    skinCare: 'Penjagaan Kulit',
+    makeup: 'Mekap',
+    baseMakeup: 'Base Makeup',
+    lips: 'Bibir',
+    eyes: 'Mata',
+    fragrance: 'Wangian',
+    bodyCare: 'Penjagaan Badan',
+    hairCare: 'Penjagaan Rambut',
+    beautyTools: 'Alat Kecantikan',
+    giftSets: 'Pakej Hadiah',
+  },
+  
+  // Product
+  product: {
+    addToCart: 'Tambah ke Troli',
+    buyNow: 'Beli Sekarang',
+    outOfStock: 'Habis Stok',
+    inStock: 'Tersedia',
+    reviews: 'Ulasan',
+    description: 'Penerangan Produk',
+    specifications: 'Spesifikasi',
+    relatedProducts: 'Produk Berkaitan',
+    viewAll: 'Lihat Semua',
+    sold: 'Terjual',
+    price: 'Harga',
+    quantity: 'Kuantiti',
+    selectOptions: 'Pilih Pilihan',
+    addSuccess: 'Ditambah ke troli',
+    details: 'Butiran Produk',
+  },
+  
+  // Cart
+  cart: {
+    title: 'Troli Belanja',
+    empty: 'Troli anda kosong',
+    continueShopping: 'Teruskan Membeli',
+    checkout: 'Daftar Keluar',
+    subtotal: 'Subjumlah',
+    total: 'Jumlah',
+    remove: 'Buang',
+    quantity: 'Jml',
+  },
+  
+  // Account
+  account: {
+    title: 'Akaun Saya',
+    orders: 'Pesanan',
+    addresses: 'Alamat',
+    profile: 'Profil',
+    favorites: 'Kegemaran',
+    settings: 'Tetapan',
+    orderHistory: 'Sejarah Pesanan',
+    orderNumber: 'Pesanan #',
+    orderDate: 'Tarikh',
+    orderStatus: 'Status',
+    orderTotal: 'Jumlah',
+    noOrders: 'Tiada pesanan lagi',
+  },
+  
+  // Auth
+  auth: {
+    login: 'Log Masuk',
+    register: 'Daftar',
+    email: 'E-mel',
+    password: 'Kata Laluan',
+    confirmPassword: 'Sahkan Kata Laluan',
+    forgotPassword: 'Lupa kata laluan?',
+    noAccount: 'Tidak punya akaun?',
+    haveAccount: 'Sudah punya akaun?',
+    signUp: 'Daftar',
+    signIn: 'Log Masuk',
+  },
+  
+  // Common
+  common: {
+    loading: 'Memuatkan...',
+    error: 'Ralat',
+    success: 'Berjaya',
+    cancel: 'Batal',
+    confirm: 'Sahkan',
+    save: 'Simpan',
+    delete: 'Padam',
+    edit: 'Sunting',
+    add: 'Tambah',
+    back: 'Kembali',
+    next: 'Seterusnya',
+    prev: 'Sebelumnya',
+    submit: 'Hantar',
+    required: 'Wajib',
+    optional: 'Opsional',
+    yes: 'Ya',
+    no: 'Tidak',
+    all: 'Semua',
+    none: 'Tiada',
+  },
+  
+  // Filters
+  filters: {
+    title: 'Penapis',
+    sort: 'Isih',
+    sortBy: 'Isih Mengikut',
+    priceRange: 'Julat Harga',
+    minPrice: 'Harga Min',
+    maxPrice: 'Harga Maks',
+    apply: 'Gunakan',
+    reset: 'Set Semula',
+    clearAll: 'Kosongkan Semua',
+    priceAsc: 'Harga: Rendah ke Tinggi',
+    priceDesc: 'Harga: Tinggi ke Rendah',
+    newest: 'Terbaharu',
+    popular: 'Popular',
+    sales: 'Terlaris',
+  },
+  
+  // Brands
+  brands: {
+    title: 'Jenama',
+    allBrands: 'Semua Jenama',
+    featured: 'Jenama Pilihan',
+    origin: 'Asal',
+    products: 'Produk',
+    noBrands: 'Jenama tidak dijumpai',
+  },
+  
+  // Footer
+  footer: {
+    customerService: 'Perkhidmatan Pelanggan',
+    aboutUs: 'Tentang Kami',
+    contactUs: 'Hubungi Kami',
+    faq: 'Soalan Lazim',
+    shipping: 'Maklumat Penghantaran',
+    returns: 'Pemulangan',
+    privacyPolicy: 'Dasar Privasi',
+    termsOfService: 'Syarat Perkhidmatan',
+    followUs: 'Ikuti Kami',
+    newsletter: 'Surat Berita',
+    subscribe: 'Langgan',
+    emailPlaceholder: 'Masukkan e-mel anda',
+    copyright: 'Hak cipta dilindungi.',
+  },
+  
+  // Messages
+  messages: {
+    noProducts: 'Produk tidak dijumpai',
+    tryOtherFilters: 'Cuba penapis lain',
+    noResults: 'Tiada hasil dijumpai',
+    serverError: 'Ralat pelayan, sila cuba lagi',
+    networkError: 'Ralat rangkaian, semak sambungan anda',
+  },
+  
+  // Admin
+  admin: {
+    dashboard: 'Papan Pemuka',
+    products: 'Produk',
+    orders: 'Pesanan',
+    users: 'Pengguna',
+    brands: 'Jenama',
+    marketing: 'Pemasaran',
+    settings: 'Tetapan',
+    chat: 'Chat',
+    totalOrders: 'Jumlah Pesanan',
+    totalProducts: 'Jumlah Produk',
+    totalUsers: 'Jumlah Pengguna',
+    totalRevenue: 'Jumlah Hasil',
+    pendingOrders: 'Pesanan Tertangguh',
+    lowStock: 'Stok Rendah',
+  },
+  
+  // Order Status
+  orderStatus: {
+    pending: 'Tertangguh',
+    paid: 'Dibayar',
+    shipped: 'Dihantar',
+    delivered: 'Selesai',
+    cancelled: 'Dibatalkan',
+  },
+  
+  // Product Form (Admin)
+  productForm: {
+    title: 'Maklumat Produk',
+    name: 'Nama Produk',
+    slug: 'URL Slug',
+    sku: 'SKU',
+    category: 'Kategori',
+    brand: 'Jenama',
+    price: 'Harga',
+    retailPrice: 'Harga Runcit',
+    stock: 'Stok',
+    description: 'Penerangan',
+    tags: 'Tag',
+    images: 'Gambar Produk',
+    specs: 'Spesifikasi',
+    variants: 'Variasi',
+    save: 'Simpan Produk',
+    cancel: 'Batal',
+    loadTemplate: 'Muat Template',
+    addSpec: 'Tambah Spesifikasi',
+    addVariant: 'Tambah Variasi',
+    noSpecs: 'Tiada spesifikasi',
+    noVariants: 'Tiada variasi',
+    specName: 'Nama Spesifikasi',
+    specValue: 'Nilai',
+    variantName: 'Nama Variasi',
+    variantPrice: 'Harga',
+    variantStock: 'Stok',
+    required: 'Wajib',
+    optional: 'Opsional',
+    mainImage: 'Gambar Utama',
+    maxImages: 'Maks 12 gambar, gambar pertama adalah utama',
+  },
+  
+  // Home
+  home: {
+    hotProducts: 'Produk Hot',
+    newArrivals: 'Produk Baharu',
+    shopNow: 'Beli Sekarang',
+    viewMore: 'Lihat Lagi',
+  },
+};

@@ -12,27 +12,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const languages = [
-  { code: 'zh', name: '简体中文', flag: '🇨🇳' },
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'th', name: 'ไทย', flag: '🇹🇭' },
-  { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
-  { code: 'id', name: 'Bahasa Indonesia', flag: '🇮🇩' },
-  { code: 'ms', name: 'Bahasa Melayu', flag: '🇲🇾' },
-];
-
-const navItems = [
-  { name: '首页', href: '/' },
-  { name: '全部商品', href: '/products' },
-  { name: '品牌馆', href: '/brands' },
-];
+import { useTranslation } from '@/lib/i18n';
 
 export function Header() {
   const router = useRouter();
+  const { t, locale, setLocale, languages } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [showMobileSearch, setShowMobileSearch] = useState(false);
-  const [currentLang, setCurrentLang] = useState('zh');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +28,13 @@ export function Header() {
     }
   };
 
-  const currentLanguage = languages.find(l => l.code === currentLang) || languages[0];
+  const currentLanguage = languages.find(l => l.code === locale) || languages[0];
+
+  const navItems = [
+    { name: t.nav.home, href: '/' },
+    { name: t.nav.allProducts, href: '/products' },
+    { name: t.nav.brands, href: '/brands' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b shadow-sm">
@@ -53,7 +45,7 @@ export function Header() {
             <form onSubmit={handleSearch} className="flex-1">
               <Input
                 type="text"
-                placeholder="搜索商品..."
+                placeholder={t.nav.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
@@ -97,7 +89,7 @@ export function Header() {
             <div className="relative w-full">
               <Input
                 type="text"
-                placeholder="搜索商品..."
+                placeholder={t.nav.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pr-10"
@@ -123,18 +115,18 @@ export function Header() {
                   <span>{currentLanguage.flag}</span>
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-36">
+              <DropdownMenuContent align="end" className="w-48">
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setCurrentLang(lang.code)}
+                    onClick={() => setLocale(lang.code)}
                     className="flex items-center justify-between cursor-pointer text-sm py-1.5"
                   >
                     <span className="flex items-center gap-1.5">
                       <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
+                      <span>{lang.nativeName}</span>
                     </span>
-                    {currentLang === lang.code && (
+                    {locale === lang.code && (
                       <Check className="h-3.5 w-3.5 text-primary" />
                     )}
                   </DropdownMenuItem>
@@ -155,7 +147,7 @@ export function Header() {
             {/* Login Button */}
             <Link href="/login">
               <Button size="sm" className="h-8 px-4 text-sm">
-                登录
+                {t.nav.login}
               </Button>
             </Link>
           </div>
@@ -178,18 +170,18 @@ export function Header() {
                   <Globe className="h-4 w-4" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-36">
+              <DropdownMenuContent align="end" className="w-48">
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
-                    onClick={() => setCurrentLang(lang.code)}
+                    onClick={() => setLocale(lang.code)}
                     className="flex items-center justify-between cursor-pointer text-sm py-1.5"
                   >
                     <span className="flex items-center gap-1.5">
                       <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
+                      <span>{lang.nativeName}</span>
                     </span>
-                    {currentLang === lang.code && (
+                    {locale === lang.code && (
                       <Check className="h-3.5 w-3.5 text-primary" />
                     )}
                   </DropdownMenuItem>

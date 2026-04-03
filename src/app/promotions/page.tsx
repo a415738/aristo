@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/layout/Layout';
@@ -238,7 +238,7 @@ function CouponCard({ coupon, onClaim }: { coupon: typeof mockCoupons[0]; onClai
   );
 }
 
-export default function PromotionsPage() {
+function PromotionsContent() {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get('tab') || 'flash';
 
@@ -384,5 +384,13 @@ export default function PromotionsPage() {
         </Tabs>
       </div>
     </Layout>
+  );
+}
+
+export default function PromotionsPage() {
+  return (
+    <Suspense fallback={<Layout><div className="container mx-auto px-4 py-6 md:py-8"><div className="animate-pulse space-y-4"><div className="h-8 bg-gray-200 rounded w-1/3"></div><div className="h-4 bg-gray-200 rounded w-1/4"></div></div></div></Layout>}>
+      <PromotionsContent />
+    </Suspense>
   );
 }

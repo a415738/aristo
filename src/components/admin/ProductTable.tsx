@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2, Search, Loader2 } from 'lucide-react';
 import { ProductForm, ProductFormData } from './ProductForm';
+import { useTranslation } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -61,6 +62,7 @@ interface ProductTableProps {
 }
 
 export function ProductTable({ products: initialProducts, categories, brands }: ProductTableProps) {
+  const { t } = useTranslation();
   const [products, setProducts] = useState(initialProducts);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -89,11 +91,11 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
         // 刷新商品列表
         window.location.reload();
       } else {
-        alert(result.error || '保存失败');
+        alert(result.error || t.common.error);
       }
     } catch (error) {
       console.error('Save error:', error);
-      alert('保存失败，请重试');
+      alert(t.common.error);
     }
   };
 
@@ -103,7 +105,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
   };
 
   const handleDelete = async (productId: string) => {
-    if (!confirm('确定要删除这个商品吗？')) return;
+    if (!confirm(t.common.confirm + '?')) return;
 
     setDeleting(productId);
     try {
@@ -115,11 +117,11 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
         setProducts(products.filter(p => p.id !== productId));
       } else {
         const result = await response.json();
-        alert(result.error || '删除失败');
+        alert(result.error || t.common.error);
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('删除失败，请重试');
+      alert(t.common.error);
     } finally {
       setDeleting(null);
     }
@@ -137,7 +139,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
             <Input
-              placeholder="搜索商品..."
+              placeholder={t.nav.search}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 border-neutral-200"
@@ -149,7 +151,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
             className="bg-neutral-900 hover:bg-neutral-800"
           >
             <Plus className="h-4 w-4 mr-2" />
-            添加商品
+            {t.common.add}
           </Button>
         </div>
 
@@ -157,15 +159,15 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
           <Table>
             <TableHeader>
               <TableRow className="bg-neutral-50">
-                <TableHead className="w-12">图片</TableHead>
-                <TableHead>商品名称</TableHead>
-                <TableHead>分类</TableHead>
-                <TableHead>品牌</TableHead>
-                <TableHead className="text-right">价格</TableHead>
-                <TableHead className="text-right">库存</TableHead>
-                <TableHead className="text-right">销量</TableHead>
-                <TableHead className="text-center">状态</TableHead>
-                <TableHead className="w-24 text-center">操作</TableHead>
+                <TableHead className="w-12">{t.productForm.images}</TableHead>
+                <TableHead>{t.productForm.name}</TableHead>
+                <TableHead>{t.productForm.category}</TableHead>
+                <TableHead>{t.productForm.brand}</TableHead>
+                <TableHead className="text-right">{t.productForm.price}</TableHead>
+                <TableHead className="text-right">{t.productForm.stock}</TableHead>
+                <TableHead className="text-right">{t.product.sold}</TableHead>
+                <TableHead className="text-center">{t.account.orderStatus}</TableHead>
+                <TableHead className="w-24 text-center">{t.common.edit}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -212,7 +214,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
                         : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-100'
                       }
                     >
-                      {product.is_active ? '上架' : '下架'}
+                      {product.is_active ? t.product.inStock : t.product.outOfStock}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -246,7 +248,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
               {filteredProducts.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={9} className="text-center py-12 text-neutral-500">
-                    {searchQuery ? '未找到匹配的商品' : '暂无商品'}
+                    {searchQuery ? t.messages.noResults : t.messages.noProducts}
                   </TableCell>
                 </TableRow>
               )}
@@ -259,7 +261,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingProduct ? '编辑商品' : '添加新商品'}
+                {editingProduct ? t.common.edit : t.common.add}
               </DialogTitle>
             </DialogHeader>
             <ProductForm

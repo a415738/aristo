@@ -1,0 +1,238 @@
+// Frontend translations - Thai
+export const th = {
+  // Navigation
+  nav: {
+    home: 'หน้าแรก',
+    allProducts: 'สินค้าทั้งหมด',
+    brands: 'แบรนด์',
+    cart: 'ตะกร้า',
+    login: 'เข้าสู่ระบบ',
+    register: 'ลงทะเบียน',
+    account: 'บัญชี',
+    logout: 'ออกจากระบบ',
+    search: 'ค้นหา',
+    searchPlaceholder: 'ค้นหาสินค้า...',
+  },
+  
+  // Categories
+  categories: {
+    all: 'หมวดหมู่ทั้งหมด',
+    skinCare: 'ดูแลผิว',
+    makeup: 'เครื่องสำอาง',
+    baseMakeup: 'เมคอัพฐาน',
+    lips: 'ลิป',
+    eyes: 'ดวงตา',
+    fragrance: 'น้ำหอม',
+    bodyCare: 'ดูแลร่างกาย',
+    hairCare: 'ดูแลเส้นผม',
+    beautyTools: 'อุปกรณ์ความงาม',
+    giftSets: 'ชุดของขวัญ',
+  },
+  
+  // Product
+  product: {
+    addToCart: 'เพิ่มลงตะกร้า',
+    buyNow: 'ซื้อเลย',
+    outOfStock: 'สินค้าหมด',
+    inStock: 'มีสินค้า',
+    reviews: 'รีวิว',
+    description: 'รายละเอียดสินค้า',
+    specifications: 'ข้อมูลจำเพาะ',
+    relatedProducts: 'สินค้าที่เกี่ยวข้อง',
+    viewAll: 'ดูทั้งหมด',
+    sold: 'ขายแล้ว',
+    price: 'ราคา',
+    quantity: 'จำนวน',
+    selectOptions: 'เลือกตัวเลือก',
+    addSuccess: 'เพิ่มลงตะกร้าแล้ว',
+    details: 'รายละเอียดสินค้า',
+  },
+  
+  // Cart
+  cart: {
+    title: 'ตะกร้าสินค้า',
+    empty: 'ตะกร้าสินค้าว่างเปล่า',
+    continueShopping: 'ช้อปต่อ',
+    checkout: 'ชำระเงิน',
+    subtotal: 'รวมย่อย',
+    total: 'รวมทั้งหมด',
+    remove: 'ลบ',
+    quantity: 'จำนวน',
+  },
+  
+  // Account
+  account: {
+    title: 'บัญชีของฉัน',
+    orders: 'คำสั่งซื้อ',
+    addresses: 'ที่อยู่',
+    profile: 'โปรไฟล์',
+    favorites: 'รายการโปรด',
+    settings: 'การตั้งค่า',
+    orderHistory: 'ประวัติคำสั่งซื้อ',
+    orderNumber: 'คำสั่งซื้อ #',
+    orderDate: 'วันที่',
+    orderStatus: 'สถานะ',
+    orderTotal: 'รวม',
+    noOrders: 'ยังไม่มีคำสั่งซื้อ',
+  },
+  
+  // Auth
+  auth: {
+    login: 'เข้าสู่ระบบ',
+    register: 'ลงทะเบียน',
+    email: 'อีเมล',
+    password: 'รหัสผ่าน',
+    confirmPassword: 'ยืนยันรหัสผ่าน',
+    forgotPassword: 'ลืมรหัสผ่าน?',
+    noAccount: 'ยังไม่มีบัญชี?',
+    haveAccount: 'มีบัญชีอยู่แล้ว?',
+    signUp: 'สมัครสมาชิก',
+    signIn: 'เข้าสู่ระบบ',
+  },
+  
+  // Common
+  common: {
+    loading: 'กำลังโหลด...',
+    error: 'เกิดข้อผิดพลาด',
+    success: 'สำเร็จ',
+    cancel: 'ยกเลิก',
+    confirm: 'ยืนยัน',
+    save: 'บันทึก',
+    delete: 'ลบ',
+    edit: 'แก้ไข',
+    add: 'เพิ่ม',
+    back: 'กลับ',
+    next: 'ถัดไป',
+    prev: 'ก่อนหน้า',
+    submit: 'ส่ง',
+    required: 'จำเป็น',
+    optional: 'ไม่บังคับ',
+    yes: 'ใช่',
+    no: 'ไม่',
+    all: 'ทั้งหมด',
+    none: 'ไม่มี',
+  },
+  
+  // Filters
+  filters: {
+    title: 'ตัวกรอง',
+    sort: 'เรียงลำดับ',
+    sortBy: 'เรียงตาม',
+    priceRange: 'ช่วงราคา',
+    minPrice: 'ราคาต่ำสุด',
+    maxPrice: 'ราคาสูงสุด',
+    apply: 'ใช้งาน',
+    reset: 'รีเซ็ต',
+    clearAll: 'ล้างทั้งหมด',
+    priceAsc: 'ราคา: ต่ำ-สูง',
+    priceDesc: 'ราคา: สูง-ต่ำ',
+    newest: 'ใหม่ล่าสุด',
+    popular: 'ยอดนิยม',
+    sales: 'ขายดี',
+  },
+  
+  // Brands
+  brands: {
+    title: 'แบรนด์',
+    allBrands: 'แบรนด์ทั้งหมด',
+    featured: 'แบรนด์แนะนำ',
+    origin: 'แหล่งกำเนิด',
+    products: 'สินค้า',
+    noBrands: 'ไม่พบแบรนด์',
+  },
+  
+  // Footer
+  footer: {
+    customerService: 'บริการลูกค้า',
+    aboutUs: 'เกี่ยวกับเรา',
+    contactUs: 'ติดต่อเรา',
+    faq: 'คำถามที่พบบ่อย',
+    shipping: 'ข้อมูลจัดส่ง',
+    returns: 'การคืนสินค้า',
+    privacyPolicy: 'นโยบายความเป็นส่วนตัว',
+    termsOfService: 'เงื่อนไขการใช้บริการ',
+    followUs: 'ติดตามเรา',
+    newsletter: 'จดหมายข่าว',
+    subscribe: 'สมัครรับข่าว',
+    emailPlaceholder: 'ใส่อีเมลของคุณ',
+    copyright: 'สงวนลิขสิทธิ์',
+  },
+  
+  // Messages
+  messages: {
+    noProducts: 'ไม่พบสินค้า',
+    tryOtherFilters: 'ลองใช้ตัวกรองอื่น',
+    noResults: 'ไม่พบผลลัพธ์',
+    serverError: 'ข้อผิดพลาดของเซิร์ฟเวอร์ กรุณาลองอีกครั้ง',
+    networkError: 'ข้อผิดพลาดเครือข่าย กรุณาตรวจสอบการเชื่อมต่อ',
+  },
+  
+  // Admin
+  admin: {
+    dashboard: 'แดชบอร์ด',
+    products: 'สินค้า',
+    orders: 'คำสั่งซื้อ',
+    users: 'ผู้ใช้',
+    brands: 'แบรนด์',
+    marketing: 'การตลาด',
+    settings: 'การตั้งค่า',
+    chat: 'แชท',
+    totalOrders: 'คำสั่งซื้อทั้งหมด',
+    totalProducts: 'สินค้าทั้งหมด',
+    totalUsers: 'ผู้ใช้ทั้งหมด',
+    totalRevenue: 'รายได้ทั้งหมด',
+    pendingOrders: 'คำสั่งซื้อที่รอดำเนินการ',
+    lowStock: 'สินค้าใกล้หมด',
+  },
+  
+  // Order Status
+  orderStatus: {
+    pending: 'รอชำระเงิน',
+    paid: 'ชำระแล้ว',
+    shipped: 'จัดส่งแล้ว',
+    delivered: 'สำเร็จ',
+    cancelled: 'ยกเลิก',
+  },
+  
+  // Product Form (Admin)
+  productForm: {
+    title: 'ข้อมูลสินค้า',
+    name: 'ชื่อสินค้า',
+    slug: 'URL Slug',
+    sku: 'SKU',
+    category: 'หมวดหมู่',
+    brand: 'แบรนด์',
+    price: 'ราคา',
+    retailPrice: 'ราคาปลีก',
+    stock: 'สต็อก',
+    description: 'รายละเอียด',
+    tags: 'แท็ก',
+    images: 'รูปภาพสินค้า',
+    specs: 'ข้อมูลจำเพาะ',
+    variants: 'ตัวเลือกสินค้า',
+    save: 'บันทึกสินค้า',
+    cancel: 'ยกเลิก',
+    loadTemplate: 'โหลดเทมเพลต',
+    addSpec: 'เพิ่มข้อมูลจำเพาะ',
+    addVariant: 'เพิ่มตัวเลือก',
+    noSpecs: 'ไม่มีข้อมูลจำเพาะ',
+    noVariants: 'ไม่มีตัวเลือก',
+    specName: 'ชื่อข้อมูล',
+    specValue: 'ค่า',
+    variantName: 'ชื่อตัวเลือก',
+    variantPrice: 'ราคา',
+    variantStock: 'สต็อก',
+    required: 'จำเป็น',
+    optional: 'ไม่บังคับ',
+    mainImage: 'รูปหลัก',
+    maxImages: 'สูงสุด 12 รูป รูปแรกเป็นรูปหลัก',
+  },
+  
+  // Home
+  home: {
+    hotProducts: 'สินค้าฮอตฮิต',
+    newArrivals: 'สินค้าใหม่',
+    shopNow: 'ช้อปเลย',
+    viewMore: 'ดูเพิ่มเติม',
+  },
+};

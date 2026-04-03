@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
+import { useTranslation } from '@/lib/i18n';
 
 interface Category {
   id: string;
@@ -28,13 +31,15 @@ const categoryIcons: Record<string, string> = {
 };
 
 export function CategorySection({ categories }: CategorySectionProps) {
+  const { t } = useTranslation();
+  
   if (categories.length === 0) return null;
 
   return (
     <section className="py-8 md:py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-lg md:text-xl font-semibold text-neutral-900 mb-6">
-          商品分类
+          {t.categories.all}
         </h2>
         
         {/* 分类网格 */}

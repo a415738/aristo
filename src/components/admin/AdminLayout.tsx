@@ -14,24 +14,26 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { ReactNode } from 'react';
+import { useTranslation } from '@/lib/i18n';
 
 interface AdminLayoutProps {
   children: ReactNode;
 }
 
-const menuItems = [
-  { name: '控制台', href: '/admin', icon: LayoutDashboard },
-  { name: '商品管理', href: '/admin/products', icon: Package },
-  { name: '品牌管理', href: '/admin/brands', icon: Tags },
-  { name: '订单管理', href: '/admin/orders', icon: ShoppingCart },
-  { name: '用户管理', href: '/admin/users', icon: Users },
-  { name: '运营管理', href: '/admin/marketing', icon: Megaphone },
-  { name: '系统设置', href: '/admin/settings', icon: Settings },
-  { name: '客服管理', href: '/admin/chat', icon: MessageSquare },
-];
-
 export function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
+  const { t } = useTranslation();
+
+  const menuItems = [
+    { name: t.admin.dashboard, href: '/admin', icon: LayoutDashboard },
+    { name: t.admin.products, href: '/admin/products', icon: Package },
+    { name: t.admin.brands, href: '/admin/brands', icon: Tags },
+    { name: t.admin.orders, href: '/admin/orders', icon: ShoppingCart },
+    { name: t.admin.users, href: '/admin/users', icon: Users },
+    { name: t.admin.marketing, href: '/admin/marketing', icon: Megaphone },
+    { name: t.admin.settings, href: '/admin/settings', icon: Settings },
+    { name: t.admin.chat, href: '/admin/chat', icon: MessageSquare },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -41,7 +43,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <Link href="/" className="text-2xl font-bold text-primary">
             Aristo
           </Link>
-          <p className="text-sm text-gray-400 mt-1">后台管理系统</p>
+          <p className="text-sm text-gray-400 mt-1">{t.admin.settings}</p>
         </div>
 
         <nav className="mt-6 px-3">
