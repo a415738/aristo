@@ -1,19 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { adminTranslations } from '@/lib/admin-translations';
 import {
   MessageSquare,
   Search,
-  Filter,
   User,
   Bot,
-  Clock,
   Send,
-  ChevronDown,
   MoreVertical,
-  Trash2,
   Download,
+  Languages,
+  ChevronDown,
+  Loader2,
+  Check,
+  Copy,
+  X,
 } from 'lucide-react';
 
 interface ChatSession {
@@ -26,6 +28,7 @@ interface ChatSession {
   lastMessageTime: string;
   messageCount: number;
   isOnline: boolean;
+  language?: string;
 }
 
 interface ChatMessage {
@@ -34,10 +37,68 @@ interface ChatMessage {
   content: string;
   sender: 'user' | 'ai' | 'admin';
   timestamp: string;
+  translated?: string;
+  detectedLang?: string;
 }
 
-const t = adminTranslations.common;
-const tNav = adminTranslations.nav;
+// 语言配置
+const languages = [
+  { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳' },
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'th', name: 'ไทย', flag: '🇹🇭' },
+  { code: 'id', name: 'Indonesia', flag: '🇮🇩' },
+  { code: 'ms', name: 'Melayu', flag: '🇲🇾' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+];
+
+// 简单的语言检测（基于字符模式）
+function detectLanguage(text: string): string {
+  const vietnameseChars = /[àáạảãâầấậẩẫăằắặẳẫèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+  const thaiChars = /[ก-๙]/;
+  const indonesianWords = /\b(saya|anda|terima kasih|tidak|ada|yang|dan|dari|untuk|dengan)\b/i;
+  const malayWords = /\b(saya|anda|terima kasih|tidak|ada|yang|dan|dari|untuk|dengan|semua)\b/i;
+
+  if (thaiChars.test(text)) return 'th';
+  if (vietnameseChars.test(text)) return 'vi';
+  if (indonesianWords.test(text.toLowerCase())) return 'id';
+  if (malayWords.test(text.toLowerCase())) return 'ms';
+  return 'en';
+}
+
+// 模拟翻译函数
+function translateText(text: string, fromLang: string, toLang: string): string {
+  // 这里可以接入真实的翻译API，如Google Translate API
+  // 目前返回模拟翻译结果
+  const translations: Record<string, Record<string, string>> = {
+    'vi': {
+      'Tôi muốn biết về sản phẩm kem chống nắng': 'I want to know about sunscreen products',
+      'Chào bạn, tôi muốn biết về sản phẩm kem chống nắng': 'Hello, I want to know about sunscreen products',
+      'Tôi quan tâm đến sản phẩm của Anessa, loại nào phù hợp cho da nhạy cảm?': 'I am interested in Anessa products, which one is suitable for sensitive skin?',
+      'Terima kasih atas bantuannya!': 'Thank you for your help!',
+    },
+    'th': {
+      'มีสีอะไรให้เลือกบ้าง': 'What colors are available?',
+      'ราคาเท่าไหร่': 'How much is it?',
+      'ส่งฟรีไหม': 'Is shipping free?',
+    },
+    'id': {
+      'Terima kasih': 'Thank you',
+      'Berapa harganya': 'How much is it?',
+    },
+    'ms': {
+      'Terima kasih': 'Thank you',
+      'Berapa harga': 'How much is it?',
+    },
+  };
+
+  const langTranslations = translations[fromLang];
+  if (langTranslations && langTranslations[text]) {
+    return langTranslations[text];
+  }
+
+  // 如果没有预设翻译，返回标记后的原文（实际应调用翻译API）
+  return `[${fromLang.toUpperCase()}] ${text}`;
+}
 
 // 模拟聊天会话数据
 const mockSessions: ChatSession[] = [
@@ -51,6 +112,7 @@ const mockSessions: ChatSession[] = [
     lastMessageTime: '2024-01-15 14:30',
     messageCount: 12,
     isOnline: true,
+    language: 'vi',
   },
   {
     id: '2',
@@ -62,6 +124,7 @@ const mockSessions: ChatSession[] = [
     lastMessageTime: '2024-01-15 14:25',
     messageCount: 8,
     isOnline: true,
+    language: 'en',
   },
   {
     id: '3',
@@ -72,6 +135,7 @@ const mockSessions: ChatSession[] = [
     lastMessageTime: '2024-01-15 13:00',
     messageCount: 15,
     isOnline: false,
+    language: 'id',
   },
   {
     id: '4',
@@ -83,6 +147,7 @@ const mockSessions: ChatSession[] = [
     lastMessageTime: '2024-01-15 12:45',
     messageCount: 6,
     isOnline: false,
+    language: 'th',
   },
   {
     id: '5',
@@ -93,6 +158,7 @@ const mockSessions: ChatSession[] = [
     lastMessageTime: '2024-01-15 11:30',
     messageCount: 20,
     isOnline: false,
+    language: 'en',
   },
 ];
 
@@ -110,23 +176,56 @@ const mockMessages: Record<string, ChatMessage[]> = {
     { id: 'm8', sessionId: '2', content: 'What about express shipping cost?', sender: 'user', timestamp: '14:24' },
     { id: 'm9', sessionId: '2', content: 'Express shipping costs vary by weight. For orders under 1kg, it\'s approximately $15. Would you like me to check the exact cost for your order?', sender: 'ai', timestamp: '14:25' },
   ],
+  '3': [
+    { id: 'm10', sessionId: '3', content: 'Terima kasih atas bantuannya!', sender: 'user', timestamp: '12:55' },
+    { id: 'm11', sessionId: '3', content: 'Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.', sender: 'ai', timestamp: '12:56' },
+    { id: 'm12', sessionId: '3', content: 'Saya akan merekomendasikan ke teman-teman saya', sender: 'user', timestamp: '12:58' },
+  ],
+  '4': [
+    { id: 'm13', sessionId: '4', content: 'มีสีอะไรให้เลือกบ้าง', sender: 'user', timestamp: '12:40' },
+    { id: 'm14', sessionId: '4', content: 'สินค้านี้มี 5 สีให้เลือกค่ะ: ชมพู, แดง, ส้ม, น้ำตาล และ สีกลาง', sender: 'ai', timestamp: '12:42' },
+    { id: 'm15', sessionId: '4', content: 'สีชมพูยังมีอยู่ไหม', sender: 'user', timestamp: '12:44' },
+    { id: 'm16', sessionId: '4', content: 'มีค่ะ สีชมพูยังมีสินค้าใน stock อยู่ค่ะ', sender: 'ai', timestamp: '12:45' },
+  ],
+  '5': [
+    { id: 'm17', sessionId: '5', content: 'Okay, I will place the order now', sender: 'user', timestamp: '11:25' },
+    { id: 'm18', sessionId: '5', content: 'Great! Your order will be processed within 24 hours. You will receive a confirmation email shortly.', sender: 'ai', timestamp: '11:26' },
+    { id: 'm19', sessionId: '5', content: 'Thank you for shopping with us!', sender: 'ai', timestamp: '11:27' },
+  ],
 };
 
 export default function ChatPageContent() {
-  const [sessions, setSessions] = useState<ChatSession[]>(mockSessions);
+  const [sessions] = useState<ChatSession[]>(mockSessions);
   const [selectedSession, setSelectedSession] = useState<ChatSession | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [displayMessages, setDisplayMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'closed'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [autoReplyEnabled, setAutoReplyEnabled] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [translatingMessageId, setTranslatingMessageId] = useState<string | null>(null);
+  const [showTranslations, setShowTranslations] = useState(true);
+  const [targetLanguage, setTargetLanguage] = useState('zh');
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (selectedSession) {
-      setMessages(mockMessages[selectedSession.id] || []);
+      const sessionMessages = mockMessages[selectedSession.id] || [];
+      setMessages(sessionMessages);
+      // 自动检测语言并标记
+      const messagesWithLang = sessionMessages.map(msg => ({
+        ...msg,
+        detectedLang: msg.sender === 'user' ? detectLanguage(msg.content) : undefined,
+      }));
+      setDisplayMessages(messagesWithLang);
     }
   }, [selectedSession]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [displayMessages]);
 
   const filteredSessions = sessions.filter(session => {
     const matchesStatus = filterStatus === 'all' || session.status === filterStatus;
@@ -147,6 +246,7 @@ export default function ChatPageContent() {
     };
 
     setMessages(prev => [...prev, newMsg]);
+    setDisplayMessages(prev => [...prev, newMsg]);
     setNewMessage('');
   };
 
@@ -155,6 +255,54 @@ export default function ChatPageContent() {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleTranslate = async (messageId: string) => {
+    const msg = displayMessages.find(m => m.id === messageId);
+    if (!msg || msg.sender === 'admin') return;
+
+    setTranslatingMessageId(messageId);
+
+    // 模拟翻译延迟
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    const sourceLang = msg.detectedLang || detectLanguage(msg.content);
+    const translated = translateText(msg.content, sourceLang, targetLanguage);
+
+    setDisplayMessages(prev => prev.map(m =>
+      m.id === messageId ? { ...m, translated, detectedLang: sourceLang } : m
+    ));
+
+    setTranslatingMessageId(null);
+  };
+
+  const handleTranslateAll = async () => {
+    if (!selectedSession) return;
+
+    setTranslatingMessageId('all');
+
+    const userMessages = displayMessages.filter(m => m.sender !== 'admin' && !m.translated);
+    
+    for (const msg of userMessages) {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      const sourceLang = msg.detectedLang || detectLanguage(msg.content);
+      const translated = translateText(msg.content, sourceLang, targetLanguage);
+      
+      setDisplayMessages(prev => prev.map(m =>
+        m.id === msg.id ? { ...m, translated, detectedLang: sourceLang } : m
+      ));
+    }
+
+    setTranslatingMessageId(null);
+  };
+
+  const handleCopyOriginal = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  const getLanguageName = (code: string) => {
+    const lang = languages.find(l => l.code === code);
+    return lang ? `${lang.flag} ${lang.name}` : code;
   };
 
   return (
@@ -166,16 +314,58 @@ export default function ChatPageContent() {
           <p className="text-gray-500 mt-1">管理客户聊天记录和 AI 客服配置</p>
         </div>
         <div className="flex items-center gap-3">
+          {/* Target Language Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setShowLangDropdown(!showLangDropdown)}
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+            >
+              <Languages className="h-4 w-4" />
+              翻译为: {getLanguageName(targetLanguage)}
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            {showLangDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-lg z-10">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      setTargetLanguage(lang.code);
+                      setShowLangDropdown(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-4 py-2 hover:bg-gray-50 ${
+                      targetLanguage === lang.code ? 'bg-primary/5 text-primary' : ''
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span>{lang.name}</span>
+                    {targetLanguage === lang.code && <Check className="h-4 w-4 ml-auto" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => setShowTranslations(!showTranslations)}
+            className={`flex items-center gap-2 px-4 py-2 border rounded-lg ${
+              showTranslations
+                ? 'bg-primary text-white border-primary'
+                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <Languages className="h-4 w-4" />
+            {showTranslations ? '隐藏翻译' : '显示翻译'}
+          </button>
           <button
             onClick={() => setShowSettings(!showSettings)}
             className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
           >
             <Bot className="h-4 w-4" />
-            AI 客服设置
+            AI 设置
           </button>
           <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
             <Download className="h-4 w-4" />
-            导出记录
+            导出
           </button>
         </div>
       </div>
@@ -187,7 +377,7 @@ export default function ChatPageContent() {
             <Bot className="h-5 w-5" />
             AI 客服配置
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div>
                 <p className="font-medium">自动回复</p>
@@ -215,6 +405,11 @@ export default function ChatPageContent() {
               <p className="font-medium mb-2">平均响应时间</p>
               <p className="text-2xl font-bold text-primary">2.3s</p>
               <p className="text-sm text-gray-500">客户满意度 94%</p>
+            </div>
+            <div className="p-4 bg-gray-50 rounded-lg">
+              <p className="font-medium mb-2">翻译调用</p>
+              <p className="text-2xl font-bold text-primary">543</p>
+              <p className="text-sm text-gray-500">今日翻译次数</p>
             </div>
           </div>
         </div>
@@ -274,7 +469,14 @@ export default function ChatPageContent() {
                       )}
                     </div>
                     <div>
-                      <p className="font-medium">{session.userName}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{session.userName}</p>
+                        {session.language && (
+                          <span className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">
+                            {languages.find(l => l.code === session.language)?.flag}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-xs text-gray-500">{session.userEmail || '游客'}</p>
                     </div>
                   </div>
@@ -308,13 +510,32 @@ export default function ChatPageContent() {
                     <User className="h-5 w-5 text-gray-500" />
                   </div>
                   <div>
-                    <p className="font-medium">{selectedSession.userName}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">{selectedSession.userName}</p>
+                      {selectedSession.language && (
+                        <span className="text-sm text-gray-500">
+                          {getLanguageName(selectedSession.language)}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-xs text-gray-500">
                       {selectedSession.isOnline ? '在线' : '离线'} • {selectedSession.messageCount} 条消息
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleTranslateAll}
+                    disabled={translatingMessageId === 'all'}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 disabled:opacity-50"
+                  >
+                    {translatingMessageId === 'all' ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Languages className="h-4 w-4" />
+                    )}
+                    翻译全部
+                  </button>
                   <button className="p-2 hover:bg-gray-100 rounded-lg">
                     <MoreVertical className="h-5 w-5 text-gray-500" />
                   </button>
@@ -323,13 +544,13 @@ export default function ChatPageContent() {
 
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((msg) => (
+                {displayMessages.map((msg) => (
                   <div
                     key={msg.id}
                     className={`flex ${msg.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-2xl px-4 py-2 ${
+                      className={`max-w-[70%] rounded-2xl ${
                         msg.sender === 'admin'
                           ? 'bg-primary text-white rounded-br-md'
                           : msg.sender === 'ai'
@@ -337,15 +558,73 @@ export default function ChatPageContent() {
                           : 'bg-gray-100 text-gray-800 rounded-bl-md'
                       }`}
                     >
-                      <div className="flex items-center gap-2 mb-1">
+                      {/* Message Header */}
+                      <div className="flex items-center gap-2 px-4 pt-3 pb-1">
                         {msg.sender === 'ai' && <Bot className="h-3 w-3" />}
                         {msg.sender === 'user' && <User className="h-3 w-3" />}
                         <span className="text-xs opacity-70">{msg.timestamp}</span>
+                        {msg.detectedLang && (
+                          <span className="text-xs opacity-70 bg-black/10 px-1.5 py-0.5 rounded">
+                            {getLanguageName(msg.detectedLang)}
+                          </span>
+                        )}
                       </div>
-                      <p className="text-sm">{msg.content}</p>
+                      
+                      {/* Original Message */}
+                      <div className="px-4 pb-2">
+                        <p className="text-sm">{msg.content}</p>
+                      </div>
+
+                      {/* Translated Message */}
+                      {showTranslations && msg.translated && msg.sender !== 'admin' && (
+                        <div className="mx-3 mb-3 p-2 bg-white/20 rounded-lg">
+                          <div className="flex items-center gap-1 mb-1">
+                            <Languages className="h-3 w-3" />
+                            <span className="text-xs opacity-70">翻译 ({getLanguageName(targetLanguage)})</span>
+                          </div>
+                          <p className="text-sm">{msg.translated}</p>
+                        </div>
+                      )}
+
+                      {/* Translate Button (for user/ai messages without translation) */}
+                      {showTranslations && !msg.translated && msg.sender !== 'admin' && (
+                        <div className="px-4 pb-3">
+                          <button
+                            onClick={() => handleTranslate(msg.id)}
+                            disabled={translatingMessageId !== null}
+                            className="flex items-center gap-1 text-xs opacity-70 hover:opacity-100 transition-opacity disabled:opacity-50"
+                          >
+                            {translatingMessageId === msg.id ? (
+                              <>
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                                翻译中...
+                              </>
+                            ) : (
+                              <>
+                                <Languages className="h-3 w-3" />
+                                翻译为中文
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Action Buttons (for user messages) */}
+                      {msg.sender === 'user' && (
+                        <div className="flex items-center gap-1 px-4 pb-2">
+                          <button
+                            onClick={() => handleCopyOriginal(msg.content)}
+                            className="flex items-center gap-1 text-xs opacity-50 hover:opacity-100 transition-opacity"
+                            title="复制原文"
+                          >
+                            <Copy className="h-3 w-3" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
+                <div ref={messagesEndRef} />
               </div>
 
               {/* Input */}
