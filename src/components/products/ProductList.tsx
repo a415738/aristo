@@ -29,6 +29,7 @@ interface ProductListProps {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -126,7 +127,7 @@ function ProductCard({ product }: { product: Product }) {
             {/* 销量标签 */}
             {product.sales_count > 100 && (
               <div className="absolute top-3 left-3 px-2 py-1 bg-neutral-900 text-white text-xs font-medium rounded">
-                热销 {product.sales_count > 999 ? '999+' : product.sales_count}
+                {t.home.hot} {product.sales_count > 999 ? '999+' : product.sales_count}
               </div>
             )}
           </div>

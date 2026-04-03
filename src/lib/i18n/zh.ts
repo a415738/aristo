@@ -139,6 +139,7 @@ export const zh = {
     origin: '产地',
     products: '商品',
     noBrands: '暂无品牌',
+    viewAll: '全部品牌',
   },
   
   // Footer
@@ -234,5 +235,8 @@ export const zh = {
     newArrivals: '新品上市',
     shopNow: '立即选购',
     viewMore: '查看更多',
+    brandZone: '品牌专区',
+    allProducts: '全部商品',
+    hot: '热销',
   },
 };

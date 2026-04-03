@@ -139,6 +139,7 @@ export const vi = {
     origin: 'Xuất xứ',
     products: 'Sản phẩm',
     noBrands: 'Không tìm thấy thương hiệu',
+    viewAll: 'Xem tất cả',
   },
   
   // Footer
@@ -234,5 +235,8 @@ export const vi = {
     newArrivals: 'Hàng mới về',
     shopNow: 'Mua ngay',
     viewMore: 'Xem thêm',
+    brandZone: 'Khu vực thương hiệu',
+    allProducts: 'Tất cả sản phẩm',
+    hot: 'Bán chạy',
   },
 };

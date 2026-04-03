@@ -139,6 +139,7 @@ export const en = {
     origin: 'Origin',
     products: 'Products',
     noBrands: 'No brands found',
+    viewAll: 'View All',
   },
   
   // Footer
@@ -234,6 +235,9 @@ export const en = {
     newArrivals: 'New Arrivals',
     shopNow: 'Shop Now',
     viewMore: 'View More',
+    brandZone: 'Brand Zone',
+    allProducts: 'All Products',
+    hot: 'Hot',
   },
 };
 

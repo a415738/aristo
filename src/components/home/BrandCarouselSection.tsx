@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n';
 
 interface Brand {
   id: string;
@@ -18,6 +19,7 @@ interface BrandCarouselSectionProps {
 }
 
 export function BrandCarouselSection({ brands }: BrandCarouselSectionProps) {
+  const { t } = useTranslation();
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -80,11 +82,11 @@ export function BrandCarouselSection({ brands }: BrandCarouselSectionProps) {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg md:text-xl font-bold flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-primary" />
-            品牌专区
+            {t.home.brandZone}
           </h2>
           <Link href="/brands">
             <Button variant="ghost" className="text-primary text-sm">
-              全部品牌 <ChevronRight className="h-4 w-4 ml-1" />
+              {t.brands.viewAll} <ChevronRight className="h-4 w-4 ml-1" />
             </Button>
           </Link>
         </div>

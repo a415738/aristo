@@ -139,6 +139,7 @@ export const ms = {
     origin: 'Asal',
     products: 'Produk',
     noBrands: 'Jenama tidak dijumpai',
+    viewAll: 'Lihat Semua',
   },
   
   // Footer
@@ -234,5 +235,8 @@ export const ms = {
     newArrivals: 'Produk Baharu',
     shopNow: 'Beli Sekarang',
     viewMore: 'Lihat Lagi',
+    brandZone: 'Zon Jenama',
+    allProducts: 'Semua Produk',
+    hot: 'Terlaris',
   },
 };

@@ -139,6 +139,7 @@ export const id = {
     origin: 'Asal',
     products: 'Produk',
     noBrands: 'Merek tidak ditemukan',
+    viewAll: 'Lihat Semua',
   },
   
   // Footer
@@ -234,5 +235,8 @@ export const id = {
     newArrivals: 'Produk Baru',
     shopNow: 'Belanja Sekarang',
     viewMore: 'Lihat Selengkapnya',
+    brandZone: 'Zona Merek',
+    allProducts: 'Semua Produk',
+    hot: 'Terlaris',
   },
 };

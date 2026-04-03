@@ -139,6 +139,7 @@ export const th = {
     origin: 'แหล่งกำเนิด',
     products: 'สินค้า',
     noBrands: 'ไม่พบแบรนด์',
+    viewAll: 'ดูทั้งหมด',
   },
   
   // Footer
@@ -234,5 +235,8 @@ export const th = {
     newArrivals: 'สินค้าใหม่',
     shopNow: 'ช้อปเลย',
     viewMore: 'ดูเพิ่มเติม',
+    brandZone: 'โซนแบรนด์',
+    allProducts: 'สินค้าทั้งหมด',
+    hot: 'ฮอต',
   },
 };

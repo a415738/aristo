@@ -1,8 +1,6 @@
 import { getSupabaseClient } from '@/storage/database/supabase-client';
 import { Layout } from '@/components/layout/Layout';
-import { HeroBanner } from '@/components/home/HeroBanner';
-import { BrandCarouselSection } from '@/components/home/BrandCarouselSection';
-import { ProductSection } from '@/components/home/ProductSection';
+import { HomeContent } from '@/components/home/HomeContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -74,10 +72,12 @@ export default async function HomePage() {
 
   return (
     <Layout>
-      <HeroBanner banners={banners} />
-      {carouselBrands.length > 0 && <BrandCarouselSection brands={carouselBrands} />}
-      <ProductSection title="热销爆款" products={hotProducts} />
-      <ProductSection title="新品上市" products={newProducts} />
+      <HomeContent 
+        banners={banners} 
+        hotProducts={hotProducts} 
+        newProducts={newProducts} 
+        carouselBrands={carouselBrands} 
+      />
     </Layout>
   );
 }
