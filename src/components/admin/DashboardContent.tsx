@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { Calendar, TrendingUp, Eye, Users } from 'lucide-react';
+import { Calendar, TrendingUp, Eye, Users, DollarSign, ShoppingCart, Package } from 'lucide-react';
 
 interface DashboardContentProps {
   stats: {
@@ -156,7 +156,55 @@ export function DashboardContent({ stats }: DashboardContentProps) {
         </div>
       </div>
 
-      {/* Summary Stats */}
+      {/* 交易统计 - 第一排 */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-50 rounded-lg">
+              <DollarSign className="h-5 w-5 text-green-500" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">{t.admin.totalRevenue}</p>
+              <p className="text-xl font-bold">${stats.totalSales.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <ShoppingCart className="h-5 w-5 text-blue-500" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">{t.admin.totalOrders}</p>
+              <p className="text-xl font-bold">{stats.totalOrders.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-purple-50 rounded-lg">
+              <Package className="h-5 w-5 text-purple-500" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">{t.admin.totalProducts}</p>
+              <p className="text-xl font-bold">{stats.totalProducts.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-orange-50 rounded-lg">
+              <Users className="h-5 w-5 text-orange-500" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">{t.admin.totalUsers}</p>
+              <p className="text-xl font-bold">{stats.totalUsers.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 流量统计 - 第二排 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-xl border border-gray-200 p-4">
           <div className="flex items-center gap-3">
