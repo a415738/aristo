@@ -24,7 +24,7 @@ export function getCurrencyConfig(code: string): CurrencyConfig | undefined {
 export function formatPrice(priceInUSD: number, currencyCode: string): string {
   const config = getCurrencyConfig(currencyCode);
   if (!config) {
-    return `$${priceInUSD.toFixed(2)}`;
+    return `$${priceInUSD.toFixed(2)} USD`;
   }
   
   const convertedPrice = priceInUSD * config.rate;
@@ -32,10 +32,10 @@ export function formatPrice(priceInUSD: number, currencyCode: string): string {
   // 根据货币类型格式化
   if (currencyCode === 'VND' || currencyCode === 'IDR') {
     // 大额货币去掉小数
-    return `${config.symbol}${Math.round(convertedPrice).toLocaleString()}`;
+    return `${config.symbol}${Math.round(convertedPrice).toLocaleString()} ${currencyCode}`;
   }
   
-  return `${config.symbol}${convertedPrice.toFixed(2)}`;
+  return `${config.symbol}${convertedPrice.toFixed(2)} ${currencyCode}`;
 }
 
 // 货币代码对应的国家/地区
