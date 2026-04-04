@@ -113,6 +113,8 @@ export const id = {
     no: 'Tidak',
     all: 'Semua',
     none: 'Tidak ada',
+    filter: 'Filter',
+    categories: 'Kategori',
   },
   
   // Filters

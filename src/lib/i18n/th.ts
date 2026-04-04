@@ -113,6 +113,8 @@ export const th = {
     no: 'ไม่',
     all: 'ทั้งหมด',
     none: 'ไม่มี',
+    filter: 'กรอง',
+    categories: 'หมวดหมู่',
   },
   
   // Filters

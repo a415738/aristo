@@ -113,6 +113,8 @@ export const vi = {
     no: 'Không',
     all: 'Tất cả',
     none: 'Không có',
+    filter: 'Lọc',
+    categories: 'Danh mục',
   },
   
   // Filters

@@ -113,6 +113,8 @@ export const en = {
     no: 'No',
     all: 'All',
     none: 'None',
+    filter: 'Filter',
+    categories: 'Categories',
   },
   
   // Filters

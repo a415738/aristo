@@ -113,6 +113,8 @@ export const zh = {
     no: '否',
     all: '全部',
     none: '无',
+    filter: '筛选',
+    categories: '分类',
   },
   
   // Filters

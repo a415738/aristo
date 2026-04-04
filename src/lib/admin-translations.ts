@@ -22,6 +22,9 @@ export const adminTranslations = {
     all: '全部',
     search: '搜索',
     actions: '操作',
+    sort: '排序',
+    status: '状态',
+    filter: '筛选',
   },
 
   // 导航
@@ -33,6 +36,7 @@ export const adminTranslations = {
   admin: {
     dashboard: '控制台',
     products: '商品管理',
+    categories: '分类管理',
     brands: '品牌管理',
     orders: '订单管理',
     users: '用户管理',
@@ -45,6 +49,7 @@ export const adminTranslations = {
     totalRevenue: '总收入',
     pendingOrders: '待处理订单',
     lowStock: '库存不足',
+    categoryName: '分类名称',
   },
 
   // 订单状态

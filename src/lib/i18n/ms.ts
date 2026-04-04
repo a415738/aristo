@@ -113,6 +113,8 @@ export const ms = {
     no: 'Tidak',
     all: 'Semua',
     none: 'Tiada',
+    filter: 'Tapis',
+    categories: 'Kategori',
   },
   
   // Filters
