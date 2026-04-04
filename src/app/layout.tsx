@@ -8,8 +8,8 @@ import { CurrencyProvider } from '@/lib/currency-context';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Aristo - 东南亚美妆购物平台',
-  description: '汇聚全球知名美妆品牌，品质保证，正品低价，支持东南亚多国配送。',
+  title: 'Aristo-Beauty Capital',
+  description: 'Beauty Capital - Premium Beauty Products in Southeast Asia',
 };
 
 export default function RootLayout({
