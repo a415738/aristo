@@ -41,14 +41,14 @@ const currencies = [
 ];
 
 // 支付方式
-const [paymentMethods, setPaymentMethods] = useState([
+const paymentMethodsDefault = [
   { id: 'cod', name: '货到付款 (COD)', enabled: true, icon: '💵', desc: '支持泰国、越南、印尼等地区' },
   { id: 'bank_transfer', name: '银行转账', enabled: true, icon: '🏦', desc: '支持本地银行转账' },
   { id: 'lianlian', name: '连连国际 (LianLian)', enabled: false, icon: '🔗', desc: '东南亚主流支付，支持多币种' },
   { id: 'ksher', name: 'KSHER', enabled: false, icon: '💠', desc: '聚合支付，支持微信/支付宝/本地钱包' },
   { id: 'paypal', name: 'PayPal', enabled: false, icon: '🅿️', desc: '国际支付' },
   { id: 'stripe', name: 'Stripe', enabled: false, icon: '💳', desc: '国际支付，支持信用卡' },
-]);
+];
 
 // 物流方式
 const shippingMethods = [
@@ -61,6 +61,7 @@ type SettingsTab = 'general' | 'language' | 'currency' | 'payment' | 'shipping' 
 
 export default function SettingsPageContent() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('general');
+  const [paymentMethods, setPaymentMethods] = useState(paymentMethodsDefault);
   const [siteName, setSiteName] = useState('Aristo Beauty');
   const [siteEmail, setSiteEmail] = useState('support@aristo-beauty.com');
   const [sitePhone, setSitePhone] = useState('+66 2 123 4567');
