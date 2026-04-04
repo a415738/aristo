@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ChatWidget } from '@/components/chat/ChatWidget';
-import { I18nProvider } from '@/lib/i18n';
+import { AutoI18nProvider } from '@/lib/i18n/auto-provider';
 import { CurrencyProvider } from '@/lib/currency-context';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,12 +20,12 @@ export default function RootLayout({
   return (
     <html lang="zh">
       <body className={inter.className}>
-        <I18nProvider defaultLocale="zh">
+        <AutoI18nProvider>
           <CurrencyProvider>
             {children}
             <ChatWidget />
           </CurrencyProvider>
-        </I18nProvider>
+        </AutoI18nProvider>
       </body>
     </html>
   );
