@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { PriceText } from '@/components/ui/PriceText';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n';
 
@@ -56,12 +57,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
                 <h3 className="text-sm font-medium text-neutral-800 line-clamp-2 mb-2 min-h-[40px]">
                   {product.name}
                 </h3>
-                <div className="flex items-baseline gap-0.5">
-                  <span className="text-xs text-neutral-400">$</span>
-                  <span className="text-lg font-bold text-neutral-900">
-                    {Number(product.retail_price).toFixed(2)}
-                  </span>
-                </div>
+                <PriceText price={product.retail_price} size="md" />
                 {product.specs && product.specs.length > 0 && (
                   <div className="mt-1 space-y-0.5">
                     {product.specs.slice(0, 2).map((spec, index) => (

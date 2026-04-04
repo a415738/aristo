@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/lib/i18n';
+import { PriceText } from '@/components/ui/PriceText';
 
 interface Product {
   id: string;
@@ -218,17 +219,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
 
             {/* Price */}
-            <div className="flex items-baseline gap-2">
-              <span className="text-xs text-neutral-400">$</span>
-              <span className="text-3xl font-bold text-neutral-900">
-                {Number(currentPrice).toFixed(2)}
-              </span>
-              {currentVariant && product.retail_price !== currentPrice && (
-                <span className="text-base text-neutral-400 line-through">
-                  ${Number(product.retail_price).toFixed(2)}
-                </span>
-              )}
-            </div>
+            <PriceText 
+              price={currentPrice} 
+              size="xl"
+              showOriginal={currentVariant && product.retail_price !== currentPrice}
+              originalPrice={product.retail_price}
+            />
 
             <Separator className="bg-neutral-100" />
 

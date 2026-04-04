@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PriceText } from '@/components/ui/PriceText';
 import { ChevronRight, Heart, Eye, Sparkles } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n';
 
@@ -131,11 +132,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </h3>
 
             {/* 价格 */}
-            <div className="flex items-baseline gap-1 md:gap-2 mb-1 md:mb-2">
-              <span className="text-base md:text-xl font-bold text-primary">
-                ${Number(product.retail_price).toFixed(2)}
-              </span>
-            </div>
+            <PriceText price={product.retail_price} size="lg" />
 
             {/* 商品参数 */}
             {product.specs && product.specs.length > 0 && (

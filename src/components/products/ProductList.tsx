@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { PriceText } from '@/components/ui/PriceText';
 import { ChevronLeft, ChevronRight, Heart, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n';
@@ -146,12 +147,7 @@ function ProductCard({ product }: { product: Product }) {
 
             {/* 价格和销量 */}
             <div className="flex items-end justify-between">
-              <div className="flex items-baseline gap-1">
-                <span className="text-xs text-neutral-400">$</span>
-                <span className="text-xl font-bold text-neutral-900">
-                  {Number(product.retail_price).toFixed(2)}
-                </span>
-              </div>
+              <PriceText price={product.retail_price} size="md" />
               <div className="flex items-center gap-1 text-xs text-neutral-400">
                 <Eye className="h-3 w-3" />
                 <span>{product.sales_count}</span>

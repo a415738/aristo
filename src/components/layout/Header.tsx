@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/lib/i18n';
+import { CurrencySelector } from './CurrencySelector';
 
 export function Header() {
   const router = useRouter();
@@ -133,6 +134,9 @@ export function Header() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Currency Switcher */}
+            <CurrencySelector />
 
             <div className="w-px h-4 bg-gray-200" />
 
