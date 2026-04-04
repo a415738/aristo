@@ -20,13 +20,36 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# 检查 Node.js
-if ! command -v node &> /dev/null; then
+# 检查系统类型并安装 Node.js
+install_nodejs() {
+    if command -v node &> /dev/null; then
+        echo -e "${GREEN}Node.js 已安装: $(node -v)${NC}"
+        return
+    fi
+    
     echo -e "${YELLOW}安装 Node.js 18...${NC}"
-    curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
-    yum install -y nodejs
-fi
-echo -e "${GREEN}Node.js: $(node -v)${NC}"
+    
+    if [ -f /etc/debian_version ]; then
+        # Debian/Ubuntu
+        apt-get update
+        apt-get install -y curl
+        curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+        apt-get install -y nodejs
+    elif [ -f /etc/redhat-release ] || [ -f /etc/centos-release ]; then
+        # CentOS/RHEL
+        yum install -y curl
+        curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+        yum install -y nodejs
+    elif [ -f /etc/alpine-release ]; then
+        # Alpine
+        apk add --no-cache nodejs npm
+    else
+        echo -e "${RED}不支持的操作系统${NC}"
+        exit 1
+    fi
+}
+
+install_nodejs
 
 # 检查 PM2
 if ! command -v pm2 &> /dev/null; then
@@ -35,7 +58,7 @@ if ! command -v pm2 &> /dev/null; then
 fi
 
 # 停止旧服务
-if pm2 list | grep -q aristo; then
+if pm2 list 2>/dev/null | grep -q aristo; then
     echo -e "${YELLOW}停止旧服务...${NC}"
     pm2 stop aristo 2>/dev/null || true
     pm2 delete aristo 2>/dev/null || true
