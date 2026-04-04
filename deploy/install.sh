@@ -1,51 +1,40 @@
 #!/bin/bash
 set -e
 
-# =============================================
-# Aristo 美妆电商平台 - 一键部署脚本
-# =============================================
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}   Aristo 美妆电商平台 一键部署${NC}"
-echo -e "${GREEN}========================================${NC}"
+echo "========================================"
+echo "   Aristo 美妆电商平台 一键部署"
+echo "========================================"
 
 # 检查 root 用户
 if [ "$EUID" -ne 0 ]; then
-    echo -e "${RED}请使用 root 用户运行: sudo ./install.sh${NC}"
+    echo "请使用 root 用户运行: sudo ./install.sh"
     exit 1
 fi
 
-# 检查系统类型并安装 Node.js
+# 通用 Node.js 安装
 install_nodejs() {
     if command -v node &> /dev/null; then
-        echo -e "${GREEN}Node.js 已安装: $(node -v)${NC}"
+        echo "Node.js 已安装: $(node -v)"
         return
     fi
     
-    echo -e "${YELLOW}安装 Node.js 18...${NC}"
+    echo "安装 Node.js..."
     
-    if [ -f /etc/debian_version ]; then
-        # Debian/Ubuntu
-        apt-get update
-        apt-get install -y curl
-        curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-        apt-get install -y nodejs
-    elif [ -f /etc/redhat-release ] || [ -f /etc/centos-release ]; then
-        # CentOS/RHEL
-        yum install -y curl
-        curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
-        yum install -y nodejs
-    elif [ -f /etc/alpine-release ]; then
-        # Alpine
+    # 尝试不同的安装方式
+    if command -v yum &> /dev/null; then
+        yum install -y nodejs npm
+    elif command -v apt-get &> /dev/null; then
+        apt-get update && apt-get install -y nodejs npm
+    elif command -v apk &> /dev/null; then
         apk add --no-cache nodejs npm
+    elif command -v dnf &> /dev/null; then
+        dnf install -y nodejs npm
     else
-        echo -e "${RED}不支持的操作系统${NC}"
-        exit 1
+        # 最后尝试 nvm 或二进制安装
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install 18
     fi
 }
 
@@ -53,57 +42,43 @@ install_nodejs
 
 # 检查 PM2
 if ! command -v pm2 &> /dev/null; then
-    echo -e "${YELLOW}安装 PM2...${NC}"
+    echo "安装 PM2..."
     npm install -g pm2
 fi
 
 # 停止旧服务
-if pm2 list 2>/dev/null | grep -q aristo; then
-    echo -e "${YELLOW}停止旧服务...${NC}"
-    pm2 stop aristo 2>/dev/null || true
-    pm2 delete aristo 2>/dev/null || true
-fi
+pm2 stop aristo 2>/dev/null || true
+pm2 delete aristo 2>/dev/null || true
 
 # 安装依赖
-echo -e "${YELLOW}安装依赖...${NC}"
+echo "安装项目依赖..."
 npm install --prefer-offline
 
 # 创建环境变量文件
 if [ ! -f .env ]; then
-    echo -e "${YELLOW}创建环境变量文件...${NC}"
+    echo "创建环境变量文件..."
     cat > .env << 'EOF'
-# Supabase 配置
 COZE_SUPABASE_URL=https://your-project.supabase.co
 COZE_SUPABASE_ANON_KEY=your-anon-key
-
-# S3 存储配置
 COZE_BUCKET_ENDPOINT_URL=https://your-s3-endpoint
 COZE_BUCKET_NAME=your-bucket
-
-# 运行配置
 COZE_PROJECT_ENV=PROD
 PORT=5000
-NODE_ENV=production
 EOF
-    echo -e "${RED}请编辑 .env 填入你的配置！${NC}"
+    echo "请编辑 .env 填入你的配置！"
 fi
 
 # 启动服务
-echo -e "${YELLOW}启动服务...${NC}"
+echo "启动服务..."
 pm2 start start.sh --name aristo
 pm2 save
-
-# 开机自启
 pm2 startup 2>/dev/null || true
 
-# 显示状态
 echo ""
-echo -e "${GREEN}========================================${NC}"
-echo -e "${GREEN}        部署完成！${NC}"
-echo -e "${GREEN}========================================${NC}"
+echo "========================================"
+echo "        部署完成！"
+echo "========================================"
 echo ""
-echo -e "访问地址: http://你的服务器IP:5000"
-echo ""
-echo -e "${YELLOW}请编辑 .env 填入配置后执行: pm2 restart aristo${NC}"
+echo "请编辑 .env 填入配置后执行: pm2 restart aristo"
 echo ""
 pm2 status
