@@ -24,7 +24,7 @@ export function getCurrencyConfig(code: string): CurrencyConfig | undefined {
 export function formatPrice(priceInUSD: number, currencyCode: string): string {
   const config = getCurrencyConfig(currencyCode);
   if (!config) {
-    return `$${priceInUSD.toFixed(2)} USD`;
+    return `$${priceInUSD.toFixed(2)}`;
   }
   
   const convertedPrice = priceInUSD * config.rate;
