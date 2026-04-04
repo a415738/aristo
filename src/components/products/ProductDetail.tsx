@@ -81,6 +81,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   return (
     <div className="space-y-8">
+      {/* Back Button - Mobile */}
+      <button
+        onClick={() => window.history.back()}
+        className="md:hidden flex items-center gap-1 text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        {t.common.back || '返回'}
+      </button>
+
       {/* Breadcrumb */}
       <nav className="text-sm text-neutral-500 flex items-center flex-wrap">
         <Link href="/" className="hover:text-neutral-900 transition-colors">{t.nav.home}</Link>
@@ -307,6 +316,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 {t.product.buyNow}
               </Button>
             </div>
+
+            {/* Mobile Back Button */}
+            <button
+              onClick={() => window.history.back()}
+              className="md:hidden w-full mt-3 py-3 text-sm text-neutral-600 hover:text-neutral-900 flex items-center justify-center gap-1 border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              {t.common.back || '返回上一页'}
+            </button>
 
             {/* Services */}
             <div className="grid grid-cols-4 gap-2 pt-4 border-t border-neutral-100">
