@@ -15,6 +15,7 @@ import {
   MessageSquare,
   LogOut,
   ChevronDown,
+  Layers,
 } from 'lucide-react';
 import { ReactNode } from 'react';
 
@@ -26,6 +27,7 @@ interface AdminLayoutProps {
 const adminText = {
   dashboard: '控制台',
   products: '商品管理',
+  categories: '分类管理',
   brands: '品牌管理',
   orders: '订单管理',
   users: '用户管理',
@@ -81,6 +83,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const menuItems = [
     { name: adminText.dashboard, href: '/admin', icon: LayoutDashboard },
     { name: adminText.products, href: '/admin/products', icon: Package },
+    { name: adminText.categories, href: '/admin/categories', icon: Layers },
     { name: adminText.brands, href: '/admin/brands', icon: Tags },
     { name: adminText.orders, href: '/admin/orders', icon: ShoppingCart },
     { name: adminText.users, href: '/admin/users', icon: Users },
