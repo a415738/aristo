@@ -19,7 +19,7 @@ export function DashboardStats({ stats }: DashboardStatsProps) {
   const cards = [
     {
       title: t.admin.totalRevenue,
-      value: `$${stats.totalSales.toLocaleString()}`,
+      value: `$${stats.totalSales.toLocaleString()} USD`,
       icon: DollarSign,
       color: 'text-green-500',
       bgColor: 'bg-green-50',

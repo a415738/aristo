@@ -198,7 +198,7 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
                     {product.brands?.name || '-'}
                   </TableCell>
                   <TableCell className="text-right font-medium text-neutral-900">
-                    ${Number(product.retail_price).toFixed(2)}
+                    ${Number(product.retail_price).toFixed(2)} USD
                   </TableCell>
                   <TableCell className="text-right text-neutral-600">
                     {product.stock}
