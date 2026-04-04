@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
-  X, Plus, Loader2, Trash2 
+  X, Plus, Loader2, Trash2, Edit2
 } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { adminTranslations } from '@/lib/admin-translations';
@@ -54,6 +54,7 @@ export interface ProductFormData {
   sku: string;
   category_id: string;
   brand_id: string;
+  brand_name?: string; // 新品牌名称
   specs: { name: string; value: string }[];
   tags: string[];
   variants: { name: string; sku: string; price: string; stock: number }[];
@@ -178,9 +179,12 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
   const [sku, setSku] = useState(product?.sku || '');
   const [categoryId, setCategoryId] = useState(product?.category_id || '');
   const [brandId, setBrandId] = useState(product?.brand_id || '');
+  const [newBrandName, setNewBrandName] = useState('');
+  const [showNewBrandInput, setShowNewBrandInput] = useState(false);
   
   // 获取当前选择的品牌名称
   const selectedBrand = brands.find(b => b.id === brandId);
+  const isCustomNewBrand = brandId === '__new_brand__';
   
   // 商品属性
   const [specs, setSpecs] = useState<{ name: string; value: string }[]>(product?.specs || []);
@@ -260,20 +264,31 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
       alert(t.productForm.category + ' ' + t.common.required);
       return;
     }
+    
+    // 验证品牌
+    if (isCustomNewBrand && !newBrandName.trim()) {
+      alert('请输入新品牌名称');
+      return;
+    }
 
     setLoading(true);
     try {
       // 保存时使用拼接后的完整名称
+      // 如果是新品牌，使用新品牌名称；否则使用选中的品牌
+      const finalBrandName = isCustomNewBrand ? newBrandName : (selectedBrand?.name || '');
+      const finalName = finalBrandName ? `${finalBrandName} ${productName}` : productName;
+      
       await onSave({
-        name: name, // 完整名称：品牌 + 产品名
-        slug: slug || name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-'),
+        name: finalName, // 完整名称：品牌 + 产品名
+        slug: slug || finalName.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-'),
         description,
         images,
         retail_price: retailPrice,
         stock,
         sku,
         category_id: categoryId,
-        brand_id: brandId,
+        brand_id: isCustomNewBrand ? '__new_brand__' : brandId,
+        brand_name: isCustomNewBrand ? newBrandName : undefined, // 新品牌名称
         specs: specs.filter(s => s.name && s.value),
         tags,
         variants,
@@ -351,34 +366,93 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
         <div className="grid grid-cols-2 gap-4">
           {/* 品牌选择 - 放在最前面 */}
           <div className="col-span-2">
-            <Label htmlFor="brand">{t.productForm.brand} <span className="text-red-500">*</span></Label>
-            <select
-              id="brand"
-              value={brandId}
-              onChange={(e) => handleBrandChange(e.target.value)}
-              className="w-full px-3 py-2 border border-neutral-200 rounded-lg bg-white"
-            >
-              <option value="">请选择品牌</option>
-              {brands.map(brand => (
-                <option key={brand.id} value={brand.id}>{brand.name}</option>
-              ))}
-            </select>
+            <Label>{t.productForm.brand} <span className="text-red-500">*</span></Label>
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                <select
+                  id="brand"
+                  value={brandId}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '__add_new__') {
+                      setShowNewBrandInput(true);
+                      setBrandId('__new_brand__');
+                    } else {
+                      setShowNewBrandInput(false);
+                      handleBrandChange(value);
+                    }
+                  }}
+                  className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg bg-white"
+                >
+                  <option value="">请选择品牌</option>
+                  {brands.map(brand => (
+                    <option key={brand.id} value={brand.id}>{brand.name}</option>
+                  ))}
+                  <option value="__add_new__">+ 添加新品牌</option>
+                </select>
+                {brandId && brandId !== '__new_brand__' && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setShowNewBrandInput(true);
+                      setBrandId('__new_brand__');
+                    }}
+                    className="px-3"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              
+              {/* 新品牌输入框 */}
+              {showNewBrandInput && (
+                <div className="flex gap-2 items-start">
+                  <Input
+                    value={newBrandName}
+                    onChange={(e) => setNewBrandName(e.target.value)}
+                    placeholder="请输入新品牌名称"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setShowNewBrandInput(false);
+                      setBrandId('');
+                      setNewBrandName('');
+                    }}
+                  >
+                    取消
+                  </Button>
+                </div>
+              )}
+              
+              {/* 显示当前新品牌名称预览 */}
+              {isCustomNewBrand && newBrandName && (
+                <p className="text-sm text-neutral-500">
+                  品牌将显示为：<span className="font-medium text-neutral-700">{newBrandName}</span>
+                </p>
+              )}
+            </div>
           </div>
 
           {/* 商品名称 */}
           <div className="col-span-2">
             <Label htmlFor="name">
               {t.productForm.name} <span className="text-red-500">*</span>
-              {selectedBrand && (
+              {(selectedBrand || (isCustomNewBrand && newBrandName)) && (
                 <span className="text-sm text-neutral-500 font-normal ml-2">
-                  （将显示为：{selectedBrand.name} {productName || 'xxx'}）
+                  （将显示为：{isCustomNewBrand ? newBrandName : selectedBrand?.name} {productName || 'xxx'}）
                 </span>
               )}
             </Label>
             <div className="relative">
-              {selectedBrand && (
+              {(selectedBrand || (isCustomNewBrand && newBrandName)) && (
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 font-medium">
-                  {selectedBrand.name}
+                  {isCustomNewBrand ? newBrandName : selectedBrand?.name}
                 </span>
               )}
               <Input
@@ -391,7 +465,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
               />
             </div>
             {/* 预览完整名称 */}
-            {productName && selectedBrand && (
+            {productName && (selectedBrand || (isCustomNewBrand && newBrandName)) && (
               <p className="text-sm text-neutral-500 mt-1">
                 完整标题预览：<span className="font-medium text-neutral-700">{name}</span>
               </p>

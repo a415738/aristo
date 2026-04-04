@@ -75,9 +75,35 @@ export function ProductTable({ products: initialProducts, categories, brands }: 
 
   const handleSave = async (data: ProductFormData) => {
     try {
+      let finalData = { ...data };
+      
+      // 如果是新品牌，先创建品牌
+      if (data.brand_id === '__new_brand__' && data.brand_name) {
+        const brandSlug = data.brand_name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-');
+        const brandResponse = await fetch('/api/admin/brands', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.brand_name,
+            slug: brandSlug,
+            is_active: true,
+          }),
+        });
+        
+        if (!brandResponse.ok) {
+          const error = await brandResponse.json();
+          alert(error.error || '创建品牌失败');
+          return;
+        }
+        
+        const newBrand = await brandResponse.json();
+        finalData.brand_id = newBrand.id;
+        delete finalData.brand_name;
+      }
+      
       const url = '/api/admin/products';
       const method = editingProduct ? 'PUT' : 'POST';
-      const body = editingProduct ? { ...data, id: editingProduct.id } : data;
+      const body = editingProduct ? { ...finalData, id: editingProduct.id } : finalData;
 
       const response = await fetch(url, {
         method,
