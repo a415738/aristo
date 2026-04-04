@@ -434,15 +434,21 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
           </div>
 
           <div>
-            <Label htmlFor="price">{t.productForm.retailPrice} <span className="text-red-500">*</span></Label>
-            <Input
-              id="price"
-              type="number"
-              step="0.01"
-              value={retailPrice}
-              onChange={(e) => setRetailPrice(e.target.value)}
-              placeholder="0.00"
-            />
+            <Label htmlFor="price">{t.productForm.retailPrice} <span className="text-red-500">*</span> <span className="text-xs font-normal text-neutral-500">(USD 美元)</span></Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+              <Input
+                id="price"
+                type="number"
+                step="0.01"
+                value={retailPrice}
+                onChange={(e) => setRetailPrice(e.target.value)}
+                placeholder="0.00"
+                className="pl-7"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-neutral-400">USD</span>
+            </div>
+            <p className="text-xs text-neutral-500 mt-1">请填写美元价格，系统会自动按汇率转换显示</p>
           </div>
 
           <div>
@@ -599,7 +605,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantName}</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.sku}</th>
-                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantPrice}</th>
+                  <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantPrice} (USD)</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600">{t.productForm.variantStock}</th>
                   <th className="px-4 py-2 text-left text-sm font-medium text-neutral-600 w-12"></th>
                 </tr>
@@ -622,12 +628,18 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
                       />
                     </td>
                     <td className="px-4 py-2">
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={variant.price}
-                        onChange={(e) => updateVariant(index, 'price', e.target.value)}
-                      />
+                      <div className="relative">
+                        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">$</span>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={variant.price}
+                          onChange={(e) => updateVariant(index, 'price', e.target.value)}
+                          placeholder="0.00"
+                          className="pl-6 pr-10"
+                        />
+                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-neutral-400">USD</span>
+                      </div>
                     </td>
                     <td className="px-4 py-2">
                       <Input
