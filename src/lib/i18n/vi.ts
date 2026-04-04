@@ -8,10 +8,12 @@ export const vi = {
     cart: 'Giỏ hàng',
     login: 'Đăng nhập',
     register: 'Đăng ký',
-    account: 'Tài khoản',
+    account: 'Của tôi',
     logout: 'Đăng xuất',
     search: 'Tìm kiếm',
     searchPlaceholder: 'Tìm kiếm sản phẩm...',
+    categories: 'Danh mục',
+    service: 'Dịch vụ',
   },
   
   // Categories

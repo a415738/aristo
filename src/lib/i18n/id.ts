@@ -8,10 +8,12 @@ export const id = {
     cart: 'Keranjang',
     login: 'Masuk',
     register: 'Daftar',
-    account: 'Akun',
+    account: 'Saya',
     logout: 'Keluar',
     search: 'Cari',
     searchPlaceholder: 'Cari produk...',
+    categories: 'Kategori',
+    service: 'Layanan',
   },
   
   // Categories

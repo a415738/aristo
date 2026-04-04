@@ -8,10 +8,12 @@ export const en = {
     cart: 'Cart',
     login: 'Login',
     register: 'Register',
-    account: 'Account',
+    account: 'My',
     logout: 'Logout',
     search: 'Search',
     searchPlaceholder: 'Search products...',
+    categories: 'Categories',
+    service: 'Service',
   },
   
   // Categories

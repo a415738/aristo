@@ -4,20 +4,38 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Search, ShoppingCart, User, MessageCircle } from 'lucide-react';
-
-const navItems = [
-  { name: '首页', href: '/', icon: Home },
-  { name: '分类', href: '/products', icon: Search },
-  { name: '购物车', href: '/cart', icon: ShoppingCart, badge: true },
-  { name: '客服', href: '#chat', icon: MessageCircle },
-  { name: '我的', href: '/account', icon: User },
-];
-
-// 自定义事件名称
-const CHAT_TOGGLE_EVENT = 'aristo:toggle-chat';
+import { useTranslation } from '@/lib/i18n';
 
 export function MobileNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
+  const [cartCount, setCartCount] = useState(0);
+
+  // 监听购物车变化
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart = localStorage.getItem('aristo_cart');
+      if (cart) {
+        const items = JSON.parse(cart);
+        setCartCount(items.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0));
+      }
+    };
+    
+    updateCartCount();
+    window.addEventListener('cart_updated', updateCartCount);
+    return () => window.removeEventListener('cart_updated', updateCartCount);
+  }, []);
+
+  const navItems = [
+    { name: t.nav.home, href: '/', icon: Home },
+    { name: t.nav.categories, href: '/products', icon: Search },
+    { name: t.nav.cart, href: '/cart', icon: ShoppingCart, badge: true },
+    { name: t.nav.service, href: '#chat', icon: MessageCircle },
+    { name: t.nav.account, href: '/account', icon: User },
+  ];
+
+// 自定义事件名称
+const CHAT_TOGGLE_EVENT = 'aristo:toggle-chat';
 
   const handleChatClick = () => {
     // 发送自定义事件打开聊天窗口
@@ -55,9 +73,9 @@ export function MobileNav() {
             >
               <Icon className="h-5 w-5" />
               <span className="text-xs mt-1">{item.name}</span>
-              {item.badge && (
+              {item.badge && cartCount > 0 && (
                 <span className="absolute top-0.5 right-1/4 bg-red-500 text-white text-[10px] rounded-full min-w-[16px] h-4 flex items-center justify-center px-1">
-                  0
+                  {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
             </Link>

@@ -8,10 +8,12 @@ export const th = {
     cart: 'ตะกร้า',
     login: 'เข้าสู่ระบบ',
     register: 'ลงทะเบียน',
-    account: 'บัญชี',
+    account: 'ของฉัน',
     logout: 'ออกจากระบบ',
     search: 'ค้นหา',
     searchPlaceholder: 'ค้นหาสินค้า...',
+    categories: 'หมวดหมู่',
+    service: 'บริการ',
   },
   
   // Categories

@@ -8,10 +8,12 @@ export const zh = {
     cart: '购物车',
     login: '登录',
     register: '注册',
-    account: '账户',
+    account: '我的',
     logout: '退出',
     search: '搜索',
     searchPlaceholder: '搜索商品...',
+    categories: '分类',
+    service: '客服',
   },
   
   // Categories

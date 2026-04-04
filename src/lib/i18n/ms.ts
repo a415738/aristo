@@ -8,10 +8,12 @@ export const ms = {
     cart: 'Troli',
     login: 'Log Masuk',
     register: 'Daftar',
-    account: 'Akaun',
+    account: 'Saya',
     logout: 'Log Keluar',
     search: 'Cari',
     searchPlaceholder: 'Cari produk...',
+    categories: 'Kategori',
+    service: 'Perkhidmatan',
   },
   
   // Categories
