@@ -27,8 +27,8 @@ interface Product {
   sales_count: number;
   categories: { id: string; name: string; slug: string } | null;
   brands: { id: string; name: string; slug: string; logo: string | null } | null;
-  product_images: { id: string; image: string; sort_order: number }[];
-  product_variants: { id: string; name: string; sku: string | null; price: string; stock: number; image: string | null }[];
+  product_images?: { id: string; image: string; sort_order: number }[];
+  product_variants?: { id: string; name: string; sku: string | null; price: string; stock: number; image: string | null }[];
 }
 
 interface ProductDetailProps {
@@ -47,9 +47,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const thumbnailsRef = useRef<HTMLDivElement>(null);
 
   // Get all images
-  const images = [product.main_image, ...product.product_images.map(img => img.image)];
+  const images = [product.main_image, ...(product.product_images?.map(img => img.image) || [])];
   
-  const currentVariant = product.product_variants.find(v => v.id === selectedVariant);
+  const currentVariant = product.product_variants?.find(v => v.id === selectedVariant);
   const currentPrice = currentVariant?.price || product.retail_price;
   const currentStock = currentVariant?.stock || product.stock;
 
@@ -238,7 +238,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             <Separator className="bg-neutral-100" />
 
             {/* Variants */}
-            {product.product_variants.length > 0 && (
+            {product.product_variants && product.product_variants.length > 0 && (
               <div className="space-y-3">
                 <label className="text-sm font-medium text-neutral-700">{t.product.selectOptions}</label>
                 <div className="flex flex-wrap gap-2">

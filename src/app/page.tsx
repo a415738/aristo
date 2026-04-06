@@ -10,7 +10,6 @@ async function getBanners() {
     .from('banners')
     .select('*')
     .eq('is_active', true)
-    .eq('position', 'home')
     .order('sort_order', { ascending: true });
   
   if (error) throw error;
@@ -21,7 +20,7 @@ async function getHotProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo), specs')
+    .select('*, categories(name), brands(name, logo)')
     .eq('is_active', true)
     .order('sales_count', { ascending: false })
     .limit(8);
@@ -34,7 +33,7 @@ async function getNewProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo), specs')
+    .select('*, categories(name), brands(name, logo)')
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(8);
@@ -44,7 +43,6 @@ async function getNewProducts() {
 }
 
 async function getCarouselBrands() {
-  // 获取首页轮播展示的品牌（is_featured = true）
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('brands')
@@ -54,7 +52,6 @@ async function getCarouselBrands() {
     .order('sort_order', { ascending: true });
   
   if (error) {
-    // 如果 is_featured 字段不存在，返回空数组
     console.error('Failed to fetch carousel brands:', error);
     return [];
   }

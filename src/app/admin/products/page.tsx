@@ -10,41 +10,25 @@ async function getProducts() {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select(`
-      *,
-      categories(name),
-      brands(name),
-      product_images(image),
-      product_variants(name, sku, price, stock)
-    `)
+    .select('*, categories(name), brands(name)')
     .order('created_at', { ascending: false })
     .limit(50);
   
-  if (error) throw error;
+  if (error) return [];
   return data || [];
 }
 
 async function getCategories() {
   const client = getSupabaseClient();
-  const { data, error } = await client
-    .from('categories')
-    .select('id, name, slug')
-    .eq('is_active', true)
-    .order('sort_order');
-  
-  if (error) throw error;
+  const { data, error } = await client.from('categories').select('*').order('name');
+  if (error) return [];
   return data || [];
 }
 
 async function getBrands() {
   const client = getSupabaseClient();
-  const { data, error } = await client
-    .from('brands')
-    .select('id, name, slug')
-    .eq('is_active', true)
-    .order('name');
-  
-  if (error) throw error;
+  const { data, error } = await client.from('brands').select('*').order('name');
+  if (error) return [];
   return data || [];
 }
 

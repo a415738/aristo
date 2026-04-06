@@ -10,13 +10,7 @@ async function getProduct(slug: string) {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select(`
-      *,
-      categories(id, name, slug),
-      brands(id, name, slug, logo),
-      product_images(*),
-      product_variants(*)
-    `)
+    .select('*, categories(id, name, slug), brands(id, name, slug, logo)')
     .eq('slug', slug)
     .eq('is_active', true)
     .single();
@@ -29,7 +23,7 @@ async function getRelatedProducts(productId: string, categoryId: string) {
   const client = getSupabaseClient();
   const { data, error } = await client
     .from('products')
-    .select('*, categories(name), brands(name, logo), specs')
+    .select('*, categories(name), brands(name, logo)')
     .eq('category_id', categoryId)
     .eq('is_active', true)
     .neq('id', productId)

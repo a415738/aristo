@@ -19,7 +19,7 @@ async function getProducts(searchParams: {
   
   let query = client
     .from('products')
-    .select('*, categories(name), brands(name, logo), specs', { count: 'exact' })
+    .select('*, categories(name), brands(name, logo)', { count: 'exact' })
     .eq('is_active', true);
 
   // Filter by category

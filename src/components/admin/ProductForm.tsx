@@ -172,7 +172,7 @@ export function ProductForm({ product, categories, brands, onSave, onCancel }: P
   const [slug, setSlug] = useState(product?.slug || '');
   const [description, setDescription] = useState(product?.description || '');
   const [images, setImages] = useState<string[]>(
-    product ? [product.main_image, ...product.product_images.map(img => img.image)] : []
+    product ? [product.main_image, ...(product.product_images?.map(img => img.image) || [])] : []
   );
   const [retailPrice, setRetailPrice] = useState(product?.retail_price || '');
   const [stock, setStock] = useState(product?.stock || 0);
