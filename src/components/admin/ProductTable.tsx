@@ -39,8 +39,8 @@ interface Product {
   brand_id: string | null;
   specs: { name: string; value: string }[] | null;
   tags: string[] | null;
-  product_images: { image: string }[];
-  product_variants: { name: string; sku: string | null; price: string; stock: number }[];
+  product_images?: { image: string }[];
+  product_variants?: { name: string; sku: string | null; price: string; stock: number }[];
   categories: { name: string } | null;
   brands: { name: string } | null;
 }
