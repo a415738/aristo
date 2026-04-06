@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { LogoUploader, BannerUploader } from './BrandImageUploader';
 
 interface Brand {
   id: string;
@@ -197,7 +198,7 @@ export function BrandsPageContent() {
             ) : filteredBrands.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                  暂无品牌
+                  暂无品牌，点击上方按钮添加
                 </TableCell>
               </TableRow>
             ) : (
@@ -255,12 +256,28 @@ export function BrandsPageContent() {
 
       {/* 添加/编辑对话框 */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingBrand ? '编辑品牌' : '添加品牌'}</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4 py-4">
+          <div className="space-y-6 py-4">
+            {/* Logo 上传 */}
+            <div>
+              <LogoUploader
+                value={formData.logo}
+                onChange={(url) => setFormData({ ...formData, logo: url })}
+                label="品牌 Logo *"
+              />
+            </div>
+
+            {/* Banner 上传 */}
+            <BannerUploader
+              value={formData.banner}
+              onChange={(url) => setFormData({ ...formData, banner: url })}
+              label="品牌 Banner（可选）"
+            />
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>品牌名称 *</Label>
@@ -285,35 +302,7 @@ export function BrandsPageContent() {
               <Input
                 value={formData.country}
                 onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                placeholder="如：Japan"
-              />
-            </div>
-
-            <div>
-              <Label>Logo URL</Label>
-              <Input
-                value={formData.logo}
-                onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                placeholder="https://..."
-              />
-              {formData.logo && (
-                <img
-                  src={formData.logo}
-                  alt="Logo预览"
-                  className="mt-2 w-20 h-20 object-contain border rounded"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              )}
-            </div>
-
-            <div>
-              <Label>Banner URL</Label>
-              <Input
-                value={formData.banner}
-                onChange={(e) => setFormData({ ...formData, banner: e.target.value })}
-                placeholder="https://..."
+                placeholder="如：Japan、France、China"
               />
             </div>
 
@@ -358,7 +347,8 @@ export function BrandsPageContent() {
             </Button>
           </div>
         </DialogContent>
-      </Dialog>
+        </Dialog>
+      </div>
     </div>
   );
 }
