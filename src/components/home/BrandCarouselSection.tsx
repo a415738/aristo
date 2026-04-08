@@ -34,9 +34,13 @@ export function BrandCarouselSection({ brands }: BrandCarouselSectionProps) {
   };
 
   useEffect(() => {
-    checkScrollButtons();
+    // 延迟检查，确保DOM渲染完成
+    const timer = setTimeout(checkScrollButtons, 100);
     window.addEventListener('resize', checkScrollButtons);
-    return () => window.removeEventListener('resize', checkScrollButtons);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkScrollButtons);
+    };
   }, [brands]);
 
   // 自动轮播
