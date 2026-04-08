@@ -35,8 +35,8 @@ interface ProductFormProps {
     brand_id: string | null;
     specs: { name: string; value: string }[] | null;
     tags: string[] | null;
-    product_images: { image: string }[];
-    product_variants: { name: string; sku: string | null; price: string; stock: number }[];
+    product_images?: { image: string }[];
+    product_variants?: { name: string; sku: string | null; price: string; stock: number }[];
   } | null;
   categories: Category[];
   brands: Brand[];

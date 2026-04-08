@@ -347,8 +347,7 @@ export function BrandsPageContent() {
             </Button>
           </div>
         </DialogContent>
-        </Dialog>
-      </div>
+      </Dialog>
     </div>
   );
 }
